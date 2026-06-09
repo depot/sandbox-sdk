@@ -19,7 +19,7 @@ Set `DEPOT_TOKEN` in your environment, then create a client and pass it to the s
 ```typescript
 import {createClient, Sandbox} from '@depot/sandbox'
 
-const client = createClient()
+const client = createClient({token: process.env.DEPOT_TOKEN!})
 const sandbox = await Sandbox.create(client, {
   env: {NODE_ENV: 'development'},
 })
@@ -41,7 +41,7 @@ You can also pass token, organization, and endpoint options explicitly:
 
 ```typescript
 const client = createClient({
-  token: process.env.DEPOT_TOKEN,
+  token: process.env.DEPOT_TOKEN!,
   orgID: process.env.DEPOT_ORG_ID,
 })
 ```

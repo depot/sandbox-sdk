@@ -1,41 +1,10 @@
 import assert from 'node:assert'
 import test from 'node:test'
-import {DEFAULT_ENDPOINT, applyAuthHeaders, createClient, resolveClientOpts} from './client.js'
+import {DEFAULT_ENDPOINT, applyAuthHeaders, createClient} from './client.js'
 
 test('createClient accepts an explicit token and uses the default endpoint', () => {
   const client = createClient({token: 'explicit'})
   assert.equal(client.endpoint, DEFAULT_ENDPOINT)
-})
-
-test('resolveClientOpts falls back to DEPOT_TOKEN', () => {
-  const previous = process.env.DEPOT_TOKEN
-  process.env.DEPOT_TOKEN = 'from-env'
-  try {
-    assert.deepEqual(resolveClientOpts(), {token: 'from-env'})
-  } finally {
-    restoreEnv('DEPOT_TOKEN', previous)
-  }
-})
-
-test('createClient uses DEPOT_TOKEN when the token option is omitted', () => {
-  const previous = process.env.DEPOT_TOKEN
-  process.env.DEPOT_TOKEN = 'from-env'
-  try {
-    const client = createClient()
-    assert.equal(client.endpoint, DEFAULT_ENDPOINT)
-  } finally {
-    restoreEnv('DEPOT_TOKEN', previous)
-  }
-})
-
-test('resolveClientOpts gives explicit token precedence over DEPOT_TOKEN', () => {
-  const previous = process.env.DEPOT_TOKEN
-  process.env.DEPOT_TOKEN = 'from-env'
-  try {
-    assert.equal(resolveClientOpts({token: 'explicit'}).token, 'explicit')
-  } finally {
-    restoreEnv('DEPOT_TOKEN', previous)
-  }
 })
 
 test('createClient preserves a custom endpoint', () => {
@@ -73,11 +42,11 @@ test('applyAuthHeaders omits x-depot-org when no organization is configured', ()
   assert.equal(headers.has('x-depot-org'), false)
 })
 
-test('createClient rejects when no explicit token or DEPOT_TOKEN exists', () => {
+test('createClient rejects when the caller passes a missing DEPOT_TOKEN', () => {
   const previous = process.env.DEPOT_TOKEN
   delete process.env.DEPOT_TOKEN
   try {
-    assert.throws(() => createClient(), /createClient requires a token/)
+    assert.throws(() => createClient({token: process.env.DEPOT_TOKEN!}), /createClient requires a token/)
   } finally {
     restoreEnv('DEPOT_TOKEN', previous)
   }

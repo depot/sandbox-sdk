@@ -14,18 +14,17 @@ export const DEFAULT_ENDPOINT = 'https://api.depot.dev'
  * const sandbox = await Sandbox.create(client)
  * ```
  */
-export function createClient(opts: CreateClientOpts = {}): SandboxClient {
-  const resolved = resolveClientOpts(opts)
-  if (!resolved.token) {
+export function createClient(opts: CreateClientOpts): SandboxClient {
+  if (!opts?.token) {
     throw new Error('createClient requires a token')
   }
-  const endpoint = resolved.endpoint ?? DEFAULT_ENDPOINT
+  const endpoint = opts.endpoint ?? DEFAULT_ENDPOINT
   const transport = createConnectTransport({
     baseUrl: endpoint,
     httpVersion: '2',
     interceptors: [
       (next) => (req) => {
-        applyAuthHeaders(req, resolved)
+        applyAuthHeaders(req, opts)
         return next(req)
       },
     ],
@@ -37,11 +36,8 @@ export function createClient(opts: CreateClientOpts = {}): SandboxClient {
 }
 
 export interface CreateClientOpts {
-  /**
-   * Bearer token used to authenticate requests. Defaults to `DEPOT_TOKEN` when
-   * omitted.
-   */
-  token?: string
+  /** Bearer token used to authenticate requests, typically your `DEPOT_TOKEN`. */
+  token: string
   /** API endpoint to connect to. Defaults to {@link DEFAULT_ENDPOINT}. */
   endpoint?: string
   /**
@@ -54,18 +50,6 @@ export interface CreateClientOpts {
   orgID?: string
 }
 
-export interface ResolvedClientOpts extends Omit<CreateClientOpts, 'token'> {
-  token: string | undefined
-}
-
-/** @internal Resolve explicit options and environment defaults for tests. */
-export function resolveClientOpts(opts: CreateClientOpts = {}): ResolvedClientOpts {
-  return {
-    ...opts,
-    token: opts.token ?? process.env.DEPOT_TOKEN,
-  }
-}
-
 interface HeaderCarrier {
   header: {
     set(name: string, value: string): void
@@ -73,10 +57,8 @@ interface HeaderCarrier {
 }
 
 /** @internal Apply Depot auth headers for tests and the Connect interceptor. */
-export function applyAuthHeaders(req: HeaderCarrier, opts: ResolvedClientOpts): void {
-  if (opts.token) {
-    req.header.set('Authorization', `Bearer ${opts.token}`)
-  }
+export function applyAuthHeaders(req: HeaderCarrier, opts: CreateClientOpts): void {
+  req.header.set('Authorization', `Bearer ${opts.token}`)
   // App and service tokens, along with user tokens that belong to more than
   // one organization, need the `x-depot-org` header so the server knows which
   // organization to act on. Without it, those requests are rejected with

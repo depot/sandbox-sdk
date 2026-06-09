@@ -29,7 +29,7 @@ The useful SDK work already exists in two places: `depot/api` contains the revie
 - R2. Preserve the reviewed `depot.sandbox.v1` SDK public surface from the API client-classes work: client creation, sandbox lifecycle helpers, command execution, streaming output, and filesystem helpers.
 - R3. Keep the SDK pure TS/JS with no Go CLI, binary dependency, or server-side API implementation.
 - R4. Bundle or vendor the generated `depot.sandbox.v1` TypeScript client code so beta consumers do not need a separate published proto module.
-- R5. Align auth behavior with ticket intent: `DEPOT_TOKEN` should be the natural default path, while explicit token, endpoint, organization, and client configuration remain available.
+- R5. Align auth behavior with ticket intent: callers pass an explicit token, typically sourced from `DEPOT_TOKEN`, while endpoint, organization, and client configuration remain available.
 - R6. Publish-ready package metadata must target the new `depot/sandbox-sdk` repository and beta package lifecycle, not the superseded `sdk-node` location.
 - R7. Add repo-local build, type-check, format, and test validation scripts that cover the package before publication.
 - R8. Document beta scope and non-goals so pilot customers understand the supported surface and deferred capabilities.
@@ -83,7 +83,7 @@ The useful SDK work already exists in two places: `depot/api` contains the revie
 - Keep ESM-only output for beta: the reference package already uses `"type": "module"`, `main`, `exports.import`, and `types`; matching that avoids inventing a dual CJS/ESM build for v0.
 - Use TypeScript declarations emitted by `tsc`: this is sufficient for a TS/JS SDK with no bundling requirement and keeps generated proto imports transparent.
 - Treat generated `depot.sandbox.v1` files as vendored source for beta: this satisfies DEP-4140's "bundle generated client" intent while avoiding a dependency on a separate proto package.
-- Add a default environment-token path in `createClient` without removing explicit token configuration: `DEPOT_TOKEN` should work naturally for examples and local use, while tests should prove explicit token precedence and missing-token errors.
+- Keep token selection explicit in `createClient`: examples should source the token from `DEPOT_TOKEN`, matching `@depot/sdk-node`, while tests should prove missing-token errors and header behavior.
 - Keep validation local and lightweight: use Node's built-in test runner through `tsx`, TypeScript strict checking, and Prettier formatting rather than introducing a heavier test framework.
 
 ---
@@ -152,7 +152,7 @@ The useful SDK work already exists in two places: `depot/api` contains the revie
 ```mermaid
 flowchart TD
     User["SDK user"]
-    Env["DEPOT_TOKEN / explicit options"]
+    Env["Explicit token from DEPOT_TOKEN / options"]
     Client["createClient"]
     RPC["Connect SandboxService client"]
     Static["Sandbox.create/get/list/listAll"]
@@ -285,7 +285,7 @@ flowchart TD
 
 - U3. **Align auth and client configuration for standalone beta use**
 
-**Goal:** Make client creation natural for beta users by supporting `DEPOT_TOKEN` as the default token source while preserving explicit configuration.
+**Goal:** Make client creation natural for beta users by documenting `DEPOT_TOKEN` as the caller-provided token source while preserving explicit configuration.
 
 **Requirements:** R2, R5, R8
 
@@ -301,8 +301,8 @@ flowchart TD
 **Approach:**
 
 - Keep `createClient` as the primary entry point and continue returning an opaque `SandboxClient` wrapping the Connect client.
-- Allow callers to omit `token` when `process.env.DEPOT_TOKEN` is set, while explicit `token` takes precedence over the environment.
-- Preserve explicit `endpoint` and `orgID` options; if an organization environment default is added, document and test precedence clearly.
+- Require callers to pass `token`, typically as `process.env.DEPOT_TOKEN!`, matching the existing `@depot/sdk-node` call-site pattern.
+- Preserve explicit `endpoint` and `orgID` options.
 - Keep auth header behavior unchanged: requests set `Authorization: Bearer <token>` and set `x-depot-org` only when an organization ID is configured.
 - Keep missing-token failures explicit and early so pilot customers get a clear setup error.
 
@@ -314,15 +314,13 @@ flowchart TD
 **Test scenarios:**
 
 - Happy path: `createClient({token: "explicit"})` uses the explicit token and default endpoint.
-- Happy path: `createClient()` uses `DEPOT_TOKEN` when present.
-- Edge case: explicit `token` overrides `DEPOT_TOKEN` when both are present.
 - Edge case: custom `endpoint` is retained on the returned client.
 - Edge case: configured `orgID` adds `x-depot-org`, while absent `orgID` leaves the header unset.
-- Error path: calling `createClient()` without an explicit token or `DEPOT_TOKEN` throws a clear missing-token error.
+- Error path: calling `createClient({token: process.env.DEPOT_TOKEN!})` when the environment variable is missing throws a clear missing-token error.
 
 **Verification:**
 
-- Client creation works for both environment-based and explicit-token examples.
+- Client creation works for explicit-token examples, including the documented `DEPOT_TOKEN` call-site pattern.
 - Existing SDK calls still receive the same RPC client shape expected by `Sandbox` and child objects.
 
 ---
@@ -343,7 +341,7 @@ flowchart TD
 
 **Approach:**
 
-- Document installation with the beta dist-tag, `DEPOT_TOKEN` setup, basic sandbox creation, command execution, output collection, filesystem usage, and cleanup.
+- Document installation with the beta dist-tag, caller-provided `DEPOT_TOKEN` setup, basic sandbox creation, command execution, output collection, filesystem usage, and cleanup.
 - Document explicit client options for endpoint and organization selection without making them required for the common case.
 - List the beta-supported surface: `createClient`, lifecycle static methods, instance lifecycle methods, command streaming/output helpers, and filesystem helpers.
 - List deferred capabilities from the reference README, such as piped stdin, command history, create-time secrets, timeout extension, snapshots, and pty support.
@@ -427,7 +425,7 @@ flowchart TD
 | The moved package accidentally follows the superseded `sdk-node` destination metadata. | Review `package.json`, README, and repository fields for `depot/sandbox-sdk`; include metadata checks in U4/U5.                                                              |
 | The API and `sdk-node` references differ in subtle ways.                               | Treat `depot/api` PR #3881 as behavioral source of truth and `sdk-node` PR #29 as packaging source; preserve characterization tests before package-specific edits.           |
 | Vendored generated files become stale relative to API protos.                          | Use the generated files that match the reviewed SDK baseline, and defer regeneration unless implementation can verify generator compatibility and source proto availability. |
-| Environment-token defaults create ambiguous auth precedence.                           | Test explicit-token precedence, environment fallback, and missing-token errors in `src/client.test.ts`.                                                                      |
+| Auth examples drift from existing SDK pattern.                                         | Keep `createClient` token selection explicit and test missing-token and header behavior in `src/client.test.ts`.                                                             |
 | Package appears buildable locally but would publish the wrong contents.                | Add package dry-run validation and verify tarball contents before release automation is planned.                                                                             |
 | Beta docs imply unsupported capabilities are available.                                | Keep the README beta surface and deferred capabilities explicit, copied from the reference package and updated only for implemented behavior.                                |
 
