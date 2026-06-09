@@ -1,0 +1,66 @@
+{
+  "name": "@depot/sandbox",
+  "version": "0.1.0-beta.0",
+  "type": "module",
+  "description": "TypeScript SDK for Depot sandboxes.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/depot/sandbox-sdk.git"
+  },
+  "homepage": "https://github.com/depot/sandbox-sdk",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.3",
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "pack:check": "pnpm run build && node -e \"import('./dist/index.js').then((m) => { if (!m.createClient || !m.Sandbox) throw new Error('missing public exports') })\" && npm pack --dry-run",
+    "prepack": "pnpm run build",
+    "test": "tsx --test src/*.test.ts",
+    "type-check": "tsc --noEmit",
+    "validate": "pnpm run fmt:check && pnpm run type-check && pnpm run test && pnpm run pack:check"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.8.0",
+    "@connectrpc/connect": "^2.1.0",
+    "@connectrpc/connect-node": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.0.0",
+    "prettier-plugin-pkg": "^0.18.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.5.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
+  "sideEffects": false,
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "plugins": [
+      "prettier-plugin-organize-imports",
+      "prettier-plugin-pkg"
+    ]
+  }
+}
