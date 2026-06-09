@@ -543,10 +543,7 @@ async function drainStream(
       // status 'running' and output()/wait() resolving as if the
       // command succeeded. Surface as a failure so callers see the
       // discrepancy.
-      _commandInternals.fail(
-        command,
-        new Error(`SandboxCommandExecution ${command.cmdId} stream closed without Finished event`),
-      )
+      _commandInternals.failClosedWithoutFinished(command)
     }
   } catch (err) {
     _commandInternals.fail(command, err)

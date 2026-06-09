@@ -230,6 +230,28 @@ test('runCommand driver: output("stdout") returns concatenated stdout only', asy
   assert.equal(await cmd.output('both'), 'hello boom\nworld\n')
 })
 
+test('runCommand driver: output() rejects when replay data was evicted', async () => {
+  const cmd = _commandInternals.fromStartedEvent({
+    cmdId: 'cmd_01HEVICT',
+    sandboxId: 'sbx_01HEVICT',
+    cmd: '/bin/cat',
+    args: [],
+    cwd: undefined,
+    env: {},
+    sudo: false,
+    detached: false,
+    startedAt: STARTED_AT,
+  })
+
+  _commandInternals.ingest(cmd, makeStartedEvent('cmd_01HEVICT', STARTED_AT))
+  _commandInternals.ingest(cmd, makeStdoutEvent('x'.repeat(16 * 1024 * 1024 + 1), 16 * 1024 * 1024 + 1))
+  _commandInternals.ingest(cmd, makeFinishedEvent(0, FINISHED_AT))
+  _commandInternals.end(cmd)
+
+  await assert.rejects(() => cmd.output('stdout'), /replay buffer evicted/)
+  await assert.rejects(() => cmd.stdout(), /replay buffer evicted/)
+})
+
 test('runCommand driver: wait() throws when stream surfaces an Error event', async () => {
   const cmd = _commandInternals.fromStartedEvent({
     cmdId: 'cmd_01HBAD',
@@ -250,6 +272,29 @@ test('runCommand driver: wait() throws when stream surfaces an Error event', asy
   _commandInternals.end(cmd)
 
   await assert.rejects(() => cmd.wait(), /vm vanished/)
+})
+
+test('runCommand driver: live pump failure preserves prior Error event reason', async () => {
+  const cmd = _commandInternals.fromStartedEvent({
+    cmdId: 'cmd_01HFAIL',
+    sandboxId: 'sbx_01HFAIL',
+    cmd: '/bin/false',
+    args: [],
+    cwd: undefined,
+    env: {},
+    sudo: false,
+    detached: false,
+    startedAt: STARTED_AT,
+  })
+  _commandInternals.ingest(cmd, makeStartedEvent('cmd_01HFAIL', STARTED_AT))
+  _commandInternals.ingest(
+    cmd,
+    create(SandboxCommandExecutionEventSchema, {event: {case: 'error', value: {reason: 'vm vanished'}}}),
+  )
+  _commandInternals.failClosedWithoutFinished(cmd)
+
+  await assert.rejects(() => cmd.wait(), /vm vanished/)
+  await assert.rejects(() => cmd.output(), /vm vanished/)
 })
 
 test('detached command: logs(), output(), and wait() are unavailable', async () => {

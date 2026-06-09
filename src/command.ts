@@ -1,4 +1,5 @@
 import {timestampDate, type Timestamp} from '@bufbuild/protobuf/wkt'
+import {SlowConsumerError} from './errors.js'
 import {
   SandboxCommandExecutionStatus as CommandStatusProto,
   type SandboxCommandExecutionEvent,
@@ -234,7 +235,15 @@ export class SandboxCommandExecution {
     const stdoutDecoder = new TextDecoder('utf-8', {fatal: false})
     const stderrDecoder = new TextDecoder('utf-8', {fatal: false})
     let out = ''
-    for await (const event of this.events.iterate({fromOffset: 0})) {
+    const events = this.events.iterate({
+      fromOffset: 0,
+      onEvicted: (info) => {
+        throw new SlowConsumerError(
+          `command output replay buffer evicted ${info.droppedBytes} bytes before output() could read them`,
+        )
+      },
+    })
+    for await (const event of events) {
       const chunk = decodeEvent(event, stdoutDecoder, stderrDecoder)
       if (chunk && (which === 'both' || which === chunk.stream)) {
         out += chunk.data
@@ -445,6 +454,21 @@ export class SandboxCommandExecution {
     this.events.error(err)
     this.settleTerminal(err)
   }
+
+  /**
+   * Fail a stream that closed without delivering Finished. This keeps the live
+   * RunCommand pump on the same error-message path as _endStream while still
+   * rejecting output/log iterators instead of ending them successfully.
+   *
+   * @internal
+   */
+  protected _failStreamClosedWithoutFinished(): void {
+    const message =
+      this._lastErrorReason !== undefined
+        ? `SandboxCommandExecution ${this.cmdId} failed: ${this._lastErrorReason}`
+        : `SandboxCommandExecution ${this.cmdId} stream closed without Finished event`
+    this._failStream(new Error(message))
+  }
 }
 
 /**
@@ -557,5 +581,8 @@ export const _commandInternals = {
   },
   fail(cmd: SandboxCommandExecution, err: unknown): void {
     ;(cmd as unknown as {_failStream(err: unknown): void})._failStream(err)
+  },
+  failClosedWithoutFinished(cmd: SandboxCommandExecution): void {
+    ;(cmd as unknown as {_failStreamClosedWithoutFinished(): void})._failStreamClosedWithoutFinished()
   },
 }
