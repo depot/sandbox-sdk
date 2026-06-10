@@ -1,6 +1,6 @@
 import {appendFileSync, readFileSync} from 'node:fs'
 
-import {formatVersion, parseVersion} from './release-version-utils.mjs'
+import {formatVersion, isCliEntrypoint, parseVersion} from './release-version-utils.mjs'
 
 const packageName = '@depot/sandbox'
 const requestTimeoutMs = 15000
@@ -164,7 +164,7 @@ async function main() {
   writeGithubOutput(result)
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isCliEntrypoint(import.meta.url)) {
   main().catch((error) => {
     console.error(error instanceof Error ? error.message : error)
     process.exit(1)

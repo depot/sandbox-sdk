@@ -3,7 +3,9 @@ import {mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
 import {describe, it} from 'node:test'
+import {pathToFileURL} from 'node:url'
 
+import {isCliEntrypoint} from './release-version-utils.mjs'
 import {
   assertReleaseVersionAllowed,
   packageVersionFromReleaseTag,
@@ -82,5 +84,16 @@ describe('assertReleaseVersionAllowed', () => {
       () => assertReleaseVersionAllowed({releaseVersion: '0.1.0-beta.1', packageVersion: '0.1.0-beta.2'}),
       /not an allowed advancement/,
     )
+  })
+})
+
+describe('isCliEntrypoint', () => {
+  it('matches scripts invoked with relative or absolute argv paths', () => {
+    const scriptPath = join(process.cwd(), 'scripts/set-package-version-from-release-tag.mjs')
+    const moduleUrl = pathToFileURL(scriptPath).href
+
+    assert.equal(isCliEntrypoint(moduleUrl, 'scripts/set-package-version-from-release-tag.mjs'), true)
+    assert.equal(isCliEntrypoint(moduleUrl, scriptPath), true)
+    assert.equal(isCliEntrypoint(moduleUrl, undefined), false)
   })
 })

@@ -1,3 +1,5 @@
+import {pathToFileURL} from 'node:url'
+
 export function parseVersion(version) {
   if (!version) {
     throw new Error('package.json version missing')
@@ -63,4 +65,8 @@ export function packageVersionFromReleaseTag(tag) {
     throw new Error(`Unsupported release tag version: ${version}`)
   }
   return version
+}
+
+export function isCliEntrypoint(moduleUrl, argvPath = process.argv[1]) {
+  return Boolean(argvPath) && moduleUrl === pathToFileURL(argvPath).href
 }

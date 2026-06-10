@@ -1,5 +1,5 @@
 import {appendFileSync, readFileSync, writeFileSync} from 'node:fs'
-import {formatVersion, packageVersionFromReleaseTag, parseVersion} from './release-version-utils.mjs'
+import {formatVersion, isCliEntrypoint, packageVersionFromReleaseTag, parseVersion} from './release-version-utils.mjs'
 
 export {packageVersionFromReleaseTag} from './release-version-utils.mjs'
 
@@ -60,7 +60,7 @@ function main() {
   writeGithubOutput({version})
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isCliEntrypoint(import.meta.url)) {
   try {
     main()
   } catch (error) {
