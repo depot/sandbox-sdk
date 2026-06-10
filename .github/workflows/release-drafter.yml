@@ -13,6 +13,17 @@ jobs:
   release-drafter:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+
+      - name: Read package version
+        id: package-version
+        run: |
+          version="$(node -p "const pkg = require('./package.json'); if (!pkg.version) throw new Error('package.json version missing'); pkg.version")"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
       - uses: release-drafter/release-drafter@v6
+        with:
+          name: '@depot/sandbox ${{ steps.package-version.outputs.version }}'
+          tag: 'v${{ steps.package-version.outputs.version }}'
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_PUBLIC_GITHUB_TOKEN }}

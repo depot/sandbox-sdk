@@ -1,5 +1,3 @@
-name-template: '@depot/sandbox $RESOLVED_VERSION'
-tag-template: v$RESOLVED_VERSION
 prerelease: true
 prerelease-identifier: beta
 template: |
