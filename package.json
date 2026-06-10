@@ -1,6 +1,6 @@
 {
   "name": "@depot/sandbox",
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "type": "module",
   "description": "TypeScript SDK for Depot sandboxes.",
   "repository": {
@@ -25,21 +25,25 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "node -e \"fs.rmSync('dist', {recursive: true, force: true})\" && tsc -p tsconfig.build.json",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
+    "gen": "buf generate && prettier --write src/gen",
+    "gen:check": "node scripts/check-generated.mjs",
     "pack:check": "pnpm run build && node -e \"import('./dist/index.js').then((m) => { if (!m.createClient || !m.Sandbox) throw new Error('missing public exports') })\" && npm pack --dry-run",
     "prepack": "pnpm run build",
     "test": "tsx --test src/*.test.ts",
     "type-check": "tsc --noEmit",
-    "validate": "pnpm run fmt:check && pnpm run type-check && pnpm run test && pnpm run pack:check"
+    "validate": "pnpm run fmt:check && pnpm run gen:check && pnpm run type-check && pnpm run test && pnpm run pack:check"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^2.8.0",
+    "@bufbuild/protobuf": "2.11.0",
     "@connectrpc/connect": "^2.1.0",
     "@connectrpc/connect-node": "^2.1.0"
   },
   "devDependencies": {
+    "@bufbuild/buf": "^1.70.0",
+    "@bufbuild/protoc-gen-es": "2.11.0",
     "@types/node": "^22.5.4",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.0.0",

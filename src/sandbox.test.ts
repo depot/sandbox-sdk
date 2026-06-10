@@ -15,6 +15,7 @@ import {
   ListSandboxesResponseSchema,
   SandboxSchema,
   SandboxStatus as SandboxStatusProto,
+  SetSandboxTimeoutResponseSchema,
   StopSandboxResponseSchema,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
@@ -23,6 +24,7 @@ import {Sandbox} from './sandbox.js'
 const CREATED_AT = new Date('2026-06-08T12:00:00.000Z')
 const STARTED_AT = new Date('2026-06-08T12:00:01.000Z')
 const FINISHED_AT = new Date('2026-06-08T12:00:02.000Z')
+const EXPIRES_AT = new Date('2026-06-08T14:00:00.000Z')
 
 type FakeClient = {
   client: SandboxClient
@@ -113,6 +115,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     runtime: undefined,
     env: undefined,
     staging: undefined,
+    timeoutMs: undefined,
   })
 
   await sandbox.stop()
@@ -199,6 +202,47 @@ test('sandboxes fetched from different clients keep using their originating clie
     sandbox: {selector: {case: 'id', value: 'sbx_b'}},
     blocking: undefined,
   })
+})
+
+test('Sandbox.create passes timeoutMs as a bigint when provided', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_timeout'})),
+  })
+
+  await Sandbox.create(recording.client, {timeoutMs: 7_200_000})
+
+  assert.deepEqual(recording.lastRequest('createSandbox'), {
+    name: undefined,
+    resources: undefined,
+    runtime: undefined,
+    env: undefined,
+    staging: undefined,
+    timeoutMs: 7_200_000n,
+  })
+})
+
+test('Sandbox.setTimeout resets the deadline using the bound client', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_keepalive'})),
+    setSandboxTimeout: () =>
+      create(SetSandboxTimeoutResponseSchema, {
+        sandbox: makeSandbox({
+          sandboxId: 'sbx_keepalive',
+          expiresAt: timestampFromDate(EXPIRES_AT),
+          timeoutMsRemaining: 3_600_000n,
+        }),
+      }),
+  })
+
+  const sandbox = await Sandbox.create(recording.client)
+  await sandbox.setTimeout({timeoutMs: 3_600_000})
+
+  assert.deepEqual(recording.lastRequest('setSandboxTimeout'), {
+    sandbox: {selector: {case: 'id', value: 'sbx_keepalive'}},
+    timeoutMs: 3_600_000n,
+  })
+  assert.deepEqual(sandbox.expiresAt, EXPIRES_AT)
+  assert.equal(sandbox.timeoutMsRemaining, 3_600_000)
 })
 
 test('Sandbox instance methods use the client captured at creation', async () => {

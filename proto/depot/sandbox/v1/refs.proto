@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+// Reference types shared across the sandbox API. Each of these messages names
+// a single resource, such as a sandbox or a command, so that other messages
+// can point at one. They live in their own file as a neutral home: both
+// sandbox.proto and command.proto need them, and keeping them here lets each
+// import these types without the two files importing each other and forming a
+// cycle. As the API grows to cover snapshots, specs, terminals, filesystems,
+// and logs, those surfaces reuse the same reference shapes instead of
+// defining their own.
+//
+// Every reference is a oneof, which we call a selector. Today the only way to
+// name a resource is by its server-assigned id, so the oneof has a single
+// `id` option. Wrapping that one option in a oneof leaves room to add other
+// ways of naming a resource later, such as an organization-scoped name or a
+// caller-supplied idempotency key, by giving each new form its own field
+// number. Adding a selector that way is backward compatible and does not
+// change how existing requests are encoded. We add new selectors only when a
+// feature actually needs one rather than reserving them in advance.
+
+// Names a single sandbox. Today the only way to name one is by its id, but
+// the selector oneof leaves room to add other forms later without changing
+// how existing references are encoded.
+message SandboxRef {
+  oneof selector {
+    // Server-assigned identifier for the sandbox, as returned by `CreateSandbox`,
+    // `GetSandbox`, and `ListSandboxes`. This is the same value carried in the
+    // `sandboxId` field of a Sandbox.
+    string id = 1;
+  }
+}
+
+// Names a single command run on a sandbox through `RunCommand`. As with the
+// other references, the selector oneof currently offers only an id but can
+// grow other forms later.
+message SandboxCommandExecutionRef {
+  oneof selector {
+    // Server-assigned identifier for the command, prefixed with `cmd_`. It is
+    // first reported when the command starts and is carried in the `cmdId`
+    // field of a SandboxCommandExecution.
+    string id = 1;
+  }
+}
+
+// Names a single sandbox snapshot. The snapshot methods are still being
+// built, so for now the selector oneof carries only an id, with room to add
+// other forms later.
+message SnapshotRef {
+  oneof selector {
+    // Server-assigned identifier for the snapshot.
+    string id = 1;
+  }
+}

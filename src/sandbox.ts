@@ -146,6 +146,7 @@ export class Sandbox {
       runtime: opts.runtime !== undefined ? runtimeToProto(opts.runtime) : undefined,
       env: opts.env,
       staging: opts.staging,
+      timeoutMs: opts.timeoutMs !== undefined ? BigInt(opts.timeoutMs) : undefined,
     })
     const sandbox = response.sandbox
     if (!sandbox) {
@@ -240,6 +241,28 @@ export class Sandbox {
     const response = await this.client.rpc.killSandbox({
       sandbox: {selector: {case: 'id', value: this.sandboxId}},
       signal: opts.signal,
+    })
+    if (response.sandbox) this.applyProto(response.sandbox)
+  }
+
+  /**
+   * Set this running sandbox's expiry to a fresh deadline. The server clamps
+   * the new deadline to the sandbox's absolute maximum lifetime, measured from
+   * when it started. For example:
+   * `sandbox.setTimeout({timeoutMs: 4 * 60 * 60 * 1000})`.
+   *
+   * To keep a sandbox alive while it's in active use, call this on an interval
+   * shorter than the timeout you set; when the calls stop, the server
+   * terminates the sandbox once the deadline lapses. Throws if the sandbox has
+   * not started, already expired, or reached a terminal status.
+   *
+   * This updates the instance in place (`expiresAt`, `timeoutMsRemaining`) from
+   * the server's response, and throws if the sandbox has already stopped.
+   */
+  async setTimeout(opts: SetTimeoutOpts): Promise<void> {
+    const response = await this.client.rpc.setSandboxTimeout({
+      sandbox: {selector: {case: 'id', value: this.sandboxId}},
+      timeoutMs: BigInt(opts.timeoutMs),
     })
     if (response.sandbox) this.applyProto(response.sandbox)
   }
@@ -467,6 +490,22 @@ export interface CreateSandboxOpts {
    * Leave unset for normal placement.
    */
   staging?: boolean
+  /**
+   * Requested lifetime in milliseconds, measured from when the sandbox reaches
+   * the running state. The server raises smaller positive values to the minimum
+   * and caps larger values at the maximum; omit it to use the server default.
+   */
+  timeoutMs?: number
+}
+
+/** Options for {@link Sandbox.setTimeout}. */
+export interface SetTimeoutOpts {
+  /**
+   * New timeout in milliseconds, measured from when the server handles the
+   * request. The server raises smaller positive values to the minimum window
+   * and caps larger values at the sandbox's absolute maximum lifetime.
+   */
+  timeoutMs: number
 }
 
 /** Options for {@link Sandbox.list}. */

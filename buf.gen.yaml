@@ -1,0 +1,15 @@
+version: v2
+clean: true
+inputs:
+  - directory: proto
+plugins:
+  - local: protoc-gen-es
+    out: src/gen
+    opt:
+      - target=ts
+      - import_extension=js
+    types:
+      - depot.sandbox.v1.SandboxService
+      - depot.sandbox.v1.SandboxCommandExecution
+      - depot.sandbox.v1.SandboxCommandExecutionStatus
+      - depot.sandbox.v1.FileSystemErrorDetail

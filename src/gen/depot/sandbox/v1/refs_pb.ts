@@ -9,9 +9,11 @@ import {fileDesc, messageDesc} from '@bufbuild/protobuf/codegenv2'
 /**
  * Describes the file depot/sandbox/v1/refs.proto.
  */
-export const file_depot_sandbox_v1_refs: GenFile = /*@__PURE__*/ fileDesc(
-  'ChtkZXBvdC9zYW5kYm94L3YxL3JlZnMucHJvdG8SEGRlcG90LnNhbmRib3gudjEiJgoKU2FuZGJveFJlZhIMCgJpZBgBIAEoCUgAQgoKCHNlbGVjdG9yYgZwcm90bzM',
-)
+export const file_depot_sandbox_v1_refs: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'ChtkZXBvdC9zYW5kYm94L3YxL3JlZnMucHJvdG8SEGRlcG90LnNhbmRib3gudjEiJgoKU2FuZGJveFJlZhIMCgJpZBgBIAEoCUgAQgoKCHNlbGVjdG9yYgZwcm90bzM',
+  )
 
 /**
  * Names a single sandbox. Today the only way to name one is by its id, but

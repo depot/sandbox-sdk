@@ -1,0 +1,321 @@
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+import "depot/sandbox/v1/command.proto";
+import "depot/sandbox/v1/filesystem.proto";
+import "depot/sandbox/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+// The next-generation sandbox API. It will eventually replace
+// depot.agent.v1.SandboxService, which remains in place for now. This service
+// covers the sandbox lifecycle: creating sandboxes, reading them back
+// individually or as a list, and stopping or killing them. Command execution,
+// filesystem access, PTYs, snapshots, and log streaming are handled by separate
+// surfaces.
+
+service SandboxService {
+  rpc CreateSandbox(CreateSandboxRequest) returns (CreateSandboxResponse);
+  rpc GetSandbox(SandboxRef) returns (GetSandboxResponse);
+  rpc ListSandboxes(ListSandboxesRequest) returns (ListSandboxesResponse);
+
+  // Stop is a graceful shutdown and lands the sandbox in FINISHED; kill is a
+  // forced termination and lands it in CANCELLED. Calling either on a sandbox
+  // that is already in a terminal state returns FailedPrecondition rather than
+  // repeating the work.
+  rpc StopSandbox(StopSandboxRequest) returns (StopSandboxResponse);
+  rpc KillSandbox(KillSandboxRequest) returns (KillSandboxResponse);
+
+  // SetSandboxTimeout sets a running sandbox's expiry to a fresh deadline. The
+  // server sets `expiresAt` to the request time plus the requested duration,
+  // clamped to the sandbox's absolute maximum lifetime measured from when it
+  // started. Calling it on a sandbox that has not started, has already expired,
+  // or has already reached a terminal state returns FailedPrecondition.
+  rpc SetSandboxTimeout(SetSandboxTimeoutRequest) returns (SetSandboxTimeoutResponse);
+
+  // Server-streaming command execution. The response stream begins with a
+  // Started event and ends with Finished (or terminates with a Connect error).
+  // Stdout/stderr arrive as raw bytes alongside the legacy string oneof.
+  // Detached mode (`detached=true`) is in beta: the server ends the stream right
+  // after Started and the command keeps running in the sandbox, but its output
+  // is not retained and can't be retrieved yet.
+  rpc RunCommand(RunCommandRequest) returns (stream SandboxCommandExecutionEvent);
+
+  // File system access. These methods give a caller a node:fs/promises-shaped
+  // view of the sandbox's file system. Their messages and enums are defined in
+  // filesystem.proto. Failures arrive as Connect errors with a
+  // FileSystemErrorDetail attached, which the SDK turns back into a Node-style
+  // error carrying code, syscall, and path. The unary methods cover the
+  // metadata and mutation operations; ReadFile and WriteFile stream file
+  // contents so that large files don't have to be buffered whole.
+  rpc Mkdir(MkdirRequest) returns (MkdirResponse);
+  rpc Stat(StatRequest) returns (StatResponse);
+  rpc ReadDir(ReadDirRequest) returns (ReadDirResponse);
+  rpc Remove(RemoveRequest) returns (RemoveResponse);
+  rpc Rename(RenameRequest) returns (RenameResponse);
+  rpc CopyFile(CopyFileRequest) returns (CopyFileResponse);
+  rpc Truncate(TruncateRequest) returns (TruncateResponse);
+  rpc Chmod(ChmodRequest) returns (ChmodResponse);
+  rpc Chown(ChownRequest) returns (ChownResponse);
+  rpc Symlink(SymlinkRequest) returns (SymlinkResponse);
+  rpc Readlink(ReadlinkRequest) returns (ReadlinkResponse);
+  rpc Access(AccessRequest) returns (AccessResponse);
+
+  // ReadFile streams the contents of a file as ordered FileChunk messages.
+  rpc ReadFile(ReadFileRequest) returns (stream FileChunk);
+  // WriteFile consumes a request stream that opens with an Init message naming
+  // the file, followed by the bytes to write.
+  rpc WriteFile(stream WriteFileRequest) returns (WriteFileResponse);
+}
+
+// SandboxRef is defined in refs.proto, alongside the other selector messages.
+
+// Where a sandbox is in its lifecycle. The values track the underlying
+// compute state, but this is a separate type: it can grow values the compute
+// layer doesn't track, or hide internal sub-states, without coordinating with
+// that schema.
+enum SandboxStatus {
+  // Default zero value, used when no status has been set.
+  SANDBOX_STATUS_UNSPECIFIED = 0;
+  // The sandbox record exists but no compute has been assigned to it yet.
+  SANDBOX_STATUS_CREATED = 1;
+  // Compute has been assigned, but the VM has not started.
+  SANDBOX_STATUS_ASSIGNED = 2;
+  // The VM is booting.
+  SANDBOX_STATUS_STARTING = 3;
+  // The VM has booted and is ready to accept commands.
+  SANDBOX_STATUS_RUNNING = 4;
+  // The sandbox terminated cleanly, either from a graceful stop or a normal
+  // exit.
+  SANDBOX_STATUS_FINISHED = 5;
+  // The sandbox was forcibly terminated by a kill.
+  SANDBOX_STATUS_CANCELLED = 6;
+  // The sandbox ended in error, for example a failed image pull, an
+  // out-of-memory condition, or a crash.
+  SANDBOX_STATUS_FAILED = 7;
+}
+
+// Compute resources for a sandbox. Every field is optional; leave a field unset
+// to take the server's default for that dimension. The defaults are currently
+// chosen by the server and not pinned here.
+message Resources {
+  // Number of virtual CPUs. Leave unset to take the server default.
+  optional int32 vcpus = 1;
+  // Memory in megabytes. Leave unset to take the server default.
+  optional int32 memory_mb = 2;
+  // Disk size in gigabytes. Leave unset to take the server default.
+  optional int32 disk_gb = 3;
+}
+
+// Chooses the runtime a sandbox boots into. Set `imageRef` to an OCI image
+// reference. `named` is reserved for a future catalog of curated runtimes
+// (for example "node24") resolved by the server; the server rejects any
+// `named` value with InvalidArgument today, so set `imageRef` instead.
+message Runtime {
+  oneof runtime {
+    // A curated runtime name resolved by the server. Reserved for a future
+    // catalog and currently rejected with InvalidArgument; use `imageRef`
+    // instead.
+    string named = 1;
+    // An OCI image reference to boot the sandbox from.
+    string image_ref = 2;
+  }
+}
+
+// A sandbox and its current state, as returned by the lifecycle methods. Field
+// number 13 is reserved: it once held a separate termination reason, which was
+// dropped because the `status` value already conveys how a sandbox ended.
+message Sandbox {
+  // Unique identifier for the sandbox.
+  string sandbox_id = 1;
+  // Organization that owns the sandbox.
+  string organization_id = 2;
+  // Current state of the sandbox in its lifecycle.
+  SandboxStatus status = 3;
+
+  // Time the sandbox record was created, in RFC 3339 format. Always populated.
+  google.protobuf.Timestamp created_at = 4;
+  // Time the sandbox started running, in RFC 3339 format. Unset until the
+  // sandbox starts.
+  optional google.protobuf.Timestamp started_at = 5;
+  // Time the sandbox stopped, in RFC 3339 format. Unset until the sandbox
+  // reaches a terminal state.
+  optional google.protobuf.Timestamp stopped_at = 6;
+
+  // Time the sandbox will expire, in RFC 3339 format. This is the stored,
+  // authoritative deadline. Unset when the sandbox has no timeout.
+  optional google.protobuf.Timestamp expires_at = 7;
+  // Milliseconds remaining until the sandbox expires, computed against the
+  // current time when the sandbox is read. Unset when the sandbox has no
+  // timeout.
+  optional int64 timeout_ms_remaining = 8;
+
+  // Active CPU time consumed by the sandbox, in milliseconds. Populated only
+  // after the sandbox reaches a terminal state, and only when metering data is
+  // available.
+  optional int64 active_cpu_usage_ms = 9;
+  // Network bytes transferred by the sandbox. Populated only after the sandbox
+  // reaches a terminal state, and only when metering data is available.
+  optional NetworkUsage network_usage = 10;
+
+  // The resources the server resolved for this sandbox, echoed back so callers
+  // can see what was actually provisioned.
+  Resources resources = 11;
+  // The runtime the server resolved for this sandbox, echoed back so callers
+  // can see what was actually provisioned.
+  Runtime runtime = 12;
+
+  reserved 13;
+
+  // Process exit code, in the Unix range 0 to 255. Populated only when the
+  // sandbox reaches a terminal state. Negative values are reserved for a future
+  // signal-encoded representation.
+  optional int32 exit_code = 14;
+  // Human-readable description of why the sandbox failed. Populated only when
+  // the sandbox reaches a terminal state.
+  optional string error_message = 15;
+
+  // Sandbox-level environment variables, echoed back from the create request.
+  // The server merges these into every command it runs in the sandbox;
+  // surfacing them here lets callers who fetched the sandbox via GetSandbox or
+  // ListSandboxes see the inherited variables without consulting the original
+  // create request.
+  map<string, string> env = 16;
+
+  // The human-readable label set when the sandbox was created. Empty when the
+  // sandbox was created without one. Returned by GetSandbox and ListSandboxes
+  // so callers can show or filter on the label they chose.
+  optional string name = 17;
+}
+
+// Bytes transferred over the sandbox's primary network interface. Ingress and
+// egress are reported separately so each direction stays visible even when one
+// dominates.
+message NetworkUsage {
+  // Bytes received by the sandbox.
+  int64 ingress_bytes = 1;
+  // Bytes sent by the sandbox.
+  int64 egress_bytes = 2;
+}
+
+message CreateSandboxRequest {
+  // Human-readable label for the sandbox, scoped to the organization. Optional.
+  optional string name = 1;
+  // Requested compute resources. The server fills in defaults for any unset
+  // field.
+  optional Resources resources = 2;
+  // Requested runtime. Set `imageRef`; `named` is reserved and rejected with
+  // InvalidArgument until the curated runtime catalog ships.
+  optional Runtime runtime = 3;
+  // Environment variables to apply to the sandbox. They are stored on the
+  // sandbox and merged into every command run in it, with a command's own
+  // environment taking precedence on a key collision. Values are passed through
+  // verbatim, with no shell interpretation or special-file handling.
+  map<string, string> env = 4;
+  // Place the sandbox on Depot's internal staging compute pool instead of
+  // production. This exists so the team can exercise the API against
+  // pre-release host infrastructure; it is not a stable, supported option and
+  // may be removed without notice. Leave unset for normal placement.
+  // Default: false.
+  optional bool staging = 5;
+  // Requested lifetime in milliseconds, measured from when the sandbox reaches
+  // RUNNING. The timeout reaper terminates the sandbox once it elapses. A smaller
+  // positive value is raised to the minimum, and a larger value is capped at the
+  // maximum. Reset the deadline later with `SetSandboxTimeout`.
+  optional int64 timeout_ms = 6;
+}
+
+message CreateSandboxResponse {
+  // The newly created sandbox.
+  Sandbox sandbox = 1;
+}
+
+message GetSandboxResponse {
+  // The requested sandbox.
+  Sandbox sandbox = 1;
+}
+
+// Lists an organization's sandboxes, with optional filtering by status and
+// creation time and token-based pagination.
+message ListSandboxesRequest {
+  // Number of sandboxes to return per page.
+  optional int32 page_size = 1;
+  // Token to fetch the next page, taken from a previous response's
+  // `nextPageToken`. Leave empty to fetch the first page.
+  optional string page_token = 2;
+  // Criteria for narrowing the list. All set criteria must match.
+  message Filter {
+    // An array of statuses to include. When non-empty, only sandboxes whose
+    // status is in this set are returned. Leave empty to include all statuses.
+    repeated SandboxStatus states = 1;
+    // Include only sandboxes created at or after this time, in RFC 3339 format.
+    optional google.protobuf.Timestamp created_after = 2;
+    // Include only sandboxes created at or before this time, in RFC 3339 format.
+    optional google.protobuf.Timestamp created_before = 3;
+  }
+  // Criteria for narrowing the results. Leave unset to list all sandboxes.
+  optional Filter filter = 3;
+}
+
+message ListSandboxesResponse {
+  // Sandboxes matching the request, most recently created first.
+  repeated Sandbox sandboxes = 1;
+  // Token to fetch the next page. Empty when there are no more results.
+  optional string next_page_token = 2;
+}
+
+// Request to gracefully shut down a sandbox. The server records the request
+// immediately and the sandbox proceeds toward FINISHED. By default the call
+// returns as soon as the request is recorded; set `blocking` to wait for the
+// sandbox to actually reach a terminal state.
+message StopSandboxRequest {
+  // The sandbox to stop.
+  SandboxRef sandbox = 1;
+  // When true, the call waits for the sandbox to reach a terminal state, up to
+  // a server-side limit, before returning. When false, it returns as soon as
+  // the stop request is recorded. Default: false.
+  optional bool blocking = 2;
+}
+
+message StopSandboxResponse {
+  // The sandbox after the stop request was recorded. Its status reflects the
+  // current state at read time, typically still RUNNING, or FINISHED if it had
+  // already terminated by the time the response was built. There is no distinct
+  // "stopping" status.
+  Sandbox sandbox = 1;
+}
+
+// Request to forcibly terminate a sandbox. This is fire-and-forget: the call
+// returns once the termination is requested and the sandbox proceeds toward
+// CANCELLED. There is no blocking option.
+message KillSandboxRequest {
+  // The sandbox to kill.
+  SandboxRef sandbox = 1;
+  // Signal name to send, for example "SIGKILL". Reserved for future use; the
+  // server currently ignores it and always issues a hard cancel.
+  optional string signal = 2;
+}
+
+message KillSandboxResponse {
+  // The sandbox after the kill request was recorded.
+  Sandbox sandbox = 1;
+}
+
+// Request to set a sandbox's expiry to a fresh deadline measured from now.
+message SetSandboxTimeoutRequest {
+  // The sandbox whose timeout to set.
+  SandboxRef sandbox = 1;
+  // New timeout in milliseconds, measured from when the server handles the
+  // request: the sandbox's `expiresAt` becomes now plus this value. The server
+  // raises smaller positive values to the minimum window, and caps larger values
+  // at the sandbox's absolute maximum lifetime measured from when the sandbox
+  // reached RUNNING. Once the current deadline has elapsed, the sandbox is no
+  // longer revivable with this method.
+  int64 timeout_ms = 2;
+}
+
+message SetSandboxTimeoutResponse {
+  // The sandbox after its expiry was set, with `expiresAt` and
+  // `timeoutMsRemaining` reflecting the new deadline.
+  Sandbox sandbox = 1;
+}
