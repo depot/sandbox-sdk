@@ -24,10 +24,12 @@ import {file_depot_sandbox_v1_refs} from './refs_pb.js'
 /**
  * Describes the file depot/sandbox/v1/filesystem.proto.
  */
-export const file_depot_sandbox_v1_filesystem: GenFile = /*@__PURE__*/ fileDesc(
-  'CiFkZXBvdC9zYW5kYm94L3YxL2ZpbGVzeXN0ZW0ucHJvdG8SEGRlcG90LnNhbmRib3gudjEijQEKFUZpbGVTeXN0ZW1FcnJvckRldGFpbBIzCgRjb2RlGAEgASgOMiUuZGVwb3Quc2FuZGJveC52MS5GaWxlU3lzdGVtRXJyb3JDb2RlEg8KB3N5c2NhbGwYAiABKAkSDAoEcGF0aBgDIAEoCRIUCgdtZXNzYWdlGAQgASgJSACIAQFCCgoIX21lc3NhZ2UijQEKDE1rZGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESEQoEbW9kZRgEIAEoDUgBiAEBQgwKCl9yZWN1cnNpdmVCBwoFX21vZGUiDwoNTWtkaXJSZXNwb25zZSJ8CgtTdGF0UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPZm9sbG93X3N5bWxpbmtzGAMgASgISACIAQFCEgoQX2ZvbGxvd19zeW1saW5rcyKcAQoMU3RhdFJlc3BvbnNlEgwKBHBhdGgYASABKAkSDAoEc2l6ZRgCIAEoAxIMCgRtb2RlGAMgASgNEigKBHR5cGUYBCABKA4yGi5kZXBvdC5zYW5kYm94LnYxLkZpbGVUeXBlEg0KBXVuYW1lGAUgASgJEg0KBWduYW1lGAYgASgJEhoKEm10aW1lX3VuaXhfc2Vjb25kcxgHIAEoAyJ/Cg5SZWFkRGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPd2l0aF9maWxlX3R5cGVzGAMgASgISACIAQFCEgoQX3dpdGhfZmlsZV90eXBlcyI+Cg9SZWFkRGlyUmVzcG9uc2USKwoHZW50cmllcxgBIAMoCzIaLmRlcG90LnNhbmRib3gudjEuRGlyRW50cnkiQgoIRGlyRW50cnkSDAoEbmFtZRgBIAEoCRIoCgR0eXBlGAIgASgOMhouZGVwb3Quc2FuZGJveC52MS5GaWxlVHlwZSKiAQoNUmVtb3ZlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESGwoOaWdub3JlX21pc3NpbmcYBCABKAhIAYgBAUIMCgpfcmVjdXJzaXZlQhEKD19pZ25vcmVfbWlzc2luZyIQCg5SZW1vdmVSZXNwb25zZSJiCg1SZW5hbWVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSEQoJZnJvbV9wYXRoGAIgASgJEg8KB3RvX3BhdGgYAyABKAkiEAoOUmVuYW1lUmVzcG9uc2UimgEKD0NvcHlGaWxlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhEKCWZyb21fcGF0aBgCIAEoCRIPCgd0b19wYXRoGAMgASgJEh4KEXByZXNlcnZlX21ldGFkYXRhGAQgASgISACIAQFCFAoSX3ByZXNlcnZlX21ldGFkYXRhIhIKEENvcHlGaWxlUmVzcG9uc2UiXAoPVHJ1bmNhdGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIMCgRzaXplGAMgASgDIhIKEFRydW5jYXRlUmVzcG9uc2UiZwoMQ2htb2RSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiDwoNQ2htb2RSZXNwb25zZSJ/CgxDaG93blJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhAKA3VpZBgDIAEoDUgAiAEBEhAKA2dpZBgEIAEoDUgBiAEBQgYKBF91aWRCBgoEX2dpZCIPCg1DaG93blJlc3BvbnNlImIKDlN5bWxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDgoGdGFyZ2V0GAIgASgJEhEKCWxpbmtfcGF0aBgDIAEoCSIRCg9TeW1saW5rUmVzcG9uc2UiTgoPUmVhZGxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIiChBSZWFkbGlua1Jlc3BvbnNlEg4KBnRhcmdldBgBIAEoCSJoCg1BY2Nlc3NSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiEAoOQWNjZXNzUmVzcG9uc2UiTgoPUmVhZEZpbGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIzCglGaWxlQ2h1bmsSDAoEZGF0YRgBIAEoDBIQCgNlb2YYAiABKAhIAIgBAUIGCgRfZW9mIp4CChBXcml0ZUZpbGVSZXF1ZXN0EjcKBGluaXQYASABKAsyJy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QuSW5pdEgAEg4KBGRhdGEYAiABKAxIABq3AQoESW5pdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhMKBmFwcGVuZBgEIAEoCEgBiAEBEh8KEmNyZWF0ZV9kaXJlY3RvcmllcxgFIAEoCEgCiAEBQgcKBV9tb2RlQgkKB19hcHBlbmRCFQoTX2NyZWF0ZV9kaXJlY3Rvcmllc0IHCgVpbnB1dCIqChFXcml0ZUZpbGVSZXNwb25zZRIVCg1ieXRlc193cml0dGVuGAEgASgDKrQHChNGaWxlU3lzdGVtRXJyb3JDb2RlEiUKIUZJTEVTWVNURU1fRVJST1JfQ09ERV9VTlNQRUNJRklFRBAAEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FUEVSTRABEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTk9FTlQQAhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlOVFIQBBIdChlGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlPEAUSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VCQURGEAkSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT01FTRAMEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FQUNDRVMQDRIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUJVU1kQEBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUVYSVNUEBESHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VYREVWEBISIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT1RESVIQFBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlTRElSEBUSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJTlZBTBAWEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkZJTEUQFxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU1GSUxFEBgSIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VUWFRCU1kQGhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUZCSUcQGxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PU1BDEBwSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VST0ZTEB4SIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VNTElOSxAfEiYKIkZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkFNRVRPT0xPTkcQJBIjCh9GSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PVEVNUFRZECcSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VMT09QECgSJAogRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VPUE5PVFNVUFAQXxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRURRVU9UEHoSIAobRklMRVNZU1RFTV9FUlJPUl9DT0RFX09USEVSEIAgKs8BCghGaWxlVHlwZRIZChVGSUxFX1RZUEVfVU5TUEVDSUZJRUQQABISCg5GSUxFX1RZUEVfRklMRRABEhcKE0ZJTEVfVFlQRV9ESVJFQ1RPUlkQAhIVChFGSUxFX1RZUEVfU1lNTElOSxADEhoKFkZJTEVfVFlQRV9CTE9DS19ERVZJQ0UQBBIeChpGSUxFX1RZUEVfQ0hBUkFDVEVSX0RFVklDRRAFEhIKDkZJTEVfVFlQRV9GSUZPEAYSFAoQRklMRV9UWVBFX1NPQ0tFVBAHYgZwcm90bzM',
-  [file_depot_sandbox_v1_refs],
-)
+export const file_depot_sandbox_v1_filesystem: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'CiFkZXBvdC9zYW5kYm94L3YxL2ZpbGVzeXN0ZW0ucHJvdG8SEGRlcG90LnNhbmRib3gudjEijQEKFUZpbGVTeXN0ZW1FcnJvckRldGFpbBIzCgRjb2RlGAEgASgOMiUuZGVwb3Quc2FuZGJveC52MS5GaWxlU3lzdGVtRXJyb3JDb2RlEg8KB3N5c2NhbGwYAiABKAkSDAoEcGF0aBgDIAEoCRIUCgdtZXNzYWdlGAQgASgJSACIAQFCCgoIX21lc3NhZ2UijQEKDE1rZGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESEQoEbW9kZRgEIAEoDUgBiAEBQgwKCl9yZWN1cnNpdmVCBwoFX21vZGUiDwoNTWtkaXJSZXNwb25zZSJ8CgtTdGF0UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPZm9sbG93X3N5bWxpbmtzGAMgASgISACIAQFCEgoQX2ZvbGxvd19zeW1saW5rcyKcAQoMU3RhdFJlc3BvbnNlEgwKBHBhdGgYASABKAkSDAoEc2l6ZRgCIAEoAxIMCgRtb2RlGAMgASgNEigKBHR5cGUYBCABKA4yGi5kZXBvdC5zYW5kYm94LnYxLkZpbGVUeXBlEg0KBXVuYW1lGAUgASgJEg0KBWduYW1lGAYgASgJEhoKEm10aW1lX3VuaXhfc2Vjb25kcxgHIAEoAyJ/Cg5SZWFkRGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPd2l0aF9maWxlX3R5cGVzGAMgASgISACIAQFCEgoQX3dpdGhfZmlsZV90eXBlcyI+Cg9SZWFkRGlyUmVzcG9uc2USKwoHZW50cmllcxgBIAMoCzIaLmRlcG90LnNhbmRib3gudjEuRGlyRW50cnkiQgoIRGlyRW50cnkSDAoEbmFtZRgBIAEoCRIoCgR0eXBlGAIgASgOMhouZGVwb3Quc2FuZGJveC52MS5GaWxlVHlwZSKiAQoNUmVtb3ZlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESGwoOaWdub3JlX21pc3NpbmcYBCABKAhIAYgBAUIMCgpfcmVjdXJzaXZlQhEKD19pZ25vcmVfbWlzc2luZyIQCg5SZW1vdmVSZXNwb25zZSJiCg1SZW5hbWVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSEQoJZnJvbV9wYXRoGAIgASgJEg8KB3RvX3BhdGgYAyABKAkiEAoOUmVuYW1lUmVzcG9uc2UimgEKD0NvcHlGaWxlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhEKCWZyb21fcGF0aBgCIAEoCRIPCgd0b19wYXRoGAMgASgJEh4KEXByZXNlcnZlX21ldGFkYXRhGAQgASgISACIAQFCFAoSX3ByZXNlcnZlX21ldGFkYXRhIhIKEENvcHlGaWxlUmVzcG9uc2UiXAoPVHJ1bmNhdGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIMCgRzaXplGAMgASgDIhIKEFRydW5jYXRlUmVzcG9uc2UiZwoMQ2htb2RSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiDwoNQ2htb2RSZXNwb25zZSJ/CgxDaG93blJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhAKA3VpZBgDIAEoDUgAiAEBEhAKA2dpZBgEIAEoDUgBiAEBQgYKBF91aWRCBgoEX2dpZCIPCg1DaG93blJlc3BvbnNlImIKDlN5bWxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDgoGdGFyZ2V0GAIgASgJEhEKCWxpbmtfcGF0aBgDIAEoCSIRCg9TeW1saW5rUmVzcG9uc2UiTgoPUmVhZGxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIiChBSZWFkbGlua1Jlc3BvbnNlEg4KBnRhcmdldBgBIAEoCSJoCg1BY2Nlc3NSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiEAoOQWNjZXNzUmVzcG9uc2UiTgoPUmVhZEZpbGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIzCglGaWxlQ2h1bmsSDAoEZGF0YRgBIAEoDBIQCgNlb2YYAiABKAhIAIgBAUIGCgRfZW9mIp4CChBXcml0ZUZpbGVSZXF1ZXN0EjcKBGluaXQYASABKAsyJy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QuSW5pdEgAEg4KBGRhdGEYAiABKAxIABq3AQoESW5pdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhMKBmFwcGVuZBgEIAEoCEgBiAEBEh8KEmNyZWF0ZV9kaXJlY3RvcmllcxgFIAEoCEgCiAEBQgcKBV9tb2RlQgkKB19hcHBlbmRCFQoTX2NyZWF0ZV9kaXJlY3Rvcmllc0IHCgVpbnB1dCIqChFXcml0ZUZpbGVSZXNwb25zZRIVCg1ieXRlc193cml0dGVuGAEgASgDKrQHChNGaWxlU3lzdGVtRXJyb3JDb2RlEiUKIUZJTEVTWVNURU1fRVJST1JfQ09ERV9VTlNQRUNJRklFRBAAEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FUEVSTRABEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTk9FTlQQAhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlOVFIQBBIdChlGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlPEAUSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VCQURGEAkSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT01FTRAMEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FQUNDRVMQDRIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUJVU1kQEBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUVYSVNUEBESHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VYREVWEBISIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT1RESVIQFBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlTRElSEBUSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJTlZBTBAWEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkZJTEUQFxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU1GSUxFEBgSIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VUWFRCU1kQGhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUZCSUcQGxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PU1BDEBwSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VST0ZTEB4SIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VNTElOSxAfEiYKIkZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkFNRVRPT0xPTkcQJBIjCh9GSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PVEVNUFRZECcSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VMT09QECgSJAogRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VPUE5PVFNVUFAQXxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRURRVU9UEHoSIAobRklMRVNZU1RFTV9FUlJPUl9DT0RFX09USEVSEIAgKs8BCghGaWxlVHlwZRIZChVGSUxFX1RZUEVfVU5TUEVDSUZJRUQQABISCg5GSUxFX1RZUEVfRklMRRABEhcKE0ZJTEVfVFlQRV9ESVJFQ1RPUlkQAhIVChFGSUxFX1RZUEVfU1lNTElOSxADEhoKFkZJTEVfVFlQRV9CTE9DS19ERVZJQ0UQBBIeChpGSUxFX1RZUEVfQ0hBUkFDVEVSX0RFVklDRRAFEhIKDkZJTEVfVFlQRV9GSUZPEAYSFAoQRklMRV9UWVBFX1NPQ0tFVBAHYgZwcm90bzM',
+    [file_depot_sandbox_v1_refs],
+  )
 
 /**
  * The error detail the server attaches to a Connect error's details. The SDK
@@ -61,10 +63,9 @@ export type FileSystemErrorDetail = Message<'depot.sandbox.v1.FileSystemErrorDet
  * Describes the message depot.sandbox.v1.FileSystemErrorDetail.
  * Use `create(FileSystemErrorDetailSchema)` to create a new message.
  */
-export const FileSystemErrorDetailSchema: GenMessage<FileSystemErrorDetail> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  0,
-)
+export const FileSystemErrorDetailSchema: GenMessage<FileSystemErrorDetail> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 0)
 
 /**
  * @generated from message depot.sandbox.v1.MkdirRequest
@@ -101,10 +102,9 @@ export type MkdirRequest = Message<'depot.sandbox.v1.MkdirRequest'> & {
  * Describes the message depot.sandbox.v1.MkdirRequest.
  * Use `create(MkdirRequestSchema)` to create a new message.
  */
-export const MkdirRequestSchema: GenMessage<MkdirRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  1,
-)
+export const MkdirRequestSchema: GenMessage<MkdirRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 1)
 
 /**
  * @generated from message depot.sandbox.v1.MkdirResponse
@@ -115,10 +115,9 @@ export type MkdirResponse = Message<'depot.sandbox.v1.MkdirResponse'> & {}
  * Describes the message depot.sandbox.v1.MkdirResponse.
  * Use `create(MkdirResponseSchema)` to create a new message.
  */
-export const MkdirResponseSchema: GenMessage<MkdirResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  2,
-)
+export const MkdirResponseSchema: GenMessage<MkdirResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 2)
 
 /**
  * @generated from message depot.sandbox.v1.StatRequest
@@ -193,10 +192,9 @@ export type StatResponse = Message<'depot.sandbox.v1.StatResponse'> & {
  * Describes the message depot.sandbox.v1.StatResponse.
  * Use `create(StatResponseSchema)` to create a new message.
  */
-export const StatResponseSchema: GenMessage<StatResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  4,
-)
+export const StatResponseSchema: GenMessage<StatResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 4)
 
 /**
  * @generated from message depot.sandbox.v1.ReadDirRequest
@@ -226,10 +224,9 @@ export type ReadDirRequest = Message<'depot.sandbox.v1.ReadDirRequest'> & {
  * Describes the message depot.sandbox.v1.ReadDirRequest.
  * Use `create(ReadDirRequestSchema)` to create a new message.
  */
-export const ReadDirRequestSchema: GenMessage<ReadDirRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  5,
-)
+export const ReadDirRequestSchema: GenMessage<ReadDirRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 5)
 
 /**
  * @generated from message depot.sandbox.v1.ReadDirResponse
@@ -245,10 +242,9 @@ export type ReadDirResponse = Message<'depot.sandbox.v1.ReadDirResponse'> & {
  * Describes the message depot.sandbox.v1.ReadDirResponse.
  * Use `create(ReadDirResponseSchema)` to create a new message.
  */
-export const ReadDirResponseSchema: GenMessage<ReadDirResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  6,
-)
+export const ReadDirResponseSchema: GenMessage<ReadDirResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 6)
 
 /**
  * @generated from message depot.sandbox.v1.DirEntry
@@ -305,10 +301,9 @@ export type RemoveRequest = Message<'depot.sandbox.v1.RemoveRequest'> & {
  * Describes the message depot.sandbox.v1.RemoveRequest.
  * Use `create(RemoveRequestSchema)` to create a new message.
  */
-export const RemoveRequestSchema: GenMessage<RemoveRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  8,
-)
+export const RemoveRequestSchema: GenMessage<RemoveRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 8)
 
 /**
  * @generated from message depot.sandbox.v1.RemoveResponse
@@ -319,10 +314,9 @@ export type RemoveResponse = Message<'depot.sandbox.v1.RemoveResponse'> & {}
  * Describes the message depot.sandbox.v1.RemoveResponse.
  * Use `create(RemoveResponseSchema)` to create a new message.
  */
-export const RemoveResponseSchema: GenMessage<RemoveResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  9,
-)
+export const RemoveResponseSchema: GenMessage<RemoveResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 9)
 
 /**
  * @generated from message depot.sandbox.v1.RenameRequest
@@ -348,10 +342,9 @@ export type RenameRequest = Message<'depot.sandbox.v1.RenameRequest'> & {
  * Describes the message depot.sandbox.v1.RenameRequest.
  * Use `create(RenameRequestSchema)` to create a new message.
  */
-export const RenameRequestSchema: GenMessage<RenameRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  10,
-)
+export const RenameRequestSchema: GenMessage<RenameRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 10)
 
 /**
  * @generated from message depot.sandbox.v1.RenameResponse
@@ -362,10 +355,9 @@ export type RenameResponse = Message<'depot.sandbox.v1.RenameResponse'> & {}
  * Describes the message depot.sandbox.v1.RenameResponse.
  * Use `create(RenameResponseSchema)` to create a new message.
  */
-export const RenameResponseSchema: GenMessage<RenameResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  11,
-)
+export const RenameResponseSchema: GenMessage<RenameResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 11)
 
 /**
  * @generated from message depot.sandbox.v1.CopyFileRequest
@@ -399,10 +391,9 @@ export type CopyFileRequest = Message<'depot.sandbox.v1.CopyFileRequest'> & {
  * Describes the message depot.sandbox.v1.CopyFileRequest.
  * Use `create(CopyFileRequestSchema)` to create a new message.
  */
-export const CopyFileRequestSchema: GenMessage<CopyFileRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  12,
-)
+export const CopyFileRequestSchema: GenMessage<CopyFileRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 12)
 
 /**
  * @generated from message depot.sandbox.v1.CopyFileResponse
@@ -413,10 +404,9 @@ export type CopyFileResponse = Message<'depot.sandbox.v1.CopyFileResponse'> & {}
  * Describes the message depot.sandbox.v1.CopyFileResponse.
  * Use `create(CopyFileResponseSchema)` to create a new message.
  */
-export const CopyFileResponseSchema: GenMessage<CopyFileResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  13,
-)
+export const CopyFileResponseSchema: GenMessage<CopyFileResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 13)
 
 /**
  * @generated from message depot.sandbox.v1.TruncateRequest
@@ -442,10 +432,9 @@ export type TruncateRequest = Message<'depot.sandbox.v1.TruncateRequest'> & {
  * Describes the message depot.sandbox.v1.TruncateRequest.
  * Use `create(TruncateRequestSchema)` to create a new message.
  */
-export const TruncateRequestSchema: GenMessage<TruncateRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  14,
-)
+export const TruncateRequestSchema: GenMessage<TruncateRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 14)
 
 /**
  * @generated from message depot.sandbox.v1.TruncateResponse
@@ -456,10 +445,9 @@ export type TruncateResponse = Message<'depot.sandbox.v1.TruncateResponse'> & {}
  * Describes the message depot.sandbox.v1.TruncateResponse.
  * Use `create(TruncateResponseSchema)` to create a new message.
  */
-export const TruncateResponseSchema: GenMessage<TruncateResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  15,
-)
+export const TruncateResponseSchema: GenMessage<TruncateResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 15)
 
 /**
  * @generated from message depot.sandbox.v1.ChmodRequest
@@ -492,10 +480,9 @@ export type ChmodRequest = Message<'depot.sandbox.v1.ChmodRequest'> & {
  * Describes the message depot.sandbox.v1.ChmodRequest.
  * Use `create(ChmodRequestSchema)` to create a new message.
  */
-export const ChmodRequestSchema: GenMessage<ChmodRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  16,
-)
+export const ChmodRequestSchema: GenMessage<ChmodRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 16)
 
 /**
  * @generated from message depot.sandbox.v1.ChmodResponse
@@ -506,10 +493,9 @@ export type ChmodResponse = Message<'depot.sandbox.v1.ChmodResponse'> & {}
  * Describes the message depot.sandbox.v1.ChmodResponse.
  * Use `create(ChmodResponseSchema)` to create a new message.
  */
-export const ChmodResponseSchema: GenMessage<ChmodResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  17,
-)
+export const ChmodResponseSchema: GenMessage<ChmodResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 17)
 
 /**
  * @generated from message depot.sandbox.v1.ChownRequest
@@ -540,10 +526,9 @@ export type ChownRequest = Message<'depot.sandbox.v1.ChownRequest'> & {
  * Describes the message depot.sandbox.v1.ChownRequest.
  * Use `create(ChownRequestSchema)` to create a new message.
  */
-export const ChownRequestSchema: GenMessage<ChownRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  18,
-)
+export const ChownRequestSchema: GenMessage<ChownRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 18)
 
 /**
  * @generated from message depot.sandbox.v1.ChownResponse
@@ -554,10 +539,9 @@ export type ChownResponse = Message<'depot.sandbox.v1.ChownResponse'> & {}
  * Describes the message depot.sandbox.v1.ChownResponse.
  * Use `create(ChownResponseSchema)` to create a new message.
  */
-export const ChownResponseSchema: GenMessage<ChownResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  19,
-)
+export const ChownResponseSchema: GenMessage<ChownResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 19)
 
 /**
  * @generated from message depot.sandbox.v1.SymlinkRequest
@@ -585,10 +569,9 @@ export type SymlinkRequest = Message<'depot.sandbox.v1.SymlinkRequest'> & {
  * Describes the message depot.sandbox.v1.SymlinkRequest.
  * Use `create(SymlinkRequestSchema)` to create a new message.
  */
-export const SymlinkRequestSchema: GenMessage<SymlinkRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  20,
-)
+export const SymlinkRequestSchema: GenMessage<SymlinkRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 20)
 
 /**
  * @generated from message depot.sandbox.v1.SymlinkResponse
@@ -599,10 +582,9 @@ export type SymlinkResponse = Message<'depot.sandbox.v1.SymlinkResponse'> & {}
  * Describes the message depot.sandbox.v1.SymlinkResponse.
  * Use `create(SymlinkResponseSchema)` to create a new message.
  */
-export const SymlinkResponseSchema: GenMessage<SymlinkResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  21,
-)
+export const SymlinkResponseSchema: GenMessage<SymlinkResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 21)
 
 /**
  * @generated from message depot.sandbox.v1.ReadlinkRequest
@@ -623,10 +605,9 @@ export type ReadlinkRequest = Message<'depot.sandbox.v1.ReadlinkRequest'> & {
  * Describes the message depot.sandbox.v1.ReadlinkRequest.
  * Use `create(ReadlinkRequestSchema)` to create a new message.
  */
-export const ReadlinkRequestSchema: GenMessage<ReadlinkRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  22,
-)
+export const ReadlinkRequestSchema: GenMessage<ReadlinkRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 22)
 
 /**
  * @generated from message depot.sandbox.v1.ReadlinkResponse
@@ -642,10 +623,9 @@ export type ReadlinkResponse = Message<'depot.sandbox.v1.ReadlinkResponse'> & {
  * Describes the message depot.sandbox.v1.ReadlinkResponse.
  * Use `create(ReadlinkResponseSchema)` to create a new message.
  */
-export const ReadlinkResponseSchema: GenMessage<ReadlinkResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  23,
-)
+export const ReadlinkResponseSchema: GenMessage<ReadlinkResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 23)
 
 /**
  * @generated from message depot.sandbox.v1.AccessRequest
@@ -674,10 +654,9 @@ export type AccessRequest = Message<'depot.sandbox.v1.AccessRequest'> & {
  * Describes the message depot.sandbox.v1.AccessRequest.
  * Use `create(AccessRequestSchema)` to create a new message.
  */
-export const AccessRequestSchema: GenMessage<AccessRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  24,
-)
+export const AccessRequestSchema: GenMessage<AccessRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 24)
 
 /**
  * @generated from message depot.sandbox.v1.AccessResponse
@@ -688,10 +667,9 @@ export type AccessResponse = Message<'depot.sandbox.v1.AccessResponse'> & {}
  * Describes the message depot.sandbox.v1.AccessResponse.
  * Use `create(AccessResponseSchema)` to create a new message.
  */
-export const AccessResponseSchema: GenMessage<AccessResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  25,
-)
+export const AccessResponseSchema: GenMessage<AccessResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 25)
 
 /**
  * @generated from message depot.sandbox.v1.ReadFileRequest
@@ -712,10 +690,9 @@ export type ReadFileRequest = Message<'depot.sandbox.v1.ReadFileRequest'> & {
  * Describes the message depot.sandbox.v1.ReadFileRequest.
  * Use `create(ReadFileRequestSchema)` to create a new message.
  */
-export const ReadFileRequestSchema: GenMessage<ReadFileRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  26,
-)
+export const ReadFileRequestSchema: GenMessage<ReadFileRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 26)
 
 /**
  * One chunk of a file streamed by ReadFile. Chunks arrive in order. The final
@@ -774,10 +751,9 @@ export type WriteFileRequest = Message<'depot.sandbox.v1.WriteFileRequest'> & {
  * Describes the message depot.sandbox.v1.WriteFileRequest.
  * Use `create(WriteFileRequestSchema)` to create a new message.
  */
-export const WriteFileRequestSchema: GenMessage<WriteFileRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  28,
-)
+export const WriteFileRequestSchema: GenMessage<WriteFileRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 28)
 
 /**
  * @generated from message depot.sandbox.v1.WriteFileRequest.Init
@@ -815,11 +791,9 @@ export type WriteFileRequest_Init = Message<'depot.sandbox.v1.WriteFileRequest.I
  * Describes the message depot.sandbox.v1.WriteFileRequest.Init.
  * Use `create(WriteFileRequest_InitSchema)` to create a new message.
  */
-export const WriteFileRequest_InitSchema: GenMessage<WriteFileRequest_Init> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  28,
-  0,
-)
+export const WriteFileRequest_InitSchema: GenMessage<WriteFileRequest_Init> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 28, 0)
 
 /**
  * @generated from message depot.sandbox.v1.WriteFileResponse
@@ -835,10 +809,9 @@ export type WriteFileResponse = Message<'depot.sandbox.v1.WriteFileResponse'> & 
  * Describes the message depot.sandbox.v1.WriteFileResponse.
  * Use `create(WriteFileResponseSchema)` to create a new message.
  */
-export const WriteFileResponseSchema: GenMessage<WriteFileResponse> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_filesystem,
-  29,
-)
+export const WriteFileResponseSchema: GenMessage<WriteFileResponse> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_filesystem, 29)
 
 /**
  * File system error codes, carried on a FileSystemErrorDetail. The value of
@@ -1000,10 +973,9 @@ export enum FileSystemErrorCode {
 /**
  * Describes the enum depot.sandbox.v1.FileSystemErrorCode.
  */
-export const FileSystemErrorCodeSchema: GenEnum<FileSystemErrorCode> = /*@__PURE__*/ enumDesc(
-  file_depot_sandbox_v1_filesystem,
-  0,
-)
+export const FileSystemErrorCodeSchema: GenEnum<FileSystemErrorCode> =
+  /*@__PURE__*/
+  enumDesc(file_depot_sandbox_v1_filesystem, 0)
 
 /**
  * The kind of file returned by Stat. The SDK uses it to back the isDirectory,

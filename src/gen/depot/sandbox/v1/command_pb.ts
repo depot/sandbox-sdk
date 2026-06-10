@@ -13,10 +13,12 @@ import {file_depot_sandbox_v1_refs} from './refs_pb.js'
 /**
  * Describes the file depot/sandbox/v1/command.proto.
  */
-export const file_depot_sandbox_v1_command: GenFile = /*@__PURE__*/ fileDesc(
-  'Ch5kZXBvdC9zYW5kYm94L3YxL2NvbW1hbmQucHJvdG8SEGRlcG90LnNhbmRib3gudjEimAQKF1NhbmRib3hDb21tYW5kRXhlY3V0aW9uEg4KBmNtZF9pZBgBIAEoCRISCgpzYW5kYm94X2lkGAIgASgJEgsKA2NtZBgDIAEoCRIMCgRhcmdzGAQgAygJEhAKA2N3ZBgFIAEoCUgAiAEBEj8KA2VudhgGIAMoCzIyLmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb24uRW52RW50cnkSDAoEc3VkbxgHIAEoCBIQCghkZXRhY2hlZBgIIAEoCBI/CgZzdGF0dXMYCSABKA4yLy5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uU3RhdHVzEi4KCnN0YXJ0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjQKC2ZpbmlzaGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBiAEBEhYKCWV4aXRfY29kZRgMIAEoBUgCiAEBEhwKFHN0ZG91dF9ieXRlc19lbWl0dGVkGA0gASgDEhwKFHN0ZGVycl9ieXRlc19lbWl0dGVkGA4gASgDGioKCEVudkVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBgoEX2N3ZEIOCgxfZmluaXNoZWRfYXRCDAoKX2V4aXRfY29kZSK8BwocU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudBJJCgdzdGFydGVkGAEgASgLMjYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29tbWFuZEV4ZWN1dGlvbkV2ZW50LlN0YXJ0ZWRIABJMCgZzdGRvdXQYAiABKAsyOi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQuU3Rkb3V0Qnl0ZXNIABJMCgZzdGRlcnIYAyABKAsyOi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQuU3RkZXJyQnl0ZXNIABJLCghmaW5pc2hlZBgEIAEoCzI3LmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudC5GaW5pc2hlZEgAEkUKBWVycm9yGAUgASgLMjQuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29tbWFuZEV4ZWN1dGlvbkV2ZW50LkVycm9ySAASUgoHZXZpY3RlZBgGIAEoCzI/LmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudC5FdmljdGVkRWFybHlEYXRhSAAaSQoHU3RhcnRlZBIOCgZjbWRfaWQYASABKAkSLgoKc3RhcnRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAaXwoLU3Rkb3V0Qnl0ZXMSDAoEZGF0YRgBIAEoDBITCgtieXRlX29mZnNldBgCIAEoAxItCgl0aW1lc3RhbXAYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGl8KC1N0ZGVyckJ5dGVzEgwKBGRhdGEYASABKAwSEwoLYnl0ZV9vZmZzZXQYAiABKAMSLQoJdGltZXN0YW1wGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBpOCghGaW5pc2hlZBIRCglleGl0X2NvZGUYASABKAUSLwoLZmluaXNoZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGhcKBUVycm9yEg4KBnJlYXNvbhgBIAEoCRpOChBFdmljdGVkRWFybHlEYXRhEhwKFGRyb3BwZWRfYnl0ZXNfc3Rkb3V0GAEgASgDEhwKFGRyb3BwZWRfYnl0ZXNfc3RkZXJyGAIgASgDQgcKBWV2ZW50Ip4CChFSdW5Db21tYW5kUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgsKA2NtZBgCIAEoCRIMCgRhcmdzGAMgAygJEhAKA2N3ZBgEIAEoCUgAiAEBEjkKA2VudhgFIAMoCzIsLmRlcG90LnNhbmRib3gudjEuUnVuQ29tbWFuZFJlcXVlc3QuRW52RW50cnkSEQoEc3VkbxgGIAEoCEgBiAEBEhUKCGRldGFjaGVkGAcgASgISAKIAQEaKgoIRW52RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUIGCgRfY3dkQgcKBV9zdWRvQgsKCV9kZXRhY2hlZCq2AgodU2FuZGJveENvbW1hbmRFeGVjdXRpb25TdGF0dXMSMAosU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfVU5TUEVDSUZJRUQQABIsCihTQU5EQk9YX0NPTU1BTkRfRVhFQ1VUSU9OX1NUQVRVU19QRU5ESU5HEAESLAooU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfUlVOTklORxACEi0KKVNBTkRCT1hfQ09NTUFORF9FWEVDVVRJT05fU1RBVFVTX0ZJTklTSEVEEAMSKwonU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfRkFJTEVEEAQSKwonU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfS0lMTEVEEAViBnByb3RvMw',
-  [file_depot_sandbox_v1_refs, file_google_protobuf_timestamp],
-)
+export const file_depot_sandbox_v1_command: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'Ch5kZXBvdC9zYW5kYm94L3YxL2NvbW1hbmQucHJvdG8SEGRlcG90LnNhbmRib3gudjEimAQKF1NhbmRib3hDb21tYW5kRXhlY3V0aW9uEg4KBmNtZF9pZBgBIAEoCRISCgpzYW5kYm94X2lkGAIgASgJEgsKA2NtZBgDIAEoCRIMCgRhcmdzGAQgAygJEhAKA2N3ZBgFIAEoCUgAiAEBEj8KA2VudhgGIAMoCzIyLmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb24uRW52RW50cnkSDAoEc3VkbxgHIAEoCBIQCghkZXRhY2hlZBgIIAEoCBI/CgZzdGF0dXMYCSABKA4yLy5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uU3RhdHVzEi4KCnN0YXJ0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjQKC2ZpbmlzaGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBiAEBEhYKCWV4aXRfY29kZRgMIAEoBUgCiAEBEhwKFHN0ZG91dF9ieXRlc19lbWl0dGVkGA0gASgDEhwKFHN0ZGVycl9ieXRlc19lbWl0dGVkGA4gASgDGioKCEVudkVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBgoEX2N3ZEIOCgxfZmluaXNoZWRfYXRCDAoKX2V4aXRfY29kZSK8BwocU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudBJJCgdzdGFydGVkGAEgASgLMjYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29tbWFuZEV4ZWN1dGlvbkV2ZW50LlN0YXJ0ZWRIABJMCgZzdGRvdXQYAiABKAsyOi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQuU3Rkb3V0Qnl0ZXNIABJMCgZzdGRlcnIYAyABKAsyOi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQuU3RkZXJyQnl0ZXNIABJLCghmaW5pc2hlZBgEIAEoCzI3LmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudC5GaW5pc2hlZEgAEkUKBWVycm9yGAUgASgLMjQuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29tbWFuZEV4ZWN1dGlvbkV2ZW50LkVycm9ySAASUgoHZXZpY3RlZBgGIAEoCzI/LmRlcG90LnNhbmRib3gudjEuU2FuZGJveENvbW1hbmRFeGVjdXRpb25FdmVudC5FdmljdGVkRWFybHlEYXRhSAAaSQoHU3RhcnRlZBIOCgZjbWRfaWQYASABKAkSLgoKc3RhcnRlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAaXwoLU3Rkb3V0Qnl0ZXMSDAoEZGF0YRgBIAEoDBITCgtieXRlX29mZnNldBgCIAEoAxItCgl0aW1lc3RhbXAYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGl8KC1N0ZGVyckJ5dGVzEgwKBGRhdGEYASABKAwSEwoLYnl0ZV9vZmZzZXQYAiABKAMSLQoJdGltZXN0YW1wGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBpOCghGaW5pc2hlZBIRCglleGl0X2NvZGUYASABKAUSLwoLZmluaXNoZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGhcKBUVycm9yEg4KBnJlYXNvbhgBIAEoCRpOChBFdmljdGVkRWFybHlEYXRhEhwKFGRyb3BwZWRfYnl0ZXNfc3Rkb3V0GAEgASgDEhwKFGRyb3BwZWRfYnl0ZXNfc3RkZXJyGAIgASgDQgcKBWV2ZW50Ip4CChFSdW5Db21tYW5kUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgsKA2NtZBgCIAEoCRIMCgRhcmdzGAMgAygJEhAKA2N3ZBgEIAEoCUgAiAEBEjkKA2VudhgFIAMoCzIsLmRlcG90LnNhbmRib3gudjEuUnVuQ29tbWFuZFJlcXVlc3QuRW52RW50cnkSEQoEc3VkbxgGIAEoCEgBiAEBEhUKCGRldGFjaGVkGAcgASgISAKIAQEaKgoIRW52RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUIGCgRfY3dkQgcKBV9zdWRvQgsKCV9kZXRhY2hlZCq2AgodU2FuZGJveENvbW1hbmRFeGVjdXRpb25TdGF0dXMSMAosU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfVU5TUEVDSUZJRUQQABIsCihTQU5EQk9YX0NPTU1BTkRfRVhFQ1VUSU9OX1NUQVRVU19QRU5ESU5HEAESLAooU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfUlVOTklORxACEi0KKVNBTkRCT1hfQ09NTUFORF9FWEVDVVRJT05fU1RBVFVTX0ZJTklTSEVEEAMSKwonU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfRkFJTEVEEAQSKwonU0FOREJPWF9DT01NQU5EX0VYRUNVVElPTl9TVEFUVVNfS0lMTEVEEAViBnByb3RvMw',
+    [file_depot_sandbox_v1_refs, file_google_protobuf_timestamp],
+  )
 
 /**
  * A record of a single command run inside a sandbox, including how it was
@@ -139,10 +141,9 @@ export type SandboxCommandExecution = Message<'depot.sandbox.v1.SandboxCommandEx
  * Describes the message depot.sandbox.v1.SandboxCommandExecution.
  * Use `create(SandboxCommandExecutionSchema)` to create a new message.
  */
-export const SandboxCommandExecutionSchema: GenMessage<SandboxCommandExecution> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_command,
-  0,
-)
+export const SandboxCommandExecutionSchema: GenMessage<SandboxCommandExecution> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 0)
 
 /**
  * A single event in the stream a command produces while it runs. Each event is
@@ -206,10 +207,9 @@ export type SandboxCommandExecutionEvent = Message<'depot.sandbox.v1.SandboxComm
  * Describes the message depot.sandbox.v1.SandboxCommandExecutionEvent.
  * Use `create(SandboxCommandExecutionEventSchema)` to create a new message.
  */
-export const SandboxCommandExecutionEventSchema: GenMessage<SandboxCommandExecutionEvent> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_command,
-  1,
-)
+export const SandboxCommandExecutionEventSchema: GenMessage<SandboxCommandExecutionEvent> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1)
 
 /**
  * The first event on every stream, signaling that the command has started.
@@ -238,7 +238,8 @@ export type SandboxCommandExecutionEvent_Started = Message<'depot.sandbox.v1.San
  * Use `create(SandboxCommandExecutionEvent_StartedSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_StartedSchema: GenMessage<SandboxCommandExecutionEvent_Started> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 0)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 0)
 
 /**
  * A chunk of standard output produced by the command.
@@ -274,7 +275,8 @@ export type SandboxCommandExecutionEvent_StdoutBytes =
  * Use `create(SandboxCommandExecutionEvent_StdoutBytesSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_StdoutBytesSchema: GenMessage<SandboxCommandExecutionEvent_StdoutBytes> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 1)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 1)
 
 /**
  * A chunk of standard error produced by the command.
@@ -310,7 +312,8 @@ export type SandboxCommandExecutionEvent_StderrBytes =
  * Use `create(SandboxCommandExecutionEvent_StderrBytesSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_StderrBytesSchema: GenMessage<SandboxCommandExecutionEvent_StderrBytes> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 2)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 2)
 
 /**
  * The terminal event when a command runs to completion, signaling that the
@@ -341,7 +344,8 @@ export type SandboxCommandExecutionEvent_Finished =
  * Use `create(SandboxCommandExecutionEvent_FinishedSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_FinishedSchema: GenMessage<SandboxCommandExecutionEvent_Finished> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 3)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 3)
 
 /**
  * A recoverable failure that does not end the stream, for example a single
@@ -364,7 +368,8 @@ export type SandboxCommandExecutionEvent_Error = Message<'depot.sandbox.v1.Sandb
  * Use `create(SandboxCommandExecutionEvent_ErrorSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_ErrorSchema: GenMessage<SandboxCommandExecutionEvent_Error> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 4)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 4)
 
 /**
  * A notice that some output was dropped before this consumer began reading,
@@ -395,7 +400,8 @@ export type SandboxCommandExecutionEvent_EvictedEarlyData =
  * Use `create(SandboxCommandExecutionEvent_EvictedEarlyDataSchema)` to create a new message.
  */
 export const SandboxCommandExecutionEvent_EvictedEarlyDataSchema: GenMessage<SandboxCommandExecutionEvent_EvictedEarlyData> =
-  /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_command, 1, 5)
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 1, 5)
 
 /**
  * Request to run a command in a sandbox. The `RunCommand` method streams back a
@@ -458,7 +464,7 @@ export type RunCommandRequest = Message<'depot.sandbox.v1.RunCommandRequest'> & 
    * started and the command keeps running in the sandbox, but its output is not
    * retained and can't be retrieved yet, so the response stream ends right after
    * the Started event. Reattaching to a detached command's output is a future
-   * API. Default: false.
+   * API (DEP-4520). Default: false.
    *
    * @generated from field: optional bool detached = 7;
    */
@@ -469,10 +475,9 @@ export type RunCommandRequest = Message<'depot.sandbox.v1.RunCommandRequest'> & 
  * Describes the message depot.sandbox.v1.RunCommandRequest.
  * Use `create(RunCommandRequestSchema)` to create a new message.
  */
-export const RunCommandRequestSchema: GenMessage<RunCommandRequest> = /*@__PURE__*/ messageDesc(
-  file_depot_sandbox_v1_command,
-  2,
-)
+export const RunCommandRequestSchema: GenMessage<RunCommandRequest> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_command, 2)
 
 /**
  * The lifecycle stage a command has reached. A command starts pending, begins
@@ -517,7 +522,6 @@ export enum SandboxCommandExecutionStatus {
 /**
  * Describes the enum depot.sandbox.v1.SandboxCommandExecutionStatus.
  */
-export const SandboxCommandExecutionStatusSchema: GenEnum<SandboxCommandExecutionStatus> = /*@__PURE__*/ enumDesc(
-  file_depot_sandbox_v1_command,
-  0,
-)
+export const SandboxCommandExecutionStatusSchema: GenEnum<SandboxCommandExecutionStatus> =
+  /*@__PURE__*/
+  enumDesc(file_depot_sandbox_v1_command, 0)

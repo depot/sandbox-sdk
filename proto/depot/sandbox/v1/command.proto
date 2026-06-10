@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+import "depot/sandbox/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+// Types for running commands inside a sandbox and streaming their output.
+//
+// Command output is carried as raw bytes on the wire rather than strings,
+// because a process can write output that is not valid UTF-8. Callers decode
+// to text themselves when they know the output is textual.
+
+// The lifecycle stage a command has reached. A command starts pending, begins
+// running once the process is launched, and ends in one of the terminal states:
+// finished if the process exited, failed if it could not start or the guest
+// reported an error, or killed if it was signaled while running.
+enum SandboxCommandExecutionStatus {
+  SANDBOX_COMMAND_EXECUTION_STATUS_UNSPECIFIED = 0;
+  SANDBOX_COMMAND_EXECUTION_STATUS_PENDING = 1;
+  SANDBOX_COMMAND_EXECUTION_STATUS_RUNNING = 2;
+  SANDBOX_COMMAND_EXECUTION_STATUS_FINISHED = 3;
+  SANDBOX_COMMAND_EXECUTION_STATUS_FAILED = 4;
+  SANDBOX_COMMAND_EXECUTION_STATUS_KILLED = 5;
+}
+
+// A record of a single command run inside a sandbox, including how it was
+// invoked and its current state. Returned by the command lookup methods.
+message SandboxCommandExecution {
+  // Unique identifier for this command execution, assigned by the server.
+  string cmd_id = 1;
+  // Unique identifier for the sandbox this command ran in.
+  string sandbox_id = 2;
+  // The executable that was run.
+  string cmd = 3;
+  // Positional arguments passed to the command. Empty when none were supplied.
+  repeated string args = 4;
+  // Working directory the command ran in. Unset when the caller did not request one.
+  optional string cwd = 5;
+  // Environment the command ran with. This is the merge of the sandbox-level
+  // environment set when the sandbox was created and the environment supplied
+  // with the command, with the per-command values taking precedence on any
+  // key that appears in both.
+  map<string, string> env = 6;
+  // Whether the command was run through `sudo -E`.
+  bool sudo = 7;
+  // Whether the command was run detached. Detached mode is in beta: the command
+  // runs fire-and-forget and its output is not retained, so it can't be
+  // retrieved through this API yet.
+  bool detached = 8;
+  // Current state of the command. This is independent of the exit code: a
+  // command that exits with a nonzero code still reports a finished status,
+  // which is the normal outcome for a failed program.
+  SandboxCommandExecutionStatus status = 9;
+  // Time the command started, in RFC 3339 format.
+  google.protobuf.Timestamp started_at = 10;
+  // Time the command reached a terminal state, in RFC 3339 format. Unset until
+  // the command has finished, failed, or been killed.
+  optional google.protobuf.Timestamp finished_at = 11;
+  // Exit code the process returned. Set when the process exited on its own;
+  // unset when the command failed to start or was killed before producing one.
+  optional int32 exit_code = 12;
+  // Total number of stdout bytes emitted so far. Tracked separately from
+  // stderr so callers can follow each stream's byte offset independently.
+  int64 stdout_bytes_emitted = 13;
+  // Total number of stderr bytes emitted so far. Tracked separately from
+  // stdout so callers can follow each stream's byte offset independently.
+  int64 stderr_bytes_emitted = 14;
+}
+
+// A single event in the stream a command produces while it runs. Each event is
+// one of: the command starting, a chunk of stdout or stderr, the command
+// finishing, a recoverable error, or a notice that earlier output was dropped.
+// Output chunks are raw bytes; callers decode to text themselves.
+message SandboxCommandExecutionEvent {
+  oneof event {
+    Started started = 1;
+    StdoutBytes stdout = 2;
+    StderrBytes stderr = 3;
+    Finished finished = 4;
+    Error error = 5;
+    EvictedEarlyData evicted = 6;
+  }
+
+  // The first event on every stream, signaling that the command has started.
+  message Started {
+    // Unique identifier for this command execution, assigned by the server and
+    // echoed here so the caller can correlate the stream with the command.
+    string cmd_id = 1;
+    // Time the command started, in RFC 3339 format.
+    google.protobuf.Timestamp started_at = 2;
+  }
+  // A chunk of standard output produced by the command.
+  message StdoutBytes {
+    // Raw stdout bytes. The contents are not guaranteed to be valid UTF-8.
+    bytes data = 1;
+    // Total number of stdout bytes emitted through the end of this chunk.
+    int64 byte_offset = 2;
+    // Time this chunk was emitted, in RFC 3339 format.
+    google.protobuf.Timestamp timestamp = 3;
+  }
+  // A chunk of standard error produced by the command.
+  message StderrBytes {
+    // Raw stderr bytes. The contents are not guaranteed to be valid UTF-8.
+    bytes data = 1;
+    // Total number of stderr bytes emitted through the end of this chunk.
+    int64 byte_offset = 2;
+    // Time this chunk was emitted, in RFC 3339 format.
+    google.protobuf.Timestamp timestamp = 3;
+  }
+  // The terminal event when a command runs to completion, signaling that the
+  // process exited.
+  message Finished {
+    // Exit code the process returned. On POSIX systems this is 0 through 255,
+    // where 0 indicates success.
+    int32 exit_code = 1;
+    // Time the process exited, in RFC 3339 format.
+    google.protobuf.Timestamp finished_at = 2;
+  }
+  // A recoverable failure that does not end the stream, for example a single
+  // output chunk being lost while more output is still to come. Fatal errors
+  // are reported through the usual error channel rather than this event.
+  message Error {
+    // Human-readable description of what went wrong.
+    string reason = 1;
+  }
+  // A notice that some output was dropped before this consumer began reading,
+  // which can happen when reattaching to a command that is already running.
+  // The byte counts let the consumer account for the gap.
+  message EvictedEarlyData {
+    // Number of stdout bytes dropped before this consumer began reading.
+    int64 dropped_bytes_stdout = 1;
+    // Number of stderr bytes dropped before this consumer began reading.
+    int64 dropped_bytes_stderr = 2;
+  }
+}
+
+// Request to run a command in a sandbox. The `RunCommand` method streams back a
+// sequence of events that begins with a started event and ends with a finished
+// event, or terminates with an error.
+message RunCommandRequest {
+  // The sandbox to run the command in.
+  SandboxRef sandbox = 1;
+  // The executable to run. Looked up on the sandbox's PATH unless given as an
+  // absolute path.
+  string cmd = 2;
+  // Positional arguments to pass to the command. Empty by default.
+  repeated string args = 3;
+  // Working directory to run the command in. Default: the sandbox's default
+  // working directory.
+  optional string cwd = 4;
+  // Environment variables for this command. These are merged with the
+  // sandbox-level environment set when the sandbox was created, and take
+  // precedence on any key that appears in both. Keys must be valid POSIX
+  // environment variable names, matching [A-Za-z_][A-Za-z0-9_]*.
+  map<string, string> env = 5;
+  // Run the command through `sudo -E`, preserving the merged environment.
+  // Default: false.
+  optional bool sudo = 6;
+  // Run the command detached (beta). The server returns once the command has
+  // started and the command keeps running in the sandbox, but its output is not
+  // retained and can't be retrieved yet, so the response stream ends right after
+  // the Started event. Reattaching to a detached command's output is a future
+  // API (DEP-4520). Default: false.
+  optional bool detached = 7;
+}

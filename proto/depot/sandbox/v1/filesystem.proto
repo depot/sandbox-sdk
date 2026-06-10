@@ -1,0 +1,249 @@
+// File system operations against a sandbox.
+//
+// The server may back these operations with different implementations, but the
+// message surface is the same regardless of which one is active.
+//
+// Errors are returned as Connect errors with a FileSystemErrorDetail attached.
+// The SDK converts that detail into a Node-style Error carrying code, syscall,
+// path, and errno, so callers can keep writing code against the shape of
+// node:fs/promises.
+//
+// The methods themselves are declared on the sandbox service; this file only
+// defines the messages and enums they use.
+
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+import "depot/sandbox/v1/refs.proto";
+
+// File system error codes, carried on a FileSystemErrorDetail. The value of
+// each code IS its Linux errno number, so the client derives the negated errno
+// by negating the value, with no hand-maintained code<->errno table on either
+// side: a native (real-errno) backing maps its errno straight onto the wire,
+// and the SDK reads code and errno back off the generated enum. The set covers
+// the errnos a file-system syscall can realistically return; a code outside it
+// (including one a newer peer adds that an older build doesn't know) reads as
+// OTHER, so the contract degrades safely instead of mis-mapping.
+//
+// UNSPECIFIED (0) is the proto3 zero value and is never sent for a real
+// failure. OTHER is a synthetic sentinel above the errno range: it has no errno
+// (the SDK reports -1) and is the catch-all when the failure can't be
+// classified into a specific code.
+//
+// Aliased Linux errnos are represented by a single canonical name (EAGAIN, not
+// EWOULDBLOCK; EOPNOTSUPP, not ENOTSUP) so each value stays unique.
+enum FileSystemErrorCode {
+  FILESYSTEM_ERROR_CODE_UNSPECIFIED = 0;
+  FILESYSTEM_ERROR_CODE_EPERM = 1;
+  FILESYSTEM_ERROR_CODE_ENOENT = 2;
+  FILESYSTEM_ERROR_CODE_EINTR = 4;
+  FILESYSTEM_ERROR_CODE_EIO = 5;
+  FILESYSTEM_ERROR_CODE_EBADF = 9;
+  FILESYSTEM_ERROR_CODE_ENOMEM = 12;
+  FILESYSTEM_ERROR_CODE_EACCES = 13;
+  FILESYSTEM_ERROR_CODE_EBUSY = 16;
+  FILESYSTEM_ERROR_CODE_EEXIST = 17;
+  FILESYSTEM_ERROR_CODE_EXDEV = 18;
+  FILESYSTEM_ERROR_CODE_ENOTDIR = 20;
+  FILESYSTEM_ERROR_CODE_EISDIR = 21;
+  FILESYSTEM_ERROR_CODE_EINVAL = 22;
+  FILESYSTEM_ERROR_CODE_ENFILE = 23;
+  FILESYSTEM_ERROR_CODE_EMFILE = 24;
+  FILESYSTEM_ERROR_CODE_ETXTBSY = 26;
+  FILESYSTEM_ERROR_CODE_EFBIG = 27;
+  FILESYSTEM_ERROR_CODE_ENOSPC = 28;
+  FILESYSTEM_ERROR_CODE_EROFS = 30;
+  FILESYSTEM_ERROR_CODE_EMLINK = 31;
+  FILESYSTEM_ERROR_CODE_ENAMETOOLONG = 36;
+  FILESYSTEM_ERROR_CODE_ENOTEMPTY = 39;
+  FILESYSTEM_ERROR_CODE_ELOOP = 40;
+  FILESYSTEM_ERROR_CODE_EOPNOTSUPP = 95;
+  FILESYSTEM_ERROR_CODE_EDQUOT = 122;
+  FILESYSTEM_ERROR_CODE_OTHER = 4096;
+}
+
+// The error detail the server attaches to a Connect error's details. The SDK
+// reads it back and uses it to build a Node-style FileSystemError.
+message FileSystemErrorDetail {
+  FileSystemErrorCode code = 1;
+  string syscall = 2;
+  string path = 3;
+  optional string message = 4;
+}
+
+// The kind of file returned by Stat. The SDK uses it to back the isDirectory,
+// isFile, and similar checks on a node:fs/promises-style Stats object.
+enum FileType {
+  FILE_TYPE_UNSPECIFIED = 0;
+  FILE_TYPE_FILE = 1;
+  FILE_TYPE_DIRECTORY = 2;
+  FILE_TYPE_SYMLINK = 3;
+  FILE_TYPE_BLOCK_DEVICE = 4;
+  FILE_TYPE_CHARACTER_DEVICE = 5;
+  FILE_TYPE_FIFO = 6;
+  FILE_TYPE_SOCKET = 7;
+}
+
+// Messages for the unary file system methods.
+
+message MkdirRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // When true, create parent directories as needed (mkdir -p). When false (the
+  // default), a missing parent directory fails with ENOENT.
+  optional bool recursive = 3;
+  // Octal permission mode for the new directory. When unset, the server applies
+  // its umask.
+  optional uint32 mode = 4;
+}
+message MkdirResponse {}
+
+message StatRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // When true (the default), follow symlinks like stat. When false, report on
+  // the link itself like lstat.
+  optional bool follow_symlinks = 3;
+}
+message StatResponse {
+  string path = 1;
+  int64 size = 2;
+  uint32 mode = 3;
+  FileType type = 4;
+  string uname = 5;
+  string gname = 6;
+  int64 mtime_unix_seconds = 7;
+}
+
+message ReadDirRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // Matches the withFileTypes option of node:fs/promises readdir. The response
+  // entries always carry name and type; when this is false the SDK exposes them
+  // as a plain array of names instead.
+  optional bool with_file_types = 3;
+}
+message ReadDirResponse {
+  repeated DirEntry entries = 1;
+}
+message DirEntry {
+  string name = 1;
+  FileType type = 2;
+}
+
+message RemoveRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // When true, remove directories and their contents recursively (rm -rf).
+  optional bool recursive = 3;
+  // When true, removing a path that does not exist succeeds instead of failing
+  // with ENOENT, matching the force option of node fs.rm.
+  optional bool ignore_missing = 4;
+}
+message RemoveResponse {}
+
+message RenameRequest {
+  SandboxRef sandbox = 1;
+  string from_path = 2;
+  string to_path = 3;
+}
+message RenameResponse {}
+
+message CopyFileRequest {
+  SandboxRef sandbox = 1;
+  string from_path = 2;
+  string to_path = 3;
+  // When true, preserve the file's mode, owner, and timestamps where the server
+  // can (cp -p).
+  optional bool preserve_metadata = 4;
+}
+message CopyFileResponse {}
+
+message TruncateRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  int64 size = 3;
+}
+message TruncateResponse {}
+
+message ChmodRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // The new permission mode as an octal integer. The SDK accepts either a
+  // string ("755") or a number (0o755) and converts it. Required: presence is
+  // tracked (optional) so the server rejects an omitted mode with
+  // InvalidArgument instead of silently applying 000, the proto3 zero value.
+  // Matches MkdirRequest.mode and WriteFileRequest.Init.mode, which are also
+  // presence-tracked.
+  optional uint32 mode = 3;
+}
+message ChmodResponse {}
+
+message ChownRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  optional uint32 uid = 3;
+  optional uint32 gid = 4;
+}
+message ChownResponse {}
+
+message SymlinkRequest {
+  SandboxRef sandbox = 1;
+  // Create link_path as a symlink pointing at target (ln -s target link_path).
+  string target = 2;
+  string link_path = 3;
+}
+message SymlinkResponse {}
+
+message ReadlinkRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+}
+message ReadlinkResponse {
+  string target = 1;
+}
+
+message AccessRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+  // Bitmask of access checks to perform (F_OK, R_OK, W_OK, X_OK). When unset,
+  // the server checks for existence (F_OK).
+  optional uint32 mode = 3;
+}
+message AccessResponse {}
+
+// Messages for the streaming file system methods.
+
+message ReadFileRequest {
+  SandboxRef sandbox = 1;
+  string path = 2;
+}
+
+// One chunk of a file streamed by ReadFile. Chunks arrive in order. The final
+// chunk may carry eof = true; the stream closing also signals the end of file.
+message FileChunk {
+  bytes data = 1;
+  optional bool eof = 2;
+}
+
+// A message in the WriteFile request stream. The first message must carry init;
+// every message after it carries data bytes. In init, append selects append
+// semantics, and mode is applied if the file is created.
+message WriteFileRequest {
+  oneof input {
+    Init init = 1;
+    bytes data = 2;
+  }
+  message Init {
+    SandboxRef sandbox = 1;
+    string path = 2;
+    optional uint32 mode = 3;
+    optional bool append = 4;
+    // When true, create the parent directories before opening the file.
+    optional bool create_directories = 5;
+  }
+}
+message WriteFileResponse {
+  int64 bytes_written = 1;
+}
