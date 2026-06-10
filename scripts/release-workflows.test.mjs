@@ -24,6 +24,10 @@ describe('release workflow contracts', () => {
     assert.match(workflow, /tag: \$\{\{ steps\.release-version\.outputs\.tag \}\}/)
     assert.match(workflow, /version: \$\{\{ steps\.release-version\.outputs\.version \}\}/)
     assert.match(workflow, /prerelease: \$\{\{ steps\.release-version\.outputs\.prerelease \}\}/)
+    assert.match(
+      workflow,
+      /concurrency:\n  group: release-drafter-\$\{\{ github\.ref \}\}\n  cancel-in-progress: false/,
+    )
 
     assert.doesNotMatch(config, /^prerelease:/m)
     assert.doesNotMatch(config, /^prerelease-identifier:/m)
@@ -53,6 +57,11 @@ describe('release workflow contracts', () => {
     assert.doesNotMatch(workflow, /tag="\$\{\{ inputs\.tag \}\}"/)
     assert.match(workflow, /tag="\$\{RELEASE_TAG\}"/)
     assert.match(workflow, /RELEASE_TAG: \$\{\{ inputs\.tag \}\}/)
+    assert.match(
+      workflow,
+      /out="\$\(npm view "@depot\/sandbox@\$\{VERSION\}" version --registry https:\/\/registry\.npmjs\.org\)"/,
+    )
+    assert.match(workflow, /\[\[ -z "\$\{out\}" \]\]/)
 
     const verifyRelease = indexOfOrThrow(workflow, 'name: Verify GitHub release and tag')
     const verifyNpm = indexOfOrThrow(workflow, 'name: Verify npm package version')

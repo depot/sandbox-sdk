@@ -1,5 +1,11 @@
-import {appendFileSync, readFileSync, writeFileSync} from 'node:fs'
-import {formatVersion, isCliEntrypoint, packageVersionFromReleaseTag, parseVersion} from './release-version-utils.mjs'
+import {readFileSync, writeFileSync} from 'node:fs'
+import {
+  formatVersion,
+  isCliEntrypoint,
+  packageVersionFromReleaseTag,
+  parseVersion,
+  writeGithubOutput,
+} from './release-version-utils.mjs'
 
 export {packageVersionFromReleaseTag} from './release-version-utils.mjs'
 
@@ -39,19 +45,6 @@ export function assertReleaseVersionAllowed({releaseVersion, packageVersion}) {
       `Release version ${releaseVersion} is not an allowed advancement from package.json version ${packageVersion}.`,
     )
   }
-}
-
-function writeGithubOutput(values) {
-  const output = process.env.GITHUB_OUTPUT
-  if (!output) {
-    for (const [key, value] of Object.entries(values)) {
-      console.log(`${key}=${value}`)
-    }
-    return
-  }
-
-  const lines = Object.entries(values).map(([key, value]) => `${key}=${value}`)
-  appendFileSync(output, `${lines.join('\n')}\n`)
 }
 
 function main() {

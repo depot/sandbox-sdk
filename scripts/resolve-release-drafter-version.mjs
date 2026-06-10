@@ -1,11 +1,14 @@
-import {appendFileSync, readFileSync} from 'node:fs'
+import {readFileSync} from 'node:fs'
 
-import {formatVersion, isCliEntrypoint, parseVersion} from './release-version-utils.mjs'
+import {formatVersion, isCliEntrypoint, parseVersion, writeGithubOutput} from './release-version-utils.mjs'
 
-const packageName = '@depot/sandbox'
 const requestTimeoutMs = 15000
 
-export function resolveReleaseDraftVersion({packageVersion, releases = [], tags = [], npmVersions = []}) {
+export function resolveReleaseDraftVersion({packageName, packageVersion, releases = [], tags = [], npmVersions = []}) {
+  if (!packageName) {
+    throw new Error('package.json name missing')
+  }
+
   const parsed = parseVersion(packageVersion)
   let candidate = parsed
 
@@ -98,8 +101,8 @@ function nextPage(linkHeader) {
   return null
 }
 
-async function fetchNpmVersions() {
-  const response = await fetch('https://registry.npmjs.org/@depot%2fsandbox', {
+async function fetchNpmVersions(packageName) {
+  const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
     headers: {accept: 'application/vnd.npm.install-v1+json'},
     signal: AbortSignal.timeout(requestTimeoutMs),
   })
@@ -116,12 +119,15 @@ async function fetchNpmVersions() {
   return Object.keys(metadata.versions ?? {})
 }
 
-export async function fetchReleaseState(repository, token) {
+export async function fetchReleaseState(repository, token, packageName) {
   if (!repository) {
     throw new Error('GITHUB_REPOSITORY is required')
   }
   if (!token) {
     throw new Error('GITHUB_TOKEN is required')
+  }
+  if (!packageName) {
+    throw new Error('package.json name missing')
   }
 
   const baseUrl = `https://api.github.com/repos/${repository}`
@@ -131,36 +137,30 @@ export async function fetchReleaseState(repository, token) {
   return {
     releases,
     tags: refs.map((ref) => ref.ref.replace(/^refs\/tags\//, '')),
-    npmVersions: await fetchNpmVersions(),
+    npmVersions: await fetchNpmVersions(packageName),
   }
 }
 
-function readPackageVersion(packageJsonPath) {
+function readPackageMetadata(packageJsonPath) {
   const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+  if (!pkg.name) {
+    throw new Error('package.json name missing')
+  }
   if (!pkg.version) {
     throw new Error('package.json version missing')
   }
-  return pkg.version
-}
-
-function writeGithubOutput(values) {
-  const output = process.env.GITHUB_OUTPUT
-  if (!output) {
-    for (const [key, value] of Object.entries(values)) {
-      console.log(`${key}=${value}`)
-    }
-    return
-  }
-
-  const lines = Object.entries(values).map(([key, value]) => `${key}=${value}`)
-  appendFileSync(output, `${lines.join('\n')}\n`)
+  return {packageName: pkg.name, packageVersion: pkg.version}
 }
 
 async function main() {
   const packageJsonPath = process.env.PACKAGE_JSON_PATH ?? 'package.json'
-  const packageVersion = readPackageVersion(packageJsonPath)
-  const {releases, tags, npmVersions} = await fetchReleaseState(process.env.GITHUB_REPOSITORY, process.env.GITHUB_TOKEN)
-  const result = resolveReleaseDraftVersion({packageVersion, releases, tags, npmVersions})
+  const {packageName, packageVersion} = readPackageMetadata(packageJsonPath)
+  const {releases, tags, npmVersions} = await fetchReleaseState(
+    process.env.GITHUB_REPOSITORY,
+    process.env.GITHUB_TOKEN,
+    packageName,
+  )
+  const result = resolveReleaseDraftVersion({packageName, packageVersion, releases, tags, npmVersions})
   writeGithubOutput(result)
 }
 

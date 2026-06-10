@@ -53,7 +53,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Verify npm package version
-        run: npm view "@depot/sandbox@${{ steps.release.outputs.version }}" version --registry https://registry.npmjs.org
+        run: |
+          out="$(npm view "@depot/sandbox@${VERSION}" version --registry https://registry.npmjs.org)"
+          if [[ -z "${out}" ]]; then
+            echo "@depot/sandbox@${VERSION} is not published on npm." >&2
+            exit 1
+          fi
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
 
       - name: Verify npm token secret
         run: |

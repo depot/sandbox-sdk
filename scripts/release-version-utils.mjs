@@ -1,5 +1,8 @@
+import {appendFileSync} from 'node:fs'
 import {pathToFileURL} from 'node:url'
 
+// This parser is deliberately narrower than full semver: no build metadata,
+// and prereleases must be one identifier plus one numeric component.
 export function parseVersion(version) {
   if (!version) {
     throw new Error('package.json version missing')
@@ -69,4 +72,17 @@ export function packageVersionFromReleaseTag(tag) {
 
 export function isCliEntrypoint(moduleUrl, argvPath = process.argv[1]) {
   return Boolean(argvPath) && moduleUrl === pathToFileURL(argvPath).href
+}
+
+export function writeGithubOutput(values) {
+  const output = process.env.GITHUB_OUTPUT
+  if (!output) {
+    for (const [key, value] of Object.entries(values)) {
+      console.log(`${key}=${value}`)
+    }
+    return
+  }
+
+  const lines = Object.entries(values).map(([key, value]) => `${key}=${value}`)
+  appendFileSync(output, `${lines.join('\n')}\n`)
 }

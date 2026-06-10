@@ -98,6 +98,8 @@ gh workflow run repair-release-metadata.yml -f tag=v0.1.0-beta.1
 
 It verifies the GitHub release and npm package version, clears GitHub pre-release status, and moves npm `latest` to that version without republishing the package. The repair workflow requires an `NPM_TOKEN` secret for `npm dist-tag add`.
 
+If a GitHub release is published but the npm publish workflow fails before the package version reaches npm, the release tag is consumed but there is no npm package version to repair. First rerun the failed release workflow from GitHub Actions. If rerunning cannot recover it, delete the GitHub release and tag, then let Release Drafter create a new draft from the next `main` run. If the workflow failed after npm accepted the version, use the repair workflow instead.
+
 ## License
 
 MIT License, see `LICENSE`.

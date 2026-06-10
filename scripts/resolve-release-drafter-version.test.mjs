@@ -3,9 +3,15 @@ import {describe, it} from 'node:test'
 
 import {fetchReleaseState, resolveReleaseDraftVersion} from './resolve-release-drafter-version.mjs'
 
+const packageName = '@depot/sandbox'
+
+function resolve(options) {
+  return resolveReleaseDraftVersion({packageName, ...options})
+}
+
 describe('resolveReleaseDraftVersion', () => {
   it('uses the package version when no release or tag owns it', () => {
-    assert.deepEqual(resolveReleaseDraftVersion({packageVersion: '0.1.0-beta.1'}), {
+    assert.deepEqual(resolve({packageVersion: '0.1.0-beta.1'}), {
       version: '0.1.0-beta.1',
       tag: 'v0.1.0-beta.1',
       name: '@depot/sandbox 0.1.0-beta.1',
@@ -15,7 +21,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('reuses an existing draft release for the package version', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         releases: [{tag_name: 'v0.1.0-beta.1', draft: true}],
       }).version,
@@ -25,7 +31,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('advances a beta prerelease when the package version is published', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         releases: [{tag_name: 'v0.1.0-beta.1', draft: false}],
       }).version,
@@ -35,7 +41,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('advances a prerelease when the package version has a git tag', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         tags: ['v0.1.0-beta.1'],
       }).version,
@@ -45,7 +51,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('treats a draft plus a git tag as consumed', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         releases: [{tag_name: 'v0.1.0-beta.1', draft: true}],
         tags: ['v0.1.0-beta.1'],
@@ -56,7 +62,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('keeps advancing until it finds an unused candidate', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         releases: [{tag_name: 'v0.1.0-beta.1', draft: false}],
         tags: ['v0.1.0-beta.2'],
@@ -67,7 +73,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('treats npm-published versions as consumed', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-beta.1',
         npmVersions: ['0.1.0-beta.1', '0.1.0-beta.2'],
       }).version,
@@ -77,7 +83,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('advances alpha independently of beta', () => {
     assert.equal(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-alpha.1',
         tags: ['v0.1.0-alpha.1', 'v0.1.0-beta.1'],
       }).version,
@@ -87,7 +93,7 @@ describe('resolveReleaseDraftVersion', () => {
 
   it('advances rc and still emits latest and normal-release status', () => {
     assert.deepEqual(
-      resolveReleaseDraftVersion({
+      resolve({
         packageVersion: '0.1.0-rc.1',
         tags: ['v0.1.0-rc.1'],
       }),
@@ -101,7 +107,7 @@ describe('resolveReleaseDraftVersion', () => {
   })
 
   it('uses an available stable version as a normal latest release', () => {
-    assert.deepEqual(resolveReleaseDraftVersion({packageVersion: '0.1.0'}), {
+    assert.deepEqual(resolve({packageVersion: '0.1.0'}), {
       version: '0.1.0',
       tag: 'v0.1.0',
       name: '@depot/sandbox 0.1.0',
@@ -112,7 +118,7 @@ describe('resolveReleaseDraftVersion', () => {
   it('fails instead of auto-advancing a consumed stable version', () => {
     assert.throws(
       () =>
-        resolveReleaseDraftVersion({
+        resolve({
           packageVersion: '0.1.0',
           tags: ['v0.1.0'],
         }),
@@ -121,13 +127,14 @@ describe('resolveReleaseDraftVersion', () => {
   })
 
   it('rejects malformed package versions', () => {
-    assert.throws(() => resolveReleaseDraftVersion({packageVersion: '0.1'}), /Unsupported package version/)
-    assert.throws(() => resolveReleaseDraftVersion({packageVersion: ''}), /package.json version missing/)
-    assert.throws(
-      () => resolveReleaseDraftVersion({packageVersion: '0.1.0-beta.9007199254740992'}),
-      /Unsupported prerelease number/,
-    )
-    assert.throws(() => resolveReleaseDraftVersion({packageVersion: '0.1.0-beta.01'}), /Unsupported prerelease number/)
+    assert.throws(() => resolve({packageVersion: '0.1'}), /Unsupported package version/)
+    assert.throws(() => resolve({packageVersion: ''}), /package.json version missing/)
+    assert.throws(() => resolve({packageVersion: '0.1.0-beta.9007199254740992'}), /Unsupported prerelease number/)
+    assert.throws(() => resolve({packageVersion: '0.1.0-beta.01'}), /Unsupported prerelease number/)
+  })
+
+  it('requires a package name for release names', () => {
+    assert.throws(() => resolveReleaseDraftVersion({packageVersion: '0.1.0-beta.1'}), /package\.json name missing/)
   })
 })
 
@@ -163,11 +170,12 @@ describe('fetchReleaseState', () => {
     }
 
     try {
-      const state = await fetchReleaseState('depot/sandbox-sdk', 'token')
+      const state = await fetchReleaseState('depot/sandbox-sdk', 'token', packageName)
 
       assert.deepEqual(state.tags, ['v0.1.0-beta.1', 'v0.1.0-beta.2'])
       assert.equal(
         resolveReleaseDraftVersion({
+          packageName,
           packageVersion: '0.1.0-beta.1',
           tags: state.tags,
           npmVersions: state.npmVersions,
@@ -179,7 +187,7 @@ describe('fetchReleaseState', () => {
         'https://api.github.com/repos/depot/sandbox-sdk/releases?per_page=100',
         'https://api.github.com/repos/depot/sandbox-sdk/git/matching-refs/tags/?per_page=100',
         'https://api.github.com/repos/depot/sandbox-sdk/git/matching-refs/tags/?per_page=100&page=2',
-        'https://registry.npmjs.org/@depot%2fsandbox',
+        'https://registry.npmjs.org/%40depot%2Fsandbox',
       ])
     } finally {
       globalThis.fetch = originalFetch

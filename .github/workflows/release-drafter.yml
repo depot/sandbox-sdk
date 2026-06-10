@@ -9,6 +9,10 @@ permissions:
   contents: write
   pull-requests: read
 
+concurrency:
+  group: release-drafter-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   release-drafter:
     runs-on: ubuntu-latest
