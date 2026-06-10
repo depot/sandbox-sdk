@@ -1,7 +1,7 @@
 import {strict as assert} from 'node:assert'
 import {describe, it} from 'node:test'
 
-import {resolveReleaseDraftVersion} from './resolve-release-drafter-version.mjs'
+import {fetchReleaseState, resolveReleaseDraftVersion} from './resolve-release-drafter-version.mjs'
 
 describe('resolveReleaseDraftVersion', () => {
   it('uses the package version when no release or tag owns it', () => {
@@ -128,5 +128,61 @@ describe('resolveReleaseDraftVersion', () => {
       /Unsupported prerelease number/,
     )
     assert.throws(() => resolveReleaseDraftVersion({packageVersion: '0.1.0-beta.01'}), /Unsupported prerelease number/)
+  })
+})
+
+describe('fetchReleaseState', () => {
+  it('paginates GitHub tag refs before resolving consumed versions', async () => {
+    const originalFetch = globalThis.fetch
+    const requests = []
+    const responses = [
+      {
+        body: [],
+      },
+      {
+        body: [{ref: 'refs/tags/v0.1.0-beta.1'}],
+        link: '<https://api.github.com/repos/depot/sandbox-sdk/git/matching-refs/tags/?per_page=100&page=2>; rel="next"',
+      },
+      {
+        body: [{ref: 'refs/tags/v0.1.0-beta.2'}],
+      },
+      {
+        body: {versions: {}},
+      },
+    ]
+
+    globalThis.fetch = async (url) => {
+      requests.push(String(url))
+      const response = responses.shift()
+      assert.ok(response, `unexpected fetch: ${url}`)
+
+      return new Response(JSON.stringify(response.body), {
+        status: 200,
+        headers: response.link ? {link: response.link} : {},
+      })
+    }
+
+    try {
+      const state = await fetchReleaseState('depot/sandbox-sdk', 'token')
+
+      assert.deepEqual(state.tags, ['v0.1.0-beta.1', 'v0.1.0-beta.2'])
+      assert.equal(
+        resolveReleaseDraftVersion({
+          packageVersion: '0.1.0-beta.1',
+          tags: state.tags,
+          npmVersions: state.npmVersions,
+          releases: state.releases,
+        }).version,
+        '0.1.0-beta.3',
+      )
+      assert.deepEqual(requests, [
+        'https://api.github.com/repos/depot/sandbox-sdk/releases?per_page=100',
+        'https://api.github.com/repos/depot/sandbox-sdk/git/matching-refs/tags/?per_page=100',
+        'https://api.github.com/repos/depot/sandbox-sdk/git/matching-refs/tags/?per_page=100&page=2',
+        'https://registry.npmjs.org/@depot%2fsandbox',
+      ])
+    } finally {
+      globalThis.fetch = originalFetch
+    }
   })
 })

@@ -58,23 +58,6 @@ function releaseTag(release) {
   return release.tag_name ?? release.tagName ?? release.tag
 }
 
-async function fetchJson(url, token = null) {
-  const response = await fetch(url, {
-    headers: {
-      accept: 'application/vnd.github+json',
-      ...(token ? {authorization: `Bearer ${token}`} : {}),
-      'x-github-api-version': '2022-11-28',
-    },
-    signal: AbortSignal.timeout(requestTimeoutMs),
-  })
-
-  if (!response.ok) {
-    throw new Error(`GitHub API request failed: ${response.status} ${response.statusText} (${url})`)
-  }
-
-  return response.json()
-}
-
 async function fetchAllPages(url, token) {
   const items = []
   let next = url
@@ -133,7 +116,7 @@ async function fetchNpmVersions() {
   return Object.keys(metadata.versions ?? {})
 }
 
-async function fetchReleaseState(repository, token) {
+export async function fetchReleaseState(repository, token) {
   if (!repository) {
     throw new Error('GITHUB_REPOSITORY is required')
   }
@@ -143,7 +126,7 @@ async function fetchReleaseState(repository, token) {
 
   const baseUrl = `https://api.github.com/repos/${repository}`
   const releases = await fetchAllPages(`${baseUrl}/releases?per_page=100`, token)
-  const refs = await fetchJson(`${baseUrl}/git/matching-refs/tags/`, token)
+  const refs = await fetchAllPages(`${baseUrl}/git/matching-refs/tags/?per_page=100`, token)
 
   return {
     releases,
