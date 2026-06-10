@@ -34,6 +34,7 @@ const fs = sandbox.fs()
 await fs.writeFile('/tmp/message.txt', 'hello')
 console.log(await fs.readFile('/tmp/message.txt', {encoding: 'utf8'}))
 
+await sandbox.setTimeout({timeoutMs: 4 * 60 * 60 * 1000})
 await sandbox.stop({blocking: true})
 ```
 
@@ -52,15 +53,23 @@ This beta package currently includes:
 
 - `createClient`
 - `Sandbox.create`, `Sandbox.get`, `Sandbox.list`, `Sandbox.listAll`
-- `sandbox.stop`, `sandbox.kill`, `sandbox.runCommand`, `sandbox.fs`
+- `sandbox.stop`, `sandbox.kill`, `sandbox.setTimeout`, `sandbox.runCommand`, `sandbox.fs`
 - `SandboxCommandExecution.wait`, `logs`, `output`, `stdout`, and `stderr`
 - `FileSystem` helpers for common file operations
 
-Other sandbox capabilities, such as piped stdin, command history, create-time secrets, timeout extension, snapshots, and pty support, are not part of this beta surface yet.
+Other sandbox capabilities, such as piped stdin, command history, create-time secrets, snapshots, and pty support, are not part of this beta surface yet.
 
 ## Generated Protos
 
-The generated `depot.sandbox.v1` TypeScript files are vendored in `src/gen` for the beta package so customers do not need a separate published proto module.
+In this repository, the `depot.sandbox.v1` proto sources are vendored in `proto/`, and the generated TypeScript files are checked in under `src/gen`. The published package ships the compiled generated bindings so customers do not need a separate proto module.
+
+After changing a proto, regenerate the TypeScript bindings:
+
+```bash
+pnpm run gen
+```
+
+CI runs `pnpm run gen:check` through `pnpm run validate` to catch drift between `proto/` and `src/gen`.
 
 ## Releasing
 
