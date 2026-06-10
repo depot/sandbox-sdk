@@ -1,0 +1,77 @@
+name: repair-release-metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to repair, for example v0.1.0-beta.1
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Validate release tag
+        id: release
+        run: |
+          tag="${RELEASE_TAG}"
+
+          if [[ "${tag}" != v* ]]; then
+            echo "Release tag must start with v. Got ${tag}." >&2
+            exit 1
+          fi
+
+          version="${tag#v}"
+          node -e 'const version = process.argv[1]; if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z-]+\.\d+)?$/.test(version)) throw new Error(`Unsupported release tag version: ${version}`)' "${version}"
+
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+
+      - name: Verify GitHub release and tag
+        run: |
+          gh release view "${{ steps.release.outputs.tag }}" --repo "$GITHUB_REPOSITORY" >/dev/null
+          git ls-remote --exit-code --tags origin "refs/tags/${{ steps.release.outputs.tag }}" >/dev/null
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Verify npm package version
+        run: npm view "@depot/sandbox@${{ steps.release.outputs.version }}" version --registry https://registry.npmjs.org
+
+      - name: Verify npm token secret
+        run: |
+          if [[ -z "${NODE_AUTH_TOKEN}" ]]; then
+            echo "NPM_TOKEN secret is required to move npm dist-tags." >&2
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Mark GitHub release as normal release
+        run: |
+          release_id="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${{ steps.release.outputs.tag }}" --jq '.id')"
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${release_id}" -f prerelease=false >/dev/null
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Move npm latest dist-tag
+        run: npm dist-tag add "@depot/sandbox@${{ steps.release.outputs.version }}" latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

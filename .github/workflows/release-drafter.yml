@@ -15,15 +15,22 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Read package version
-        id: package-version
-        run: |
-          version="$(node -p "const pkg = require('./package.json'); if (!pkg.version) throw new Error('package.json version missing'); pkg.version")"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Resolve release draft version
+        id: release-version
+        run: node scripts/resolve-release-drafter-version.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_PUBLIC_GITHUB_TOKEN }}
 
       - uses: release-drafter/release-drafter@v6
         with:
-          name: '@depot/sandbox ${{ steps.package-version.outputs.version }}'
-          tag: 'v${{ steps.package-version.outputs.version }}'
+          name: ${{ steps.release-version.outputs.name }}
+          tag: ${{ steps.release-version.outputs.tag }}
+          version: ${{ steps.release-version.outputs.version }}
+          prerelease: ${{ steps.release-version.outputs.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_PUBLIC_GITHUB_TOKEN }}
