@@ -1,6 +1,9 @@
 import {appendFileSync} from 'node:fs'
 import {pathToFileURL} from 'node:url'
 
+export const npmRegistryUrl = 'https://registry.npmjs.org'
+export const requestTimeoutMs = 15000
+
 // This parser is deliberately narrower than full semver: no build metadata,
 // and prereleases must be one identifier plus one numeric component.
 export function parseVersion(version) {
@@ -50,6 +53,52 @@ export function formatVersion(version) {
   }
 
   return `${base}-${version.prerelease.identifier}.${version.prerelease.number}`
+}
+
+export function samePrereleaseChannel(left, right) {
+  return (
+    left.prerelease &&
+    right.prerelease &&
+    left.major === right.major &&
+    left.minor === right.minor &&
+    left.patch === right.patch &&
+    left.prerelease.identifier === right.prerelease.identifier
+  )
+}
+
+export function prereleaseNumbersInChannel(versions, channel) {
+  const numbers = []
+
+  for (const version of versions) {
+    try {
+      const parsed = parseVersion(version)
+      if (samePrereleaseChannel(parsed, channel)) {
+        numbers.push(parsed.prerelease.number)
+      }
+    } catch {
+      // Ignore versions outside this repository's intentionally narrow release format.
+    }
+  }
+
+  return numbers
+}
+
+export async function fetchNpmPackageVersions(packageName) {
+  const response = await fetch(`${npmRegistryUrl}/${encodeURIComponent(packageName)}`, {
+    headers: {accept: 'application/vnd.npm.install-v1+json'},
+    signal: AbortSignal.timeout(requestTimeoutMs),
+  })
+
+  if (response.status === 404) {
+    return []
+  }
+
+  if (!response.ok) {
+    throw new Error(`npm registry request failed: ${response.status} ${response.statusText}`)
+  }
+
+  const metadata = await response.json()
+  return Object.keys(metadata.versions ?? {})
 }
 
 export function packageVersionFromReleaseTag(tag) {

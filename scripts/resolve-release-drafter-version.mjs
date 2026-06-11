@@ -1,8 +1,14 @@
 import {readFileSync} from 'node:fs'
 
-import {formatVersion, isCliEntrypoint, parseVersion, writeGithubOutput} from './release-version-utils.mjs'
-
-const requestTimeoutMs = 15000
+import {
+  fetchNpmPackageVersions,
+  formatVersion,
+  isCliEntrypoint,
+  parseVersion,
+  prereleaseNumbersInChannel,
+  requestTimeoutMs,
+  writeGithubOutput,
+} from './release-version-utils.mjs'
 
 export function resolveReleaseDraftVersion({packageName, packageVersion, releases = [], tags = [], npmVersions = []}) {
   if (!packageName) {
@@ -10,7 +16,7 @@ export function resolveReleaseDraftVersion({packageName, packageVersion, release
   }
 
   const parsed = parseVersion(packageVersion)
-  let candidate = parsed
+  let candidate = nextCandidateAtOrAfterObservedChannel({candidate: parsed, releases, tags, npmVersions})
 
   while (true) {
     const version = formatVersion(candidate)
@@ -38,6 +44,51 @@ export function resolveReleaseDraftVersion({packageName, packageVersion, release
       },
     }
   }
+}
+
+function nextCandidateAtOrAfterObservedChannel({candidate, releases, tags, npmVersions}) {
+  if (!candidate.prerelease) {
+    return candidate
+  }
+
+  const consumedMax = maxNumber([
+    ...prereleaseNumbersInChannel(
+      tags.map((tag) => tag.replace(/^v/, '')),
+      candidate,
+    ),
+    ...prereleaseNumbersInChannel(npmVersions, candidate),
+    ...prereleaseNumbersInChannel(
+      releases
+        .filter((release) => !release.draft)
+        .map(releaseTag)
+        .filter(Boolean)
+        .map((tag) => tag.replace(/^v/, '')),
+      candidate,
+    ),
+  ])
+  const draftMax = maxNumber(
+    prereleaseNumbersInChannel(
+      releases
+        .filter((release) => release.draft)
+        .map(releaseTag)
+        .filter(Boolean)
+        .map((tag) => tag.replace(/^v/, '')),
+      candidate,
+    ),
+  )
+  const floor = Math.max(candidate.prerelease.number, consumedMax + 1)
+
+  return {
+    ...candidate,
+    prerelease: {
+      ...candidate.prerelease,
+      number: draftMax >= floor ? draftMax : floor,
+    },
+  }
+}
+
+function maxNumber(numbers) {
+  return numbers.length > 0 ? Math.max(...numbers) : 0
 }
 
 function candidateState({tag, version, releases, tags, npmVersions}) {
@@ -101,24 +152,6 @@ function nextPage(linkHeader) {
   return null
 }
 
-async function fetchNpmVersions(packageName) {
-  const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
-    headers: {accept: 'application/vnd.npm.install-v1+json'},
-    signal: AbortSignal.timeout(requestTimeoutMs),
-  })
-
-  if (response.status === 404) {
-    return []
-  }
-
-  if (!response.ok) {
-    throw new Error(`npm registry request failed: ${response.status} ${response.statusText}`)
-  }
-
-  const metadata = await response.json()
-  return Object.keys(metadata.versions ?? {})
-}
-
 export async function fetchReleaseState(repository, token, packageName) {
   if (!repository) {
     throw new Error('GITHUB_REPOSITORY is required')
@@ -137,7 +170,7 @@ export async function fetchReleaseState(repository, token, packageName) {
   return {
     releases,
     tags: refs.map((ref) => ref.ref.replace(/^refs\/tags\//, '')),
-    npmVersions: await fetchNpmVersions(packageName),
+    npmVersions: await fetchNpmPackageVersions(packageName),
   }
 }
 

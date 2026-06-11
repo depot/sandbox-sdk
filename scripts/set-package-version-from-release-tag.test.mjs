@@ -71,6 +71,28 @@ describe('assertReleaseVersionAllowed', () => {
     )
   })
 
+  it('rejects release versions older than the published prerelease channel', () => {
+    assert.throws(
+      () =>
+        assertReleaseVersionAllowed({
+          releaseVersion: '0.1.0-beta.2',
+          packageVersion: '0.1.0-beta.1',
+          publishedVersions: ['0.1.0-beta.10'],
+        }),
+      /not newer than the latest published prerelease/,
+    )
+  })
+
+  it('allows release versions newer than the published prerelease channel', () => {
+    assert.doesNotThrow(() =>
+      assertReleaseVersionAllowed({
+        releaseVersion: '0.1.0-beta.11',
+        packageVersion: '0.1.0-beta.1',
+        publishedVersions: ['0.1.0-beta.10'],
+      }),
+    )
+  })
+
   it('rejects unrelated manual release versions', () => {
     assert.throws(
       () => assertReleaseVersionAllowed({releaseVersion: '1.0.0', packageVersion: '0.1.0-beta.1'}),

@@ -81,6 +81,38 @@ describe('resolveReleaseDraftVersion', () => {
     )
   })
 
+  it('skips lower available prereleases when a higher channel version is consumed', () => {
+    assert.equal(
+      resolve({
+        packageVersion: '0.1.0-beta.1',
+        tags: ['v0.1.0-beta.10'],
+      }).version,
+      '0.1.0-beta.11',
+    )
+  })
+
+  it('ignores stale lower drafts when a higher channel version is consumed', () => {
+    assert.equal(
+      resolve({
+        packageVersion: '0.1.0-beta.1',
+        releases: [{tag_name: 'v0.1.0-beta.2', draft: true}],
+        npmVersions: ['0.1.0-beta.10'],
+      }).version,
+      '0.1.0-beta.11',
+    )
+  })
+
+  it('reuses a higher draft when it is newer than consumed channel versions', () => {
+    assert.equal(
+      resolve({
+        packageVersion: '0.1.0-beta.1',
+        releases: [{tag_name: 'v0.1.0-beta.11', draft: true}],
+        npmVersions: ['0.1.0-beta.10'],
+      }).version,
+      '0.1.0-beta.11',
+    )
+  })
+
   it('advances alpha independently of beta', () => {
     assert.equal(
       resolve({
