@@ -1,5 +1,5 @@
 import {strict as assert} from 'node:assert'
-import {readFileSync} from 'node:fs'
+import {existsSync, readFileSync} from 'node:fs'
 import {describe, it} from 'node:test'
 
 function read(path) {
@@ -47,34 +47,7 @@ describe('release workflow contracts', () => {
     assert.equal(pkg.publishConfig?.tag, undefined)
   })
 
-  it('keeps repair workflow manual, verifies state before mutation, and never publishes', () => {
-    const workflow = read('.github/workflows/repair-release-metadata.yml')
-
-    assert.match(workflow, /workflow_dispatch:/)
-    assert.doesNotMatch(workflow, /^  push:/m)
-    assert.doesNotMatch(workflow, /^  release:/m)
-    assert.doesNotMatch(workflow, /npm publish/)
-    assert.doesNotMatch(workflow, /tag="\$\{\{ inputs\.tag \}\}"/)
-    assert.match(workflow, /tag="\$\{RELEASE_TAG\}"/)
-    assert.match(workflow, /RELEASE_TAG: \$\{\{ inputs\.tag \}\}/)
-    assert.match(
-      workflow,
-      /out="\$\(npm view "@depot\/sandbox@\$\{VERSION\}" version --registry https:\/\/registry\.npmjs\.org\)"/,
-    )
-    assert.match(workflow, /\[\[ -z "\$\{out\}" \]\]/)
-
-    const verifyRelease = indexOfOrThrow(workflow, 'name: Verify GitHub release and tag')
-    const verifyNpm = indexOfOrThrow(workflow, 'name: Verify npm package version')
-    const verifyToken = indexOfOrThrow(workflow, 'name: Verify npm token secret')
-    const patchRelease = indexOfOrThrow(workflow, 'name: Mark GitHub release as normal release')
-    const moveLatest = indexOfOrThrow(workflow, 'name: Move npm latest dist-tag')
-
-    assert.ok(verifyRelease < patchRelease, 'GitHub release must be verified before patching')
-    assert.ok(verifyNpm < moveLatest, 'npm package version must be verified before moving latest')
-    assert.ok(verifyToken < patchRelease, 'NPM_TOKEN must be verified before any metadata mutation')
-    assert.ok(patchRelease < moveLatest, 'GitHub release status should be repaired before npm latest moves')
-    assert.match(workflow, /-f prerelease=false/)
-    assert.match(workflow, /npm dist-tag add "@depot\/sandbox@/)
-    assert.match(workflow, /NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/)
+  it('omits one-off metadata repair automation', () => {
+    assert.equal(existsSync('.github/workflows/repair-release-metadata.yml'), false)
   })
 })
