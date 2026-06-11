@@ -28,27 +28,16 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
+      - name: Set package version from release tag
+        run: node scripts/set-package-version-from-release-tag.mjs
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Validate package
         run: pnpm run validate
 
-      - name: Verify release tag matches package version
-        run: |
-          tag="${{ github.event.release.tag_name }}"
-          version="$(node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version")"
-          expected_tag="v${version}"
-
-          if [[ "${tag}" != v* ]]; then
-            echo "Release tag must start with v and match package.json version. Got ${tag}." >&2
-            exit 1
-          fi
-
-          if [[ "${tag}" != "${expected_tag}" ]]; then
-            echo "Release tag ${tag} does not match package.json version ${version}; expected ${expected_tag}." >&2
-            exit 1
-          fi
-
       - name: Publish package
-        run: npm publish --access public
+        run: npm publish --access public --tag latest
