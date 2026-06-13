@@ -145,10 +145,7 @@ message Sandbox {
   // Time the sandbox will expire, in RFC 3339 format. This is the stored,
   // authoritative deadline. Unset when the sandbox has no timeout.
   optional google.protobuf.Timestamp expires_at = 7;
-  // Milliseconds remaining until the sandbox expires, computed against the
-  // current time when the sandbox is read. Unset when the sandbox has no
-  // timeout.
-  optional int64 timeout_ms_remaining = 8;
+  reserved 8;
 
   // Active CPU time consumed by the sandbox, in milliseconds. Populated only
   // after the sandbox reaches a terminal state, and only when metering data is
@@ -218,11 +215,12 @@ message CreateSandboxRequest {
   // may be removed without notice. Leave unset for normal placement.
   // Default: false.
   optional bool staging = 5;
-  // Requested lifetime in milliseconds, measured from when the sandbox reaches
-  // RUNNING. The timeout reaper terminates the sandbox once it elapses. A smaller
-  // positive value is raised to the minimum, and a larger value is capped at the
-  // maximum. Reset the deadline later with `SetSandboxTimeout`.
-  optional int64 timeout_ms = 6;
+  reserved 6;
+  // Requested lifetime in minutes, measured from when the sandbox is created —
+  // provisioning time counts against it. The timeout reaper terminates the
+  // sandbox once the deadline elapses. Must be a positive integer. Reset the
+  // deadline later with `SetSandboxTimeout`.
+  optional int32 timeout_minutes = 7;
 }
 
 message CreateSandboxResponse {
@@ -305,17 +303,17 @@ message KillSandboxResponse {
 message SetSandboxTimeoutRequest {
   // The sandbox whose timeout to set.
   SandboxRef sandbox = 1;
-  // New timeout in milliseconds, measured from when the server handles the
-  // request: the sandbox's `expiresAt` becomes now plus this value. The server
-  // raises smaller positive values to the minimum window, and caps larger values
-  // at the sandbox's absolute maximum lifetime measured from when the sandbox
-  // reached RUNNING. Once the current deadline has elapsed, the sandbox is no
-  // longer revivable with this method.
-  int64 timeout_ms = 2;
+  reserved 2;
+  // New timeout in minutes, measured from when the server handles the request:
+  // the sandbox's `expiresAt` becomes now plus this value. Must be a positive
+  // integer. The server caps larger values at the sandbox's absolute maximum
+  // lifetime measured from when the sandbox reached RUNNING. Once the current
+  // deadline has elapsed, the sandbox is no longer revivable with this method.
+  optional int32 timeout_minutes = 3;
 }
 
 message SetSandboxTimeoutResponse {
-  // The sandbox after its expiry was set, with `expiresAt` and
-  // `timeoutMsRemaining` reflecting the new deadline.
+  // The sandbox after its expiry was set, with `expiresAt` reflecting the new
+  // deadline.
   Sandbox sandbox = 1;
 }

@@ -43,7 +43,6 @@ export class Sandbox {
   protected _startedAt: Date | undefined
   protected _stoppedAt: Date | undefined
   protected _expiresAt: Date | undefined
-  protected _timeoutMsRemaining: number | undefined
   protected _activeCpuUsageMs: number | undefined
   protected _networkUsage: NetworkUsage | undefined
   protected _exitCode: number | undefined
@@ -99,14 +98,6 @@ export class Sandbox {
   }
 
   /**
-   * Milliseconds left before the sandbox times out, measured when the server
-   * built this response. Undefined when the sandbox has no timeout.
-   */
-  get timeoutMsRemaining(): number | undefined {
-    return this._timeoutMsRemaining
-  }
-
-  /**
    * Total CPU time the sandbox used, in milliseconds. Only populated once the
    * sandbox has stopped, and only when the server reports metering. It stays
    * undefined until server-side metering is in place.
@@ -140,13 +131,15 @@ export class Sandbox {
 
   /** Create a new sandbox. */
   static async create(client: SandboxClient, opts: CreateSandboxOpts = {}): Promise<Sandbox> {
+    assertNoLegacyTimeoutMs(opts)
+    if (opts.timeoutMinutes !== undefined) assertTimeoutMinutes(opts.timeoutMinutes)
     const response = await client.rpc.createSandbox({
       name: opts.name,
       resources: opts.resources,
       runtime: opts.runtime !== undefined ? runtimeToProto(opts.runtime) : undefined,
       env: opts.env,
       staging: opts.staging,
-      timeoutMs: opts.timeoutMs !== undefined ? BigInt(opts.timeoutMs) : undefined,
+      timeoutMinutes: opts.timeoutMinutes,
     })
     const sandbox = response.sandbox
     if (!sandbox) {
@@ -249,20 +242,22 @@ export class Sandbox {
    * Set this running sandbox's expiry to a fresh deadline. The server clamps
    * the new deadline to the sandbox's absolute maximum lifetime, measured from
    * when it started. For example:
-   * `sandbox.setTimeout({timeoutMs: 4 * 60 * 60 * 1000})`.
+   * `sandbox.setTimeout({timeoutMinutes: 240})`.
    *
    * To keep a sandbox alive while it's in active use, call this on an interval
    * shorter than the timeout you set; when the calls stop, the server
    * terminates the sandbox once the deadline lapses. Throws if the sandbox has
    * not started, already expired, or reached a terminal status.
    *
-   * This updates the instance in place (`expiresAt`, `timeoutMsRemaining`) from
-   * the server's response, and throws if the sandbox has already stopped.
+   * This updates the instance in place (`expiresAt`) from the server's
+   * response, and throws if the sandbox has already stopped.
    */
   async setTimeout(opts: SetTimeoutOpts): Promise<void> {
+    assertNoLegacyTimeoutMs(opts)
+    assertTimeoutMinutes(opts.timeoutMinutes)
     const response = await this.client.rpc.setSandboxTimeout({
       sandbox: {selector: {case: 'id', value: this.sandboxId}},
-      timeoutMs: BigInt(opts.timeoutMs),
+      timeoutMinutes: opts.timeoutMinutes,
     })
     if (response.sandbox) this.applyProto(response.sandbox)
   }
@@ -432,7 +427,6 @@ export class Sandbox {
     this._startedAt = timestampToDate(sandbox.startedAt)
     this._stoppedAt = timestampToDate(sandbox.stoppedAt)
     this._expiresAt = timestampToDate(sandbox.expiresAt)
-    this._timeoutMsRemaining = bigintToNumber(sandbox.timeoutMsRemaining)
     this._activeCpuUsageMs = bigintToNumber(sandbox.activeCpuUsageMs)
     this._networkUsage = networkUsageFromProto(sandbox.networkUsage)
     this._exitCode = sandbox.exitCode
@@ -491,21 +485,22 @@ export interface CreateSandboxOpts {
    */
   staging?: boolean
   /**
-   * Requested lifetime in milliseconds, measured from when the sandbox reaches
-   * the running state. The server raises smaller positive values to the minimum
-   * and caps larger values at the maximum; omit it to use the server default.
+   * Requested lifetime in minutes, measured from when the sandbox is created —
+   * provisioning time counts against it. Must be a positive integer. The
+   * server caps larger values at the maximum (24 hours); omit it to use the
+   * server default (2 hours).
    */
-  timeoutMs?: number
+  timeoutMinutes?: number
 }
 
 /** Options for {@link Sandbox.setTimeout}. */
 export interface SetTimeoutOpts {
   /**
-   * New timeout in milliseconds, measured from when the server handles the
-   * request. The server raises smaller positive values to the minimum window
-   * and caps larger values at the sandbox's absolute maximum lifetime.
+   * New timeout in minutes, measured from when the server handles the request.
+   * Must be a positive integer. The server caps larger values at the sandbox's
+   * absolute maximum lifetime.
    */
-  timeoutMs: number
+  timeoutMinutes: number
 }
 
 /** Options for {@link Sandbox.list}. */
@@ -524,6 +519,22 @@ export interface ListAllSandboxesOpts {
 export interface ListSandboxesResult {
   sandboxes: Sandbox[]
   pagination: PaginationResult
+}
+
+/**
+ * Reject invalid timeout values before any RPC is issued, including values the
+ * protobuf int32 field cannot represent.
+ */
+function assertTimeoutMinutes(minutes: number): void {
+  if (!Number.isSafeInteger(minutes) || minutes <= 0 || minutes > 2_147_483_647) {
+    throw new TypeError(`timeoutMinutes must be a positive safe int32 integer, got ${minutes}`)
+  }
+}
+
+function assertNoLegacyTimeoutMs(opts: object): void {
+  if (Object.prototype.hasOwnProperty.call(opts, 'timeoutMs')) {
+    throw new TypeError('timeoutMs was replaced by timeoutMinutes')
+  }
 }
 
 function runtimeToProto(runtime: Runtime): RuntimeProto {
