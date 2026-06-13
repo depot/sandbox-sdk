@@ -19,7 +19,7 @@ import {
   StopSandboxResponseSchema,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
-import {Sandbox} from './sandbox.js'
+import {Sandbox, type CreateSandboxOpts, type SetTimeoutOpts} from './sandbox.js'
 
 const CREATED_AT = new Date('2026-06-08T12:00:00.000Z')
 const STARTED_AT = new Date('2026-06-08T12:00:01.000Z')
@@ -115,7 +115,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     runtime: undefined,
     env: undefined,
     staging: undefined,
-    timeoutMs: undefined,
+    timeoutMinutes: undefined,
   })
 
   await sandbox.stop()
@@ -204,12 +204,12 @@ test('sandboxes fetched from different clients keep using their originating clie
   })
 })
 
-test('Sandbox.create passes timeoutMs as a bigint when provided', async () => {
+test('Sandbox.create sends timeoutMinutes when provided', async () => {
   const recording = fakeClient({
     createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_timeout'})),
   })
 
-  await Sandbox.create(recording.client, {timeoutMs: 7_200_000})
+  await Sandbox.create(recording.client, {timeoutMinutes: 120})
 
   assert.deepEqual(recording.lastRequest('createSandbox'), {
     name: undefined,
@@ -217,8 +217,42 @@ test('Sandbox.create passes timeoutMs as a bigint when provided', async () => {
     runtime: undefined,
     env: undefined,
     staging: undefined,
-    timeoutMs: 7_200_000n,
+    timeoutMinutes: 120,
   })
+})
+
+test('Sandbox.create omits timeoutMinutes when no timeout is requested', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_default'})),
+  })
+
+  await Sandbox.create(recording.client, {})
+
+  const request = recording.lastRequest('createSandbox') as {timeoutMinutes?: number}
+  assert.equal(request.timeoutMinutes, undefined)
+})
+
+test('Sandbox.create rejects invalid timeoutMinutes before any RPC', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_invalid'})),
+  })
+
+  for (const timeoutMinutes of [0, -5, 2.5, 2_147_483_648, Number.MAX_SAFE_INTEGER + 1]) {
+    await assert.rejects(Sandbox.create(recording.client, {timeoutMinutes}), TypeError)
+  }
+  assert.equal(recording.calls('createSandbox').length, 0, 'invalid input must fail before the RPC is issued')
+})
+
+test('Sandbox.create rejects legacy timeoutMs before any RPC', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_legacy_timeout'})),
+  })
+
+  await assert.rejects(
+    Sandbox.create(recording.client, {timeoutMs: 60_000} as unknown as CreateSandboxOpts),
+    /timeoutMs was replaced by timeoutMinutes/,
+  )
+  assert.equal(recording.calls('createSandbox').length, 0, 'legacy input must fail before the RPC is issued')
 })
 
 test('Sandbox.setTimeout resets the deadline using the bound client', async () => {
@@ -229,20 +263,38 @@ test('Sandbox.setTimeout resets the deadline using the bound client', async () =
         sandbox: makeSandbox({
           sandboxId: 'sbx_keepalive',
           expiresAt: timestampFromDate(EXPIRES_AT),
-          timeoutMsRemaining: 3_600_000n,
         }),
       }),
   })
 
   const sandbox = await Sandbox.create(recording.client)
-  await sandbox.setTimeout({timeoutMs: 3_600_000})
+  await sandbox.setTimeout({timeoutMinutes: 60})
 
   assert.deepEqual(recording.lastRequest('setSandboxTimeout'), {
     sandbox: {selector: {case: 'id', value: 'sbx_keepalive'}},
-    timeoutMs: 3_600_000n,
+    timeoutMinutes: 60,
   })
   assert.deepEqual(sandbox.expiresAt, EXPIRES_AT)
-  assert.equal(sandbox.timeoutMsRemaining, 3_600_000)
+
+  const callCount = recording.calls('setSandboxTimeout').length
+  for (const timeoutMinutes of [0, -5, 2.5, 2_147_483_648, Number.MAX_SAFE_INTEGER + 1]) {
+    await assert.rejects(sandbox.setTimeout({timeoutMinutes}), TypeError)
+  }
+  assert.equal(
+    recording.calls('setSandboxTimeout').length,
+    callCount,
+    'invalid input must fail before the RPC is issued',
+  )
+
+  await assert.rejects(
+    sandbox.setTimeout({timeoutMs: 60_000} as unknown as SetTimeoutOpts),
+    /timeoutMs was replaced by timeoutMinutes/,
+  )
+  assert.equal(
+    recording.calls('setSandboxTimeout').length,
+    callCount,
+    'legacy input must fail before the RPC is issued',
+  )
 })
 
 test('Sandbox instance methods use the client captured at creation', async () => {
@@ -309,17 +361,8 @@ function assertSandboxTypeContract(sandbox: Sandbox, client: SandboxClient): voi
   void sandbox.kill()
   void sandbox.runCommand({cmd: 'echo'})
   void sandbox.fs()
-
-  // @ts-expect-error instance stop uses the bound client, not a passed client
-  void sandbox.stop(client)
-  // @ts-expect-error instance kill uses the bound client, not a passed client
-  void sandbox.kill(client)
-  // @ts-expect-error instance runCommand uses the bound client, not a passed client
-  void sandbox.runCommand(client, {cmd: 'echo'})
-  // @ts-expect-error instance fs uses the bound client, not a passed client
-  void sandbox.fs(client)
-  // @ts-expect-error static create still requires the explicit client boundary
-  void Sandbox.create()
+  void Sandbox.create(client, {timeoutMinutes: 10})
+  void sandbox.setTimeout({timeoutMinutes: 10})
 }
 
 void assertSandboxTypeContract

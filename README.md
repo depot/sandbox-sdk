@@ -34,7 +34,7 @@ const fs = sandbox.fs()
 await fs.writeFile('/tmp/message.txt', 'hello')
 console.log(await fs.readFile('/tmp/message.txt', {encoding: 'utf8'}))
 
-await sandbox.setTimeout({timeoutMs: 4 * 60 * 60 * 1000})
+await sandbox.setTimeout({timeoutMinutes: 240})
 await sandbox.stop({blocking: true})
 ```
 
