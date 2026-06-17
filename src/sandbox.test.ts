@@ -349,6 +349,7 @@ test('Sandbox instance methods use the client captured at creation', async () =>
     path: '/work',
     recursive: undefined,
     mode: undefined,
+    sudo: undefined,
   })
 })
 

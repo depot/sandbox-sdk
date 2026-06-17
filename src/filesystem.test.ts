@@ -69,6 +69,7 @@ test('mkdir sends the request against the bound sandbox', async () => {
     path: '/work',
     recursive: true,
     mode: 0o755,
+    sudo: undefined,
   })
 })
 
@@ -325,6 +326,7 @@ test('chmod accepts an octal string and converts it', async () => {
     sandbox: {selector: {case: 'id', value: 'sbx_1'}},
     path: '/f',
     mode: 0o755,
+    sudo: undefined,
   })
 })
 
@@ -353,4 +355,69 @@ test('chmod rejects an out-of-range numeric mode with EINVAL', async () => {
     () => fs.chmod('/f', 0o10000),
     (err: unknown) => err instanceof FileSystemError && err.code === 'EINVAL',
   )
+})
+
+// ─── sudo ─────────────────────────────────────────────────────────────────
+// Each privileged method threads its sudo option into the proto request it
+// builds, mirroring how runCommand forwards sudo. These assert the flag is set
+// on the outgoing request, not how the server acts on it.
+
+test('mkdir forwards sudo into the request', async () => {
+  const recording = fakeClient({mkdir: () => ({})})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.mkdir('/work', {sudo: true})
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, true)
+})
+
+test('chmod forwards sudo into the request', async () => {
+  const recording = fakeClient({chmod: () => ({})})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.chmod('/f', '755', {sudo: true})
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, true)
+})
+
+test('chown forwards sudo into the request', async () => {
+  const recording = fakeClient({chown: () => ({})})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.chown('/f', 0, 0, {sudo: true})
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, true)
+})
+
+test('rm forwards sudo into the remove request', async () => {
+  const recording = fakeClient({remove: () => ({})})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.rm('/d', {recursive: true, sudo: true})
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, true)
+})
+
+test('a method called without sudo leaves the flag unset', async () => {
+  const recording = fakeClient({mkdir: () => ({})})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.mkdir('/work')
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, undefined)
+})
+
+test('writeFile forwards sudo on the init message', async () => {
+  let initSudo: boolean | undefined
+  const recording = fakeClient({
+    writeFile: async (req) => {
+      for await (const m of req as AsyncIterable<WriteFileRequest>) {
+        if (m.input.case === 'init') initSudo = m.input.value.sudo
+      }
+      return create(WriteFileResponseSchema, {bytesWritten: 0n})
+    },
+  })
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.writeFile('/f', 'hi', {sudo: true})
+  assert.equal(initSudo, true)
+})
+
+test('readFile forwards sudo into the request', async () => {
+  async function* chunks() {
+    yield create(FileChunkSchema, {data: new Uint8Array(0), eof: true})
+  }
+  const recording = fakeClient({readFile: () => chunks()})
+  const fs = new FileSystem({client: recording.client, sandboxId: 'sbx_1'})
+  await fs.readFile('/f', {sudo: true})
+  assert.equal((recording.lastRequest() as {sudo?: boolean}).sudo, true)
 })
