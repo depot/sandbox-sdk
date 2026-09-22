@@ -55,8 +55,7 @@ message Snapshot {
   optional string error_message = 10;
 }
 
-// Request to capture a sandbox's disk as a snapshot. The sandbox must be
-// RUNNING; any other state returns FailedPrecondition.
+// Request to capture a sandbox's disk as a snapshot.
 message SnapshotSandboxRequest {
   // The sandbox to snapshot.
   SandboxRef sandbox = 1;

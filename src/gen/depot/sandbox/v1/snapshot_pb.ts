@@ -111,8 +111,7 @@ export type Snapshot = Message<'depot.sandbox.v1.Snapshot'> & {
 export const SnapshotSchema: GenMessage<Snapshot> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_snapshot, 0)
 
 /**
- * Request to capture a sandbox's disk as a snapshot. The sandbox must be
- * RUNNING; any other state returns FailedPrecondition.
+ * Request to capture a sandbox's disk as a snapshot.
  *
  * @generated from message depot.sandbox.v1.SnapshotSandboxRequest
  */
