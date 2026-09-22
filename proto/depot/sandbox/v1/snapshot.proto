@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+import "depot/sandbox/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+// Messages for the snapshot methods on SandboxService. A snapshot captures a
+// running sandbox's disk as an image that a new sandbox can boot from, by
+// passing the snapshot as `runtime.snapshot` or its `imageRef` as
+// `runtime.imageRef` to `CreateSandbox`. The server does not implement these
+// methods yet and returns Unimplemented for each of them.
+
+// Where a snapshot is in its lifecycle.
+enum SnapshotStatus {
+  // Default zero value, used when no status has been set.
+  SNAPSHOT_STATUS_UNSPECIFIED = 0;
+  // The snapshot record exists and its disk is still being captured. It can't
+  // be booted from yet.
+  SNAPSHOT_STATUS_CAPTURING = 1;
+  // The capture finished. `imageRef` is set and a sandbox can boot from it.
+  SNAPSHOT_STATUS_READY = 2;
+  // The capture ended in error. `errorMessage` describes why.
+  SNAPSHOT_STATUS_FAILED = 3;
+}
+
+// A snapshot of a sandbox's disk and its current state.
+message Snapshot {
+  // Unique identifier for the snapshot.
+  string snapshot_id = 1;
+  // Organization that owns the snapshot.
+  string organization_id = 2;
+  // Unique identifier for the sandbox the snapshot was taken from.
+  string source_sandbox_id = 3;
+  // Current state of the snapshot in its lifecycle.
+  SnapshotStatus status = 4;
+  // The human-readable label set when the snapshot was taken. Empty when the
+  // snapshot was taken without one.
+  optional string name = 5;
+  // OCI image reference to boot a new sandbox from, pinned by digest. Unset
+  // until the snapshot is READY.
+  optional string image_ref = 6;
+  // Size of the captured disk image, in bytes. Unset until the snapshot is
+  // READY.
+  optional int64 size_bytes = 7;
+  // Time the snapshot record was created, in RFC 3339 format. Always
+  // populated.
+  google.protobuf.Timestamp created_at = 8;
+  // Time the snapshot expires, in RFC 3339 format. After it passes, new
+  // sandboxes can no longer boot from the snapshot. Unset when the snapshot
+  // has no expiry.
+  optional google.protobuf.Timestamp expires_at = 9;
+  // Human-readable description of why the capture failed. Populated only when
+  // the snapshot is FAILED.
+  optional string error_message = 10;
+}
+
+// Request to capture a sandbox's disk as a snapshot. The sandbox must be
+// RUNNING; any other state returns FailedPrecondition.
+message SnapshotSandboxRequest {
+  // The sandbox to snapshot.
+  SandboxRef sandbox = 1;
+  // Human-readable label for the snapshot, scoped to the organization.
+  // Optional.
+  optional string name = 2;
+}
+
+message SnapshotSandboxResponse {
+  // The new snapshot.
+  Snapshot snapshot = 1;
+}
+
+message GetSnapshotResponse {
+  // The requested snapshot.
+  Snapshot snapshot = 1;
+}
+
+// Lists an organization's snapshots, with optional filtering by source sandbox
+// and token-based pagination.
+message ListSnapshotsRequest {
+  // Number of snapshots to return per page.
+  optional int32 page_size = 1;
+  // Token to fetch the next page, taken from a previous response's
+  // `nextPageToken`. Leave empty to fetch the first page.
+  optional string page_token = 2;
+  // Criteria for narrowing the list. All set criteria must match.
+  message Filter {
+    // Include only snapshots taken from this sandbox.
+    optional SandboxRef source_sandbox = 1;
+  }
+  // Criteria for narrowing the results. Leave unset to list all snapshots.
+  optional Filter filter = 3;
+}
+
+message ListSnapshotsResponse {
+  // Snapshots matching the request, most recently created first.
+  repeated Snapshot snapshots = 1;
+  // Token to fetch the next page. Empty when there are no more results.
+  optional string next_page_token = 2;
+}
+
+// Request to delete a snapshot. A sandbox already booted from the snapshot
+// keeps running; new sandboxes can no longer boot from it.
+message DeleteSnapshotRequest {
+  // The snapshot to delete.
+  SnapshotRef snapshot = 1;
+}
+
+message DeleteSnapshotResponse {}

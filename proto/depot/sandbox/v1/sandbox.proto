@@ -5,6 +5,7 @@ package depot.sandbox.v1;
 import "depot/sandbox/v1/command.proto";
 import "depot/sandbox/v1/filesystem.proto";
 import "depot/sandbox/v1/refs.proto";
+import "depot/sandbox/v1/snapshot.proto";
 import "google/protobuf/timestamp.proto";
 
 // The next-generation sandbox API. It will eventually replace
@@ -66,6 +67,15 @@ service SandboxService {
   // WriteFile consumes a request stream that opens with an Init message naming
   // the file, followed by the bytes to write.
   rpc WriteFile(stream WriteFileRequest) returns (WriteFileResponse);
+
+  // Snapshots. SnapshotSandbox captures a running sandbox's disk as an image a
+  // new sandbox can boot from. Their messages and enums are defined in
+  // snapshot.proto. These methods are not implemented yet and return
+  // Unimplemented.
+  rpc SnapshotSandbox(SnapshotSandboxRequest) returns (SnapshotSandboxResponse);
+  rpc GetSnapshot(SnapshotRef) returns (GetSnapshotResponse);
+  rpc ListSnapshots(ListSnapshotsRequest) returns (ListSnapshotsResponse);
+  rpc DeleteSnapshot(DeleteSnapshotRequest) returns (DeleteSnapshotResponse);
 }
 
 // SandboxRef is defined in refs.proto, alongside the other selector messages.
@@ -111,6 +121,9 @@ message Resources {
 // reference. `named` is reserved for a future catalog of curated runtimes
 // (for example "node24") resolved by the server; the server rejects any
 // `named` value with InvalidArgument today, so set `imageRef` instead.
+// `snapshot` boots from a snapshot taken with `SnapshotSandbox`; the server
+// rejects it with Unimplemented today, so pass the snapshot's `imageRef` as
+// `imageRef` instead.
 message Runtime {
   oneof runtime {
     // A curated runtime name resolved by the server. Reserved for a future
@@ -119,6 +132,9 @@ message Runtime {
     string named = 1;
     // An OCI image reference to boot the sandbox from.
     string image_ref = 2;
+    // A READY snapshot to boot the sandbox from. Currently rejected with
+    // Unimplemented; pass the snapshot's `imageRef` as `imageRef` instead.
+    SnapshotRef snapshot = 3;
   }
 }
 
