@@ -554,7 +554,9 @@ function runtimeFromProto(sandbox: SandboxProto): Runtime | undefined {
   const r = sandbox.runtime?.runtime
   if (!r || r.case === undefined) return undefined
   if (r.case === 'named') return {named: r.value}
-  return {imageRef: r.value}
+  if (r.case === 'imageRef') return {imageRef: r.value}
+  // The SDK has no snapshot runtime yet (DEP-6806), so a snapshot reads as unset.
+  return undefined
 }
 
 function timestampToDate(ts: Timestamp | undefined): Date | undefined {

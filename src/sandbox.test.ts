@@ -366,3 +366,17 @@ function assertSandboxTypeContract(sandbox: Sandbox, client: SandboxClient): voi
 }
 
 void assertSandboxTypeContract
+
+test('Sandbox.get reads a runtime case the SDK does not model as unset', async () => {
+  const recording = fakeClient({
+    getSandbox: () =>
+      create(GetSandboxResponseSchema, {
+        sandbox: makeSandbox({
+          runtime: {runtime: {case: 'snapshot', value: {selector: {case: 'id', value: 'snap_1'}}}},
+        }),
+      }),
+  })
+
+  const sandbox = await Sandbox.get(recording.client, 'sbx_1')
+  assert.equal(sandbox.runtime, undefined)
+})
