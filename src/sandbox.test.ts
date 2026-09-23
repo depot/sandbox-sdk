@@ -13,13 +13,19 @@ import {
   CreateSandboxResponseSchema,
   GetSandboxResponseSchema,
   ListSandboxesResponseSchema,
+  RuntimeSchema,
   SandboxSchema,
   SandboxStatus as SandboxStatusProto,
   SetSandboxTimeoutResponseSchema,
   StopSandboxResponseSchema,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
+import {
+  SnapshotSandboxResponseSchema,
+  SnapshotStatus as SnapshotStatusProto,
+} from './gen/depot/sandbox/v1/snapshot_pb.js'
 import {Sandbox, type CreateSandboxOpts, type SetTimeoutOpts} from './sandbox.js'
+import {Snapshot} from './snapshot.js'
 
 const CREATED_AT = new Date('2026-06-08T12:00:00.000Z')
 const STARTED_AT = new Date('2026-06-08T12:00:01.000Z')
@@ -361,22 +367,55 @@ function assertSandboxTypeContract(sandbox: Sandbox, client: SandboxClient): voi
   void sandbox.kill()
   void sandbox.runCommand({cmd: 'echo'})
   void sandbox.fs()
+  void sandbox.snapshot()
   void Sandbox.create(client, {timeoutMinutes: 10})
   void sandbox.setTimeout({timeoutMinutes: 10})
 }
 
 void assertSandboxTypeContract
 
-test('Sandbox.get reads a runtime case the SDK does not model as unset', async () => {
+test('Sandbox.create boots from a snapshot and reads the snapshot runtime back', async () => {
+  const runtime = {runtime: {case: 'snapshot' as const, value: {selector: {case: 'id' as const, value: 'snap_1'}}}}
   const recording = fakeClient({
-    getSandbox: () =>
-      create(GetSandboxResponseSchema, {
-        sandbox: makeSandbox({
-          runtime: {runtime: {case: 'snapshot', value: {selector: {case: 'id', value: 'snap_1'}}}},
-        }),
+    createSandbox: () => create(CreateSandboxResponseSchema, {sandbox: makeSandbox({runtime})}),
+  })
+
+  const sandbox = await Sandbox.create(recording.client, {runtime: {snapshotId: 'snap_1'}})
+
+  assert.deepEqual(
+    (recording.lastRequest('createSandbox') as {runtime: unknown}).runtime,
+    create(RuntimeSchema, runtime),
+  )
+  assert.deepEqual(sandbox.runtime, {snapshotId: 'snap_1'})
+})
+
+test('sandbox.snapshot captures through the bound client and returns a capturing Snapshot', async () => {
+  const recording = fakeClient({
+    getSandbox: () => create(GetSandboxResponseSchema, {sandbox: makeSandbox({sandboxId: 'sbx_src'})}),
+    snapshotSandbox: () =>
+      create(SnapshotSandboxResponseSchema, {
+        snapshot: {
+          snapshotId: 'snap_1',
+          organizationId: 'org_1',
+          sourceSandboxId: 'sbx_src',
+          status: SnapshotStatusProto.CAPTURING,
+          name: 'deps',
+          createdAt: timestampFromDate(CREATED_AT),
+        },
       }),
   })
 
-  const sandbox = await Sandbox.get(recording.client, 'sbx_1')
-  assert.equal(sandbox.runtime, undefined)
+  const sandbox = await Sandbox.get(recording.client, 'sbx_src')
+  const snapshot = await sandbox.snapshot({name: 'deps'})
+
+  assert.deepEqual(recording.lastRequest('snapshotSandbox'), {
+    sandbox: {selector: {case: 'id', value: 'sbx_src'}},
+    name: 'deps',
+  })
+  assert.ok(snapshot instanceof Snapshot)
+  assert.equal(snapshot.snapshotId, 'snap_1')
+  assert.equal(snapshot.sourceSandboxId, 'sbx_src')
+  assert.equal(snapshot.status, 'capturing')
+  assert.equal(snapshot.imageRef, undefined)
+  assert.deepEqual(snapshot.createdAt, CREATED_AT)
 })

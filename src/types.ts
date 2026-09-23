@@ -15,6 +15,8 @@
  */
 export type SandboxStatus = 'created' | 'assigned' | 'starting' | 'running' | 'finished' | 'cancelled' | 'failed'
 
+export type SnapshotStatus = 'capturing' | 'ready' | 'failed'
+
 /**
  * Bytes transferred over the sandbox's primary network interface. This is only
  * reported once the sandbox reaches a terminal status, and only when a metering
@@ -36,15 +38,15 @@ export interface Resources {
 }
 
 /**
- * Selects which runtime a sandbox boots into. Today the only supported option
- * is `imageRef`, an arbitrary OCI image reference.
+ * Selects which runtime a sandbox boots into: `imageRef`, an arbitrary OCI
+ * image reference, or `snapshotId`, a `ready` snapshot.
  *
  * The `named` variant is reserved for a future catalog of curated runtimes
  * (for example `"node24"`) that the server would resolve by name. It is not
  * usable yet: the server currently rejects any `named` value, so do not set it
  * until the catalog ships.
  */
-export type Runtime = {readonly named: string} | {readonly imageRef: string}
+export type Runtime = {readonly named: string} | {readonly imageRef: string} | {readonly snapshotId: string}
 
 /** Narrows the results of {@link Sandbox.list} and {@link Sandbox.listAll}. */
 export interface ListFilter {

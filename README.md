@@ -53,11 +53,12 @@ This beta package currently includes:
 
 - `createClient`
 - `Sandbox.create`, `Sandbox.get`, `Sandbox.list`, `Sandbox.listAll`
-- `sandbox.stop`, `sandbox.kill`, `sandbox.setTimeout`, `sandbox.runCommand`, `sandbox.fs`
+- `sandbox.stop`, `sandbox.kill`, `sandbox.setTimeout`, `sandbox.runCommand`, `sandbox.fs`, `sandbox.snapshot`
+- `Snapshot.get`, `Snapshot.list`, `Snapshot.listAll`, and `snapshot.refresh`, `wait`, `delete`; boot from one with `runtime: {snapshotId}`
 - `SandboxCommandExecution.wait`, `logs`, `output`, `stdout`, and `stderr`
 - `FileSystem` helpers for common file operations
 
-Other sandbox capabilities, such as piped stdin, command history, create-time secrets, snapshots, and pty support, are not part of this beta surface yet.
+Other sandbox capabilities, such as piped stdin, command history, create-time secrets, and pty support, are not part of this beta surface yet.
 
 ## Generated Protos
 
