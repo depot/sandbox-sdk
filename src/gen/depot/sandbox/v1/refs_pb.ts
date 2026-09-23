@@ -12,7 +12,7 @@ import {fileDesc, messageDesc} from '@bufbuild/protobuf/codegenv2'
 export const file_depot_sandbox_v1_refs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    'ChtkZXBvdC9zYW5kYm94L3YxL3JlZnMucHJvdG8SEGRlcG90LnNhbmRib3gudjEiJgoKU2FuZGJveFJlZhIMCgJpZBgBIAEoCUgAQgoKCHNlbGVjdG9yYgZwcm90bzM',
+    'ChtkZXBvdC9zYW5kYm94L3YxL3JlZnMucHJvdG8SEGRlcG90LnNhbmRib3gudjEiJgoKU2FuZGJveFJlZhIMCgJpZBgBIAEoCUgAQgoKCHNlbGVjdG9yIjMKB0Rpc2tSZWYSDAoCaWQYASABKAlIABIOCgRuYW1lGAIgASgJSABCCgoIc2VsZWN0b3JiBnByb3RvMw',
   )
 
 /**
@@ -46,3 +46,43 @@ export type SandboxRef = Message<'depot.sandbox.v1.SandboxRef'> & {
  * Use `create(SandboxRefSchema)` to create a new message.
  */
 export const SandboxRefSchema: GenMessage<SandboxRef> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_refs, 0)
+
+/**
+ * Names a single disk, either by id or by its organization-scoped name.
+ *
+ * @generated from message depot.sandbox.v1.DiskRef
+ */
+export type DiskRef = Message<'depot.sandbox.v1.DiskRef'> & {
+  /**
+   * @generated from oneof depot.sandbox.v1.DiskRef.selector
+   */
+  selector:
+    | {
+        /**
+         * Server-assigned identifier for the disk, as returned by `CreateDisk`,
+         * `GetDisk`, and `ListDisks`. This is the same value carried in the
+         * `diskId` field of a Disk.
+         *
+         * @generated from field: string id = 1;
+         */
+        value: string
+        case: 'id'
+      }
+    | {
+        /**
+         * Name of the disk, unique within the organization. This is the same value
+         * carried in the `name` field of a Disk.
+         *
+         * @generated from field: string name = 2;
+         */
+        value: string
+        case: 'name'
+      }
+    | {case: undefined; value?: undefined}
+}
+
+/**
+ * Describes the message depot.sandbox.v1.DiskRef.
+ * Use `create(DiskRefSchema)` to create a new message.
+ */
+export const DiskRefSchema: GenMessage<DiskRef> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_refs, 1)
