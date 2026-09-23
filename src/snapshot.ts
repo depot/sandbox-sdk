@@ -122,8 +122,11 @@ export class Snapshot {
   }
 
   /** Re-read the snapshot from the server and update this instance in place. */
-  async refresh(): Promise<void> {
-    const response = await this.client.rpc.getSnapshot({selector: {case: 'id', value: this.snapshotId}})
+  async refresh(opts: {signal?: AbortSignal} = {}): Promise<void> {
+    const response = await this.client.rpc.getSnapshot(
+      {selector: {case: 'id', value: this.snapshotId}},
+      {signal: opts.signal},
+    )
     if (!response.snapshot) {
       throw new Error('GetSnapshot response missing `snapshot`')
     }
@@ -138,7 +141,7 @@ export class Snapshot {
     const pollIntervalMs = opts.pollIntervalMs ?? 2_000
     while (this._status === 'capturing') {
       await sleep(pollIntervalMs, opts.signal)
-      await this.refresh()
+      await this.refresh({signal: opts.signal})
     }
     if (this._status === 'ready') return
     if (this._status === 'failed') throw new SnapshotFailedError(this)

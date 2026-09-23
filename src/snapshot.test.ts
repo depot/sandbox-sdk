@@ -16,7 +16,7 @@ import {Snapshot, SnapshotFailedError} from './snapshot.js'
 const CREATED_AT = new Date('2026-06-08T12:00:00.000Z')
 const EXPIRES_AT = new Date('2026-06-09T12:00:00.000Z')
 
-function fakeClient(overrides: Partial<Record<string, (req: unknown) => unknown>>): {
+function fakeClient(overrides: Partial<Record<string, (req: unknown, opts?: {signal?: AbortSignal}) => unknown>>): {
   client: SandboxClient
   calls: (name: string) => unknown[]
 } {
@@ -27,9 +27,9 @@ function fakeClient(overrides: Partial<Record<string, (req: unknown) => unknown>
       get(_target, name: string) {
         const fn = overrides[name]
         if (!fn) throw new Error(`unexpected RPC call: ${name}`)
-        return (req: unknown) => {
+        return (req: unknown, opts?: {signal?: AbortSignal}) => {
           requests.set(name, [...(requests.get(name) ?? []), req])
-          return fn(req)
+          return fn(req, opts)
         }
       },
     },
@@ -210,6 +210,25 @@ test('snapshot.wait stops when its signal aborts', async () => {
 
   await assert.rejects(waiting, /gave up/)
   assert.equal(recording.calls('getSnapshot').length, 1)
+})
+
+test('snapshot.wait aborts an in-flight poll', async () => {
+  const capturing = getSnapshotSequence(SnapshotStatusProto.CAPTURING)
+  let calls = 0
+  const recording = fakeClient({
+    getSnapshot: (_req, opts) =>
+      calls++ === 0
+        ? capturing()
+        : new Promise((_resolve, reject) => opts?.signal?.addEventListener('abort', () => reject(opts.signal?.reason))),
+  })
+  const snapshot = await Snapshot.get(recording.client, 'snap_1')
+  const controller = new AbortController()
+
+  const waiting = snapshot.wait({pollIntervalMs: 0, signal: controller.signal})
+  while (recording.calls('getSnapshot').length < 2) await new Promise((r) => setImmediate(r))
+  controller.abort(new Error('gave up'))
+
+  await assert.rejects(waiting, /gave up/)
 })
 
 test('snapshot.delete sends the snapshot ref', async () => {
