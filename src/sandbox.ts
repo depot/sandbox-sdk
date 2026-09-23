@@ -14,6 +14,7 @@ import {
   type Runtime as RuntimeProto,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
+import {_snapshotInternals, type Snapshot} from './snapshot.js'
 import type {
   ListFilter,
   NetworkUsage,
@@ -400,6 +401,18 @@ export class Sandbox {
     return command
   }
 
+  /** Capture this `running` sandbox's filesystem as a {@link Snapshot}. Returns while `capturing`. */
+  async snapshot(opts: SnapshotSandboxOpts = {}): Promise<Snapshot> {
+    const response = await this.client.rpc.snapshotSandbox({
+      sandbox: {selector: {case: 'id', value: this.sandboxId}},
+      name: opts.name,
+    })
+    if (!response.snapshot) {
+      throw new Error('SnapshotSandbox response missing `snapshot`')
+    }
+    return _snapshotInternals.fromProto(response.snapshot, this.client)
+  }
+
   /**
    * The sandbox's file system, as a {@link FileSystem} bound to this sandbox.
    * Its methods mirror `node:fs/promises`:
@@ -464,13 +477,18 @@ export interface KillSandboxOpts {
   signal?: string
 }
 
+/** Options for {@link Sandbox.snapshot}. `name` must be unique among your organization's snapshots. */
+export interface SnapshotSandboxOpts {
+  name?: string
+}
+
 /** Options for {@link Sandbox.create}. */
 export interface CreateSandboxOpts {
   /** An optional name for the sandbox, unique within your organization. */
   name?: string
   /** The resources to request. The server fills in defaults for anything you leave unset. */
   resources?: Resources
-  /** The runtime to use. Set exactly one of `named` or `imageRef`. */
+  /** The runtime to use. Set exactly one of `named`, `imageRef`, or `snapshotId`. */
   runtime?: Runtime
   /**
    * Environment variables for the sandbox. The server merges these into every
@@ -541,7 +559,12 @@ function runtimeToProto(runtime: Runtime): RuntimeProto {
   if ('named' in runtime) {
     return create(RuntimeSchema, {runtime: {case: 'named', value: runtime.named}})
   }
-  return create(RuntimeSchema, {runtime: {case: 'imageRef', value: runtime.imageRef}})
+  if ('imageRef' in runtime) {
+    return create(RuntimeSchema, {runtime: {case: 'imageRef', value: runtime.imageRef}})
+  }
+  return create(RuntimeSchema, {
+    runtime: {case: 'snapshot', value: {selector: {case: 'id', value: runtime.snapshotId}}},
+  })
 }
 
 function resourcesFromProto(sandbox: SandboxProto): Resources | undefined {
@@ -555,8 +578,8 @@ function runtimeFromProto(sandbox: SandboxProto): Runtime | undefined {
   if (!r || r.case === undefined) return undefined
   if (r.case === 'named') return {named: r.value}
   if (r.case === 'imageRef') return {imageRef: r.value}
-  // The SDK has no snapshot runtime yet (DEP-6806), so a snapshot reads as unset.
-  return undefined
+  const snapshotId = r.value.selector.case === 'id' ? r.value.selector.value : undefined
+  return snapshotId !== undefined ? {snapshotId} : undefined
 }
 
 function timestampToDate(ts: Timestamp | undefined): Date | undefined {

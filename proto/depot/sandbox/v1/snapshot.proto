@@ -8,8 +8,8 @@ import "google/protobuf/timestamp.proto";
 // Messages for the snapshot methods on SandboxService. A snapshot captures a
 // running sandbox's disk as an image that a new sandbox can boot from, by
 // passing the snapshot as `runtime.snapshot` or its `imageRef` as
-// `runtime.imageRef` to `CreateSandbox`. The server does not implement these
-// methods yet and returns Unimplemented for each of them.
+// `runtime.imageRef` to `CreateSandbox`. SnapshotSandbox returns while the
+// snapshot is CAPTURING; poll GetSnapshot until it is READY or FAILED.
 
 // Where a snapshot is in its lifecycle.
 enum SnapshotStatus {
@@ -99,7 +99,9 @@ message ListSnapshotsResponse {
 }
 
 // Request to delete a snapshot. A sandbox already booted from the snapshot
-// keeps running; new sandboxes can no longer boot from it.
+// keeps running; new sandboxes can no longer boot from it as
+// `runtime.snapshot`. Its image is reclaimed later, so an `imageRef` copied
+// before the delete may still boot until then.
 message DeleteSnapshotRequest {
   // The snapshot to delete.
   SnapshotRef snapshot = 1;

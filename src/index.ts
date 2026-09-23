@@ -1,6 +1,6 @@
 // Public surface of @depot/sandbox.
 //
-// Lifecycle surface: create + get + list + listAll + stop + kill + setTimeout. Sandbox
+// Lifecycle surface: create + get + list + listAll + stop + kill + setTimeout + snapshot. Sandbox
 // instances carry their client, so instance methods and child objects do not
 // require callers to pass it again.
 
@@ -31,8 +31,18 @@ export {
   type ListSandboxesOpts,
   type ListSandboxesResult,
   type SetTimeoutOpts,
+  type SnapshotSandboxOpts,
   type StopSandboxOpts,
 } from './sandbox.js'
+export {
+  Snapshot,
+  SnapshotFailedError,
+  type ListAllSnapshotsOpts,
+  type ListSnapshotsFilter,
+  type ListSnapshotsOpts,
+  type ListSnapshotsResult,
+  type WaitSnapshotOpts,
+} from './snapshot.js'
 export type {
   ListFilter,
   Pagination,
@@ -42,4 +52,5 @@ export type {
   Runtime,
   SandboxCommandExecutionStatus,
   SandboxStatus,
+  SnapshotStatus,
 } from './types.js'

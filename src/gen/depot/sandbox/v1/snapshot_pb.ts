@@ -269,7 +269,9 @@ export const ListSnapshotsResponseSchema: GenMessage<ListSnapshotsResponse> =
 
 /**
  * Request to delete a snapshot. A sandbox already booted from the snapshot
- * keeps running; new sandboxes can no longer boot from it.
+ * keeps running; new sandboxes can no longer boot from it as
+ * `runtime.snapshot`. Its image is reclaimed later, so an `imageRef` copied
+ * before the delete may still boot until then.
  *
  * @generated from message depot.sandbox.v1.DeleteSnapshotRequest
  */

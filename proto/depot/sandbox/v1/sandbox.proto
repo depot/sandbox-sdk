@@ -70,8 +70,7 @@ service SandboxService {
 
   // Snapshots. SnapshotSandbox captures a running sandbox's disk as an image a
   // new sandbox can boot from. Their messages and enums are defined in
-  // snapshot.proto. These methods are not implemented yet and return
-  // Unimplemented.
+  // snapshot.proto.
   rpc SnapshotSandbox(SnapshotSandboxRequest) returns (SnapshotSandboxResponse);
   rpc GetSnapshot(SnapshotRef) returns (GetSnapshotResponse);
   rpc ListSnapshots(ListSnapshotsRequest) returns (ListSnapshotsResponse);
@@ -121,9 +120,7 @@ message Resources {
 // reference. `named` is reserved for a future catalog of curated runtimes
 // (for example "node24") resolved by the server; the server rejects any
 // `named` value with InvalidArgument today, so set `imageRef` instead.
-// `snapshot` boots from a snapshot taken with `SnapshotSandbox`; the server
-// rejects it with Unimplemented today, so pass the snapshot's `imageRef` as
-// `imageRef` instead.
+// `snapshot` boots from a READY snapshot taken with `SnapshotSandbox`.
 message Runtime {
   oneof runtime {
     // A curated runtime name resolved by the server. Reserved for a future
@@ -132,8 +129,8 @@ message Runtime {
     string named = 1;
     // An OCI image reference to boot the sandbox from.
     string image_ref = 2;
-    // A READY snapshot to boot the sandbox from. Currently rejected with
-    // Unimplemented; pass the snapshot's `imageRef` as `imageRef` instead.
+    // A READY snapshot to boot the sandbox from. A snapshot that is not READY,
+    // or has expired, is rejected with FailedPrecondition.
     SnapshotRef snapshot = 3;
   }
 }
