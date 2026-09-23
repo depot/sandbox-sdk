@@ -3,6 +3,7 @@ syntax = "proto3";
 package depot.sandbox.v1;
 
 import "depot/sandbox/v1/command.proto";
+import "depot/sandbox/v1/disk.proto";
 import "depot/sandbox/v1/filesystem.proto";
 import "depot/sandbox/v1/refs.proto";
 import "google/protobuf/timestamp.proto";
@@ -221,6 +222,9 @@ message CreateSandboxRequest {
   // sandbox once the deadline elapses. Must be a positive integer. Reset the
   // deadline later with `SetSandboxTimeout`.
   optional int32 timeout_minutes = 7;
+  // Disks to mount into the sandbox. Not implemented yet: the server rejects a
+  // request that sets any with Unimplemented.
+  repeated DiskMount disks = 8;
 }
 
 message CreateSandboxResponse {

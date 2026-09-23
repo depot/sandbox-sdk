@@ -53,3 +53,16 @@ message SnapshotRef {
     string id = 1;
   }
 }
+
+// Names a single disk, either by id or by its organization-scoped name.
+message DiskRef {
+  oneof selector {
+    // Server-assigned identifier for the disk, as returned by `CreateDisk`,
+    // `GetDisk`, and `ListDisks`. This is the same value carried in the
+    // `diskId` field of a Disk.
+    string id = 1;
+    // Name of the disk, unique within the organization. This is the same value
+    // carried in the `name` field of a Disk.
+    string name = 2;
+  }
+}

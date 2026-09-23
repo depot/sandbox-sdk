@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package depot.sandbox.v1;
+
+import "depot/sandbox/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+// Manages durable disks that outlive the sandboxes that mount them. Mount a
+// disk into a new sandbox with the `disks` field of `CreateSandbox`. The server
+// does not implement these methods yet and returns Unimplemented for each of
+// them.
+service DiskService {
+  rpc CreateDisk(CreateDiskRequest) returns (CreateDiskResponse);
+  rpc GetDisk(DiskRef) returns (GetDiskResponse);
+  rpc ListDisks(ListDisksRequest) returns (ListDisksResponse);
+  rpc DeleteDisk(DeleteDiskRequest) returns (DeleteDiskResponse);
+}
+
+// A durable disk owned by an organization. Access is organization-wide: any
+// sandbox in the organization can mount any of its disks, so a disk does not
+// isolate data between sandboxes.
+message Disk {
+  // Unique identifier for the disk.
+  string disk_id = 1;
+  // Organization that owns the disk.
+  string organization_id = 2;
+  // Name of the disk, unique within the organization.
+  string name = 3;
+  // Time the disk was created, in RFC 3339 format. Always populated.
+  google.protobuf.Timestamp created_at = 4;
+  // Time a sandbox last mounted the disk, in RFC 3339 format. Unset until the
+  // disk is first mounted.
+  optional google.protobuf.Timestamp last_used_at = 5;
+  // Bytes stored on the disk, as last measured by the server. The server
+  // measures it periodically, so it can trail recent writes. Unset until the
+  // first measurement.
+  optional int64 size_bytes = 6;
+  // Whether the server deletes the disk once the sandbox holding it ends.
+  optional bool delete_on_release = 7;
+  // Unique identifier for the sandbox that has the disk mounted writable. A
+  // disk has at most one writable holder at a time. Unset when no sandbox
+  // holds it.
+  optional string holder_sandbox_id = 8;
+}
+
+// A disk to mount into a sandbox at create time.
+message DiskMount {
+  // The disk to mount. It must belong to the caller's organization.
+  DiskRef disk = 1;
+  // Absolute path inside the sandbox to mount the disk at. For example,
+  // "/workspace". Created if it does not exist. Each mount in a request must
+  // use a different path.
+  string path = 2;
+  // Mount the disk writable. Only one sandbox can hold a disk writable at a
+  // time; mounting a disk another sandbox holds writable returns
+  // FailedPrecondition. Default: false.
+  optional bool writable = 3;
+  // Create the disk when no disk with the given name exists in the
+  // organization. Only valid when `disk` names the disk by `name`.
+  // Default: false.
+  optional bool create_if_missing = 4;
+}
+
+// Request to create an empty disk.
+message CreateDiskRequest {
+  // Name for the disk, unique within the organization. Required.
+  string name = 1;
+  // Delete the disk once the sandbox holding it ends. Use it for a disk that
+  // should not outlive one sandbox. Default: false.
+  optional bool delete_on_release = 2;
+}
+
+message CreateDiskResponse {
+  // The new disk.
+  Disk disk = 1;
+}
+
+message GetDiskResponse {
+  // The requested disk.
+  Disk disk = 1;
+}
+
+// Lists an organization's disks with token-based pagination.
+message ListDisksRequest {
+  // Number of disks to return per page.
+  optional int32 page_size = 1;
+  // Token to fetch the next page, taken from a previous response's
+  // `nextPageToken`. Leave empty to fetch the first page.
+  optional string page_token = 2;
+}
+
+message ListDisksResponse {
+  // Disks in the organization, most recently created first.
+  repeated Disk disks = 1;
+  // Token to fetch the next page. Empty when there are no more results.
+  optional string next_page_token = 2;
+}
+
+// Request to delete a disk and its contents.
+message DeleteDiskRequest {
+  // The disk to delete.
+  DiskRef disk = 1;
+  // Delete the disk even while a sandbox has it mounted. Without it, deleting a
+  // mounted disk returns FailedPrecondition. Default: false.
+  optional bool force = 2;
+}
+
+message DeleteDiskResponse {}
