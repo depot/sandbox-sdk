@@ -110,9 +110,7 @@ export const ResourcesSchema: GenMessage<Resources> = /*@__PURE__*/ messageDesc(
  * reference. `named` is reserved for a future catalog of curated runtimes
  * (for example "node24") resolved by the server; the server rejects any
  * `named` value with InvalidArgument today, so set `imageRef` instead.
- * `snapshot` boots from a snapshot taken with `SnapshotSandbox`; the server
- * rejects it with Unimplemented today, so pass the snapshot's `imageRef` as
- * `imageRef` instead.
+ * `snapshot` boots from a READY snapshot taken with `SnapshotSandbox`.
  *
  * @generated from message depot.sandbox.v1.Runtime
  */
@@ -143,8 +141,8 @@ export type Runtime = Message<'depot.sandbox.v1.Runtime'> & {
       }
     | {
         /**
-         * A READY snapshot to boot the sandbox from. Currently rejected with
-         * Unimplemented; pass the snapshot's `imageRef` as `imageRef` instead.
+         * A READY snapshot to boot the sandbox from. A snapshot that is not READY,
+         * or has expired, is rejected with FailedPrecondition.
          *
          * @generated from field: depot.sandbox.v1.SnapshotRef snapshot = 3;
          */
@@ -977,8 +975,7 @@ export const SandboxService: GenService<{
   /**
    * Snapshots. SnapshotSandbox captures a running sandbox's disk as an image a
    * new sandbox can boot from. Their messages and enums are defined in
-   * snapshot.proto. These methods are not implemented yet and return
-   * Unimplemented.
+   * snapshot.proto.
    *
    * @generated from rpc depot.sandbox.v1.SandboxService.SnapshotSandbox
    */
