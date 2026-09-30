@@ -362,7 +362,8 @@ export type SandboxConfiguration = Message<'depot.sandbox.v1.SandboxConfiguratio
    * `secrets`. For example, "production". Leave unset to use only variants that
    * are not scoped to an environment. Setting it requires the Owner role or a
    * non-reader organization token; otherwise the create fails with
-   * PermissionDenied.
+   * PermissionDenied. The same requirement then applies to RunCommand and every
+   * file system method on the sandbox.
    *
    * @generated from field: optional string environment = 2;
    */
@@ -372,7 +373,9 @@ export type SandboxConfiguration = Message<'depot.sandbox.v1.SandboxConfiguratio
    * Repository used to choose among the variants of each secret in `secrets`.
    * For example, "depot/api". Leave unset to use only variants that are not
    * scoped to a repository. Setting it requires the Owner role or a non-reader
-   * organization token; otherwise the create fails with PermissionDenied.
+   * organization token; otherwise the create fails with PermissionDenied. The
+   * same requirement then applies to RunCommand and every file system method on
+   * the sandbox.
    *
    * @generated from field: optional string repository = 3;
    */

@@ -64,7 +64,7 @@ await sandbox.runCommand({cmd: 'sh', args: ['-c', 'psql "$DATABASE_URL" -c "sele
 ```
 
 - **Unknown or inapplicable name:** `Sandbox.create` fails with `InvalidArgument` when a secret doesn't exist, or has no variant for the given `environment` and `repository`.
-- **Scoped variants:** setting `environment` or `repository` requires an organization owner or an organization token; otherwise `Sandbox.create` fails with `PermissionDenied`.
+- **Scoped variants:** setting `environment` or `repository` requires an organization owner or an organization token; otherwise `Sandbox.create` fails with `PermissionDenied`. The same applies to `runCommand` and file system calls on that sandbox.
 - **Deleted secret:** each command reads the secret's current value when it starts, so a rotated value applies to the next command. If the secret was deleted after the sandbox was created, the command fails with `FailedPrecondition`. Create a new sandbox to recover.
 - **Output is not masked:** a command that prints the variable streams its value back to you.
 

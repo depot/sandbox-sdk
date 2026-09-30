@@ -37,9 +37,15 @@ export interface SandboxConfiguration {
    * FailedPrecondition (create a new sandbox). Command output is not masked.
    */
   secrets: Record<string, string>
-  /** CI environment that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token. */
+  /**
+   * CI environment that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token,
+   * which `runCommand` and `fs()` on the sandbox then require too.
+   */
   environment?: string
-  /** Repository that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token. */
+  /**
+   * Repository that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token,
+   * which `runCommand` and `fs()` on the sandbox then require too.
+   */
   repository?: string
 }
 
