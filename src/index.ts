@@ -33,6 +33,13 @@ export {
   type SetTimeoutOpts,
   type StopSandboxOpts,
 } from './sandbox.js'
+export {
+  SandboxTailnet,
+  TailnetTimeoutError,
+  type TailnetBackendState,
+  type TailnetStatus,
+  type WaitForAddressOpts,
+} from './tailnet.js'
 export type {
   ListFilter,
   Pagination,

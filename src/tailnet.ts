@@ -1,0 +1,100 @@
+import type {SandboxCommandExecution} from './command.js'
+import type {RunCommandOpts} from './types.js'
+
+/** tailscaled's `BackendState`, or `NotInstalled` (no `tailscale` binary) / `NotRunning` (daemon unreachable). */
+export type TailnetBackendState =
+  | 'NotInstalled'
+  | 'NotRunning'
+  | 'NoState'
+  | 'NeedsLogin'
+  | 'NeedsMachineAuth'
+  | 'Stopped'
+  | 'Starting'
+  | 'Running'
+  | (string & {})
+
+/** A snapshot of the sandbox's tailnet connection, from `tailscale status --json`. */
+export interface TailnetStatus {
+  backendState: TailnetBackendState
+  /** IPv4 first; empty until the node has joined. */
+  ips: string[]
+  /** Fully qualified MagicDNS name, without the trailing dot. */
+  dnsName: string | undefined
+}
+
+/** Options for {@link SandboxTailnet.waitForAddress}. */
+export interface WaitForAddressOpts {
+  /** Default 60 seconds. */
+  timeoutMs?: number
+  /** Pause between status checks. Default 1 second. */
+  intervalMs?: number
+}
+
+/** Thrown by {@link SandboxTailnet.waitForAddress} when the node doesn't come up in time. */
+export class TailnetTimeoutError extends Error {
+  override readonly name = 'TailnetTimeoutError'
+  constructor(readonly lastStatus: TailnetStatus) {
+    super(`sandbox did not get a tailnet address in time (last backend state: ${lastStatus.backendState})`)
+  }
+}
+
+const NOT_INSTALLED_EXIT_CODE = 127
+const STATUS_SCRIPT = `command -v tailscale >/dev/null 2>&1 || exit ${NOT_INSTALLED_EXIT_CODE}; exec tailscale status --json`
+
+/**
+ * The sandbox's connection to its organization's tailnet. The join runs in the
+ * background while the sandbox boots, so call {@link waitForAddress} first.
+ */
+export class SandboxTailnet {
+  /** Short MagicDNS name, `depot-sandbox-<sandboxId>`; undefined when the server started no join. */
+  readonly hostname: string | undefined
+  protected readonly run: (opts: RunCommandOpts) => Promise<SandboxCommandExecution>
+
+  /** @internal */
+  constructor(opts: {hostname: string | undefined; run: (opts: RunCommandOpts) => Promise<SandboxCommandExecution>}) {
+    this.hostname = opts.hostname
+    this.run = opts.run
+  }
+
+  /** Runs `tailscale status --json` in the sandbox. */
+  async status(): Promise<TailnetStatus> {
+    const command = await this.run({cmd: '/bin/sh', args: ['-c', STATUS_SCRIPT]})
+    const stdout = await command.stdout()
+    const {exitCode} = await command.wait()
+    if (exitCode === NOT_INSTALLED_EXIT_CODE) return {backendState: 'NotInstalled', ips: [], dnsName: undefined}
+    if (exitCode !== 0) return {backendState: 'NotRunning', ips: [], dnsName: undefined}
+    return parseTailscaleStatus(stdout)
+  }
+
+  /**
+   * Polls {@link status} until the node is `Running` with an IP. Throws at once
+   * without a `tailscale` binary, and {@link TailnetTimeoutError} on timeout.
+   */
+  async waitForAddress(opts: WaitForAddressOpts = {}): Promise<TailnetStatus> {
+    const timeoutMs = opts.timeoutMs ?? 60_000
+    const intervalMs = opts.intervalMs ?? 1_000
+    const deadline = Date.now() + timeoutMs
+    while (true) {
+      const status = await this.status()
+      if (status.backendState === 'Running' && status.ips.length > 0) return status
+      if (status.backendState === 'NotInstalled') {
+        throw new Error('tailscale is not installed in this sandbox image, so it cannot join the tailnet')
+      }
+      const remaining = deadline - Date.now()
+      if (remaining <= 0) throw new TailnetTimeoutError(status)
+      await new Promise((resolve) => setTimeout(resolve, Math.min(intervalMs, remaining)))
+    }
+  }
+}
+
+/** @internal Exported for tests. */
+export function parseTailscaleStatus(json: string): TailnetStatus {
+  const raw = JSON.parse(json) as {BackendState?: unknown; TailscaleIPs?: unknown; Self?: {DNSName?: unknown}}
+  const ips = Array.isArray(raw.TailscaleIPs) ? raw.TailscaleIPs.filter((ip) => typeof ip === 'string') : []
+  const dnsName = typeof raw.Self?.DNSName === 'string' ? raw.Self.DNSName.replace(/\.$/, '') : ''
+  return {
+    backendState: typeof raw.BackendState === 'string' ? raw.BackendState : 'NoState',
+    ips: [...ips].sort((a, b) => Number(a.includes(':')) - Number(b.includes(':'))),
+    dnsName: dnsName || undefined,
+  }
+}

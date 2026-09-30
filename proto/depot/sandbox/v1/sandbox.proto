@@ -183,6 +183,10 @@ message Sandbox {
   // sandbox was created without one. Returned by GetSandbox and ListSandboxes
   // so callers can show or filter on the label they chose.
   optional string name = 17;
+
+  // Short MagicDNS name on the organization's tailnet, set only when the server
+  // started a join. The join is asynchronous and can fail, so it may not resolve.
+  optional string tailnet_hostname = 18;
 }
 
 // Bytes transferred over the sandbox's primary network interface. Ingress and

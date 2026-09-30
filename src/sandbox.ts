@@ -14,6 +14,7 @@ import {
   type Runtime as RuntimeProto,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
+import {SandboxTailnet} from './tailnet.js'
 import type {
   ListFilter,
   NetworkUsage,
@@ -48,6 +49,7 @@ export class Sandbox {
   protected _exitCode: number | undefined
   protected _errorMessage: string | undefined
   protected _name: string | undefined
+  protected _tailnetHostname: string | undefined
   // The sandbox's environment variables, as reported by the server. The
   // server merges these into every command it runs, so callers can read
   // them here without holding onto the original create options.
@@ -127,6 +129,11 @@ export class Sandbox {
   /** The human-readable label set when the sandbox was created, if any. */
   get name(): string | undefined {
     return this._name
+  }
+
+  /** The sandbox's connection to your organization's tailnet. */
+  get tailnet(): SandboxTailnet {
+    return new SandboxTailnet({hostname: this._tailnetHostname, run: (opts) => this.runCommand(opts)})
   }
 
   /** Create a new sandbox. */
@@ -432,6 +439,7 @@ export class Sandbox {
     this._exitCode = sandbox.exitCode
     this._errorMessage = sandbox.errorMessage
     this._name = sandbox.name
+    this._tailnetHostname = sandbox.tailnetHostname
     this._env = {...sandbox.env}
   }
 

@@ -366,3 +366,16 @@ function assertSandboxTypeContract(sandbox: Sandbox, client: SandboxClient): voi
 }
 
 void assertSandboxTypeContract
+
+test('sandbox.tailnet exposes the tailnet hostname only when the server set one', async () => {
+  const recording = fakeClient({
+    getSandbox: (req) => {
+      const id = (req as {selector: {value: string}}).selector.value
+      const tailnetHostname = id === 'sbx_joined' ? 'depot-sandbox-sbx_joined' : undefined
+      return create(GetSandboxResponseSchema, {sandbox: makeSandbox({sandboxId: id, tailnetHostname})})
+    },
+  })
+
+  assert.equal((await Sandbox.get(recording.client, 'sbx_joined')).tailnet.hostname, 'depot-sandbox-sbx_joined')
+  assert.equal((await Sandbox.get(recording.client, 'sbx_plain')).tailnet.hostname, undefined)
+})
