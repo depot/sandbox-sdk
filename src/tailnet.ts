@@ -33,8 +33,11 @@ export interface WaitForAddressOpts {
 /** Thrown by {@link SandboxTailnet.waitForAddress} when the node doesn't come up in time. */
 export class TailnetTimeoutError extends Error {
   override readonly name = 'TailnetTimeoutError'
-  constructor(readonly lastStatus: TailnetStatus) {
-    super(`sandbox did not get a tailnet address in time (last backend state: ${lastStatus.backendState})`)
+  /** Undefined when no status check finished before the deadline. */
+  constructor(readonly lastStatus: TailnetStatus | undefined) {
+    super(
+      `sandbox did not get a tailnet address in time (last backend state: ${lastStatus?.backendState ?? 'unknown'})`,
+    )
   }
 }
 
@@ -80,8 +83,10 @@ export class SandboxTailnet {
       if (!Number.isFinite(value) || value < 0) throw new TypeError(`${name} must be a finite, non-negative number`)
     }
     const deadline = Date.now() + timeoutMs
+    let last: TailnetStatus | undefined
     while (true) {
-      const status = await this.status()
+      const status = await beforeDeadline(this.status(), deadline, () => new TailnetTimeoutError(last))
+      last = status
       if (status.backendState === 'Running' && status.ips.length > 0) return status
       if (status.backendState === 'NotInstalled') {
         throw new Error('tailscale is not installed in this sandbox image, so it cannot join the tailnet')
@@ -90,6 +95,18 @@ export class SandboxTailnet {
       if (remaining <= 0) throw new TailnetTimeoutError(status)
       await new Promise((resolve) => setTimeout(resolve, Math.min(intervalMs, remaining)))
     }
+  }
+}
+
+async function beforeDeadline<T>(promise: Promise<T>, deadline: number, onTimeout: () => Error): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const expired = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(onTimeout()), Math.max(0, deadline - Date.now()))
+  })
+  try {
+    return await Promise.race([promise, expired])
+  } finally {
+    clearTimeout(timer)
   }
 }
 

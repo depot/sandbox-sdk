@@ -83,11 +83,20 @@ test('waitForAddress rejects a non-finite timeout before running anything', asyn
   assert.equal(requests.length, 0)
 })
 
+test('waitForAddress times out while a status check hangs', async () => {
+  const tailnet = new SandboxTailnet({hostname: undefined, run: () => new Promise(() => {})})
+  await assert.rejects(tailnet.waitForAddress({timeoutMs: 20}), (err) => {
+    assert.ok(err instanceof TailnetTimeoutError)
+    assert.equal(err.lastStatus, undefined)
+    return true
+  })
+})
+
 test('waitForAddress times out with the last status it saw', async () => {
   const {tailnet} = fakeTailnet([{exitCode: 0, stdout: NEEDS_LOGIN}])
   await assert.rejects(tailnet.waitForAddress({timeoutMs: 20, intervalMs: 5}), (err) => {
     assert.ok(err instanceof TailnetTimeoutError)
-    assert.equal(err.lastStatus.backendState, 'NeedsLogin')
+    assert.equal(err.lastStatus?.backendState, 'NeedsLogin')
     return true
   })
 })
