@@ -76,6 +76,13 @@ test('waitForAddress fails fast when tailscale is not installed', async () => {
   assert.equal(requests.length, 1)
 })
 
+test('waitForAddress rejects a non-finite timeout before running anything', async () => {
+  const {tailnet, requests} = fakeTailnet([{exitCode: 0, stdout: NEEDS_LOGIN}])
+  await assert.rejects(tailnet.waitForAddress({timeoutMs: Number.NaN}), TypeError)
+  await assert.rejects(tailnet.waitForAddress({timeoutMs: Infinity}), TypeError)
+  assert.equal(requests.length, 0)
+})
+
 test('waitForAddress times out with the last status it saw', async () => {
   const {tailnet} = fakeTailnet([{exitCode: 0, stdout: NEEDS_LOGIN}])
   await assert.rejects(tailnet.waitForAddress({timeoutMs: 20, intervalMs: 5}), (err) => {

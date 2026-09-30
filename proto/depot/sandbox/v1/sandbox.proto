@@ -225,6 +225,13 @@ message CreateSandboxRequest {
   // sandbox once the deadline elapses. Must be a positive integer. Reset the
   // deadline later with `SetSandboxTimeout`.
   optional int32 timeout_minutes = 7;
+  // Keep the sandbox off the organization's tailnet. When the organization has
+  // connected Tailscale and the image includes the `tailscale` CLI, a new
+  // sandbox joins that tailnet as an ephemeral device. The join finishes in the
+  // background shortly after the sandbox is running, so a command that runs
+  // right away may not reach tailnet addresses yet. Set to true to skip the
+  // join. Default: false.
+  optional bool disable_tailnet = 8;
 }
 
 message CreateSandboxResponse {

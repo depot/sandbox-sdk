@@ -147,6 +147,7 @@ export class Sandbox {
       env: opts.env,
       staging: opts.staging,
       timeoutMinutes: opts.timeoutMinutes,
+      disableTailnet: opts.disableTailnet,
     })
     const sandbox = response.sandbox
     if (!sandbox) {
@@ -499,6 +500,8 @@ export interface CreateSandboxOpts {
    * server default (2 hours).
    */
   timeoutMinutes?: number
+  /** Keep the sandbox off your organization's tailnet, which it otherwise joins when Tailscale is connected. */
+  disableTailnet?: boolean
 }
 
 /** Options for {@link Sandbox.setTimeout}. */

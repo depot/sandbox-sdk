@@ -73,6 +73,12 @@ export class SandboxTailnet {
   async waitForAddress(opts: WaitForAddressOpts = {}): Promise<TailnetStatus> {
     const timeoutMs = opts.timeoutMs ?? 60_000
     const intervalMs = opts.intervalMs ?? 1_000
+    for (const [name, value] of [
+      ['timeoutMs', timeoutMs],
+      ['intervalMs', intervalMs],
+    ] as const) {
+      if (!Number.isFinite(value) || value < 0) throw new TypeError(`${name} must be a finite, non-negative number`)
+    }
     const deadline = Date.now() + timeoutMs
     while (true) {
       const status = await this.status()

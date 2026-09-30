@@ -116,6 +116,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     env: undefined,
     staging: undefined,
     timeoutMinutes: undefined,
+    disableTailnet: undefined,
   })
 
   await sandbox.stop()
@@ -218,6 +219,7 @@ test('Sandbox.create sends timeoutMinutes when provided', async () => {
     env: undefined,
     staging: undefined,
     timeoutMinutes: 120,
+    disableTailnet: undefined,
   })
 })
 
@@ -378,4 +380,10 @@ test('sandbox.tailnet exposes the tailnet hostname only when the server set one'
 
   assert.equal((await Sandbox.get(recording.client, 'sbx_joined')).tailnet.hostname, 'depot-sandbox-sbx_joined')
   assert.equal((await Sandbox.get(recording.client, 'sbx_plain')).tailnet.hostname, undefined)
+})
+
+test('Sandbox.create forwards disableTailnet', async () => {
+  const recording = fakeClient({createSandbox: () => createResponse(makeSandbox())})
+  await Sandbox.create(recording.client, {disableTailnet: true})
+  assert.equal((recording.lastRequest('createSandbox') as {disableTailnet?: boolean}).disableTailnet, true)
 })
