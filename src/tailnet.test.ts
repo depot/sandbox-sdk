@@ -17,7 +17,6 @@ type Result = {exitCode: number; stdout?: string}
 function fakeTailnet(results: Result[]) {
   const requests: RunCommandOpts[] = []
   const tailnet = new SandboxTailnet({
-    hostname: 'depot-sandbox-sbx1',
     run: async (opts) => {
       requests.push(opts)
       const result = results[Math.min(requests.length - 1, results.length - 1)]!
@@ -66,6 +65,7 @@ test('waitForAddress polls until the node is running with an IP', async () => {
     {exitCode: 0, stdout: RUNNING},
   ])
   const status = await tailnet.waitForAddress({intervalMs: 1})
+  assert.equal(status.dnsName, 'depot-sandbox-sbx1.example.ts.net')
   assert.equal(status.ips[0], '100.64.0.7')
   assert.equal(requests.length, 3)
 })
@@ -84,7 +84,7 @@ test('waitForAddress rejects a non-finite timeout before running anything', asyn
 })
 
 test('waitForAddress times out while a status check hangs', async () => {
-  const tailnet = new SandboxTailnet({hostname: undefined, run: () => new Promise(() => {})})
+  const tailnet = new SandboxTailnet({run: () => new Promise(() => {})})
   await assert.rejects(tailnet.waitForAddress({timeoutMs: 20}), (err) => {
     assert.ok(err instanceof TailnetTimeoutError)
     assert.equal(err.lastStatus, undefined)

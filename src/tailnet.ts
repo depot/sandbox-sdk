@@ -18,7 +18,7 @@ export interface TailnetStatus {
   backendState: TailnetBackendState
   /** IPv4 first; empty until the node has joined. */
   ips: string[]
-  /** Fully qualified MagicDNS name, without the trailing dot. */
+  /** The node's fully qualified MagicDNS name as the tailnet assigned it, without the trailing dot. */
   dnsName: string | undefined
 }
 
@@ -49,13 +49,10 @@ const STATUS_SCRIPT = `command -v tailscale >/dev/null 2>&1 || exit ${NOT_INSTAL
  * background while the sandbox boots, so call {@link waitForAddress} first.
  */
 export class SandboxTailnet {
-  /** Short MagicDNS name, `depot-sandbox-<sandboxId>`; undefined when the server started no join. */
-  readonly hostname: string | undefined
   protected readonly run: (opts: RunCommandOpts) => Promise<SandboxCommandExecution>
 
   /** @internal */
-  constructor(opts: {hostname: string | undefined; run: (opts: RunCommandOpts) => Promise<SandboxCommandExecution>}) {
-    this.hostname = opts.hostname
+  constructor(opts: {run: (opts: RunCommandOpts) => Promise<SandboxCommandExecution>}) {
     this.run = opts.run
   }
 
@@ -70,7 +67,8 @@ export class SandboxTailnet {
   }
 
   /**
-   * Polls {@link status} until the node is `Running` with an IP. Throws at once
+   * Polls {@link status} until the node is `Running` with an IP, and resolves to that
+   * status: its `dnsName` and `ips` are how to reach the sandbox. Throws at once
    * without a `tailscale` binary, and {@link TailnetTimeoutError} on timeout.
    */
   async waitForAddress(opts: WaitForAddressOpts = {}): Promise<TailnetStatus> {

@@ -49,7 +49,6 @@ export class Sandbox {
   protected _exitCode: number | undefined
   protected _errorMessage: string | undefined
   protected _name: string | undefined
-  protected _tailnetHostname: string | undefined
   // The sandbox's environment variables, as reported by the server. The
   // server merges these into every command it runs, so callers can read
   // them here without holding onto the original create options.
@@ -133,7 +132,7 @@ export class Sandbox {
 
   /** The sandbox's connection to your organization's tailnet. */
   get tailnet(): SandboxTailnet {
-    return new SandboxTailnet({hostname: this._tailnetHostname, run: (opts) => this.runCommand(opts)})
+    return new SandboxTailnet({run: (opts) => this.runCommand(opts)})
   }
 
   /** Create a new sandbox. */
@@ -440,7 +439,6 @@ export class Sandbox {
     this._exitCode = sandbox.exitCode
     this._errorMessage = sandbox.errorMessage
     this._name = sandbox.name
-    this._tailnetHostname = sandbox.tailnetHostname
     this._env = {...sandbox.env}
   }
 
