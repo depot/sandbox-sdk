@@ -195,6 +195,47 @@ message NetworkUsage {
   int64 egress_bytes = 2;
 }
 
+// One organization CI secret exposed to a sandbox's commands as an environment
+// variable.
+message SandboxSecret {
+  // Environment variable the value appears under. Must match
+  // [A-Za-z_][A-Za-z0-9_]*, must not be `__proto__`, and must be unique within
+  // `SandboxConfiguration.secrets`; otherwise the create fails with
+  // InvalidArgument. A name that also appears in the sandbox's `env` takes the
+  // secret's value.
+  string env = 1;
+  // Name of the CI secret whose value to expose. For example, "NPM_TOKEN".
+  string secret = 2;
+}
+
+// Configuration applied to every command run in a sandbox for its whole life.
+message SandboxConfiguration {
+  // Organization CI secrets to expose to commands. At create time the server
+  // picks the variant of each secret that applies to `environment` and
+  // `repository` and keeps that choice for the life of the sandbox; an unknown
+  // name fails the create with InvalidArgument. The chosen variant's current
+  // value is read when each command starts, so a rotated value takes effect on
+  // the next command, and a deleted secret fails the command with
+  // FailedPrecondition. Depot does not store the value with the sandbox or the
+  // command, or return it from any method. A command that prints the variable
+  // shows the value in its own output, which is streamed back unredacted.
+  repeated SandboxSecret secrets = 1;
+  // CI environment used to choose among the variants of each secret in
+  // `secrets`. For example, "production". Leave unset to use only variants that
+  // are not scoped to an environment. Setting it requires the Owner role or a
+  // non-reader organization token; otherwise the create fails with
+  // PermissionDenied. The same requirement then applies to RunCommand and every
+  // file system method on the sandbox.
+  optional string environment = 2;
+  // Repository used to choose among the variants of each secret in `secrets`.
+  // For example, "depot/api". Leave unset to use only variants that are not
+  // scoped to a repository. Setting it requires the Owner role or a non-reader
+  // organization token; otherwise the create fails with PermissionDenied. The
+  // same requirement then applies to RunCommand and every file system method on
+  // the sandbox.
+  optional string repository = 3;
+}
+
 message CreateSandboxRequest {
   // Human-readable label for the sandbox, scoped to the organization. Optional.
   optional string name = 1;
@@ -222,12 +263,15 @@ message CreateSandboxRequest {
   // deadline later with `SetSandboxTimeout`.
   optional int32 timeout_minutes = 7;
   // Keep the sandbox off the organization's tailnet. When the organization has
-  // connected Tailscale and the image includes the `tailscale` CLI, a new
-  // sandbox joins that tailnet as an ephemeral device. The join finishes in the
-  // background shortly after the sandbox is running, so a command that runs
-  // right away may not reach tailnet addresses yet. Set to true to skip the
-  // join. Default: false.
+  // connected Tailscale and the image includes `curl` and the `tailscale` CLI,
+  // a new sandbox joins that tailnet as an ephemeral device. The join finishes
+  // in the background shortly after the sandbox is running, so a command that
+  // runs right away may not reach tailnet addresses yet. Set to true to skip
+  // the join. Default: false.
   optional bool disable_tailnet = 8;
+  // Configuration applied to every command run in the sandbox, including the CI
+  // secrets to inject. Leave unset for a sandbox with no configuration.
+  optional SandboxConfiguration configuration = 9;
 }
 
 message CreateSandboxResponse {

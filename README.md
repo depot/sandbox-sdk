@@ -47,18 +47,39 @@ const client = createClient({
 })
 ```
 
+### CI secrets
+
+Pass `configuration.secrets` to expose your organization's CI secrets to every command in the sandbox. Each key is the environment variable to set, and each value is the name of a CI secret. `environment` and `repository` choose which variant of each secret applies, the same way a CI workflow would.
+
+```typescript
+const sandbox = await Sandbox.create(client, {
+  configuration: {
+    secrets: {DATABASE_URL: 'PROD_DATABASE_URL'},
+    environment: 'production',
+    repository: 'acme/app',
+  },
+})
+
+await sandbox.runCommand({cmd: 'sh', args: ['-c', 'psql "$DATABASE_URL" -c "select 1"']})
+```
+
+- **Unknown or inapplicable name:** `Sandbox.create` fails with `InvalidArgument` when a secret doesn't exist, or has no variant for the given `environment` and `repository`.
+- **Scoped variants:** setting `environment` or `repository` requires an organization owner or an organization token; otherwise `Sandbox.create` fails with `PermissionDenied`. The same applies to `runCommand` and file system calls on that sandbox.
+- **Deleted secret:** each command reads the secret's current value when it starts, so a rotated value applies to the next command. If the secret was deleted after the sandbox was created, the command fails with `FailedPrecondition`. Create a new sandbox to recover.
+- **Output is not masked:** a command that prints the variable streams its value back to you.
+
 ## Beta Surface
 
 This beta package currently includes:
 
 - `createClient`
-- `Sandbox.create`, `Sandbox.get`, `Sandbox.list`, `Sandbox.listAll`
+- `Sandbox.create` (including CI secrets), `Sandbox.get`, `Sandbox.list`, `Sandbox.listAll`
 - `sandbox.stop`, `sandbox.kill`, `sandbox.setTimeout`, `sandbox.runCommand`, `sandbox.fs`
 - `SandboxCommandExecution.wait`, `logs`, `output`, `stdout`, and `stderr`
 - `FileSystem` helpers for common file operations
 - `sandbox.tailnet`: `status()` and `waitForAddress()`, which report the sandbox's live MagicDNS name and IPs on your organization's tailnet; opt out with `disableTailnet` on create
 
-Other sandbox capabilities, such as piped stdin, command history, create-time secrets, snapshots, and pty support, are not part of this beta surface yet.
+Other sandbox capabilities, such as piped stdin, command history, snapshots, and pty support, are not part of this beta surface yet.
 
 ## Generated Protos
 

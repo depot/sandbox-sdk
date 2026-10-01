@@ -17,6 +17,7 @@ import {
   SandboxStatus as SandboxStatusProto,
   SetSandboxTimeoutResponseSchema,
   StopSandboxResponseSchema,
+  type SandboxConfiguration as SandboxConfigurationProto,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
 import {Sandbox, type CreateSandboxOpts, type SetTimeoutOpts} from './sandbox.js'
@@ -117,6 +118,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     staging: undefined,
     timeoutMinutes: undefined,
     disableTailnet: undefined,
+    configuration: undefined,
   })
 
   await sandbox.stop()
@@ -220,6 +222,7 @@ test('Sandbox.create sends timeoutMinutes when provided', async () => {
     staging: undefined,
     timeoutMinutes: 120,
     disableTailnet: undefined,
+    configuration: undefined,
   })
 })
 
@@ -243,6 +246,53 @@ test('Sandbox.create rejects invalid timeoutMinutes before any RPC', async () =>
     await assert.rejects(Sandbox.create(recording.client, {timeoutMinutes}), TypeError)
   }
   assert.equal(recording.calls('createSandbox').length, 0, 'invalid input must fail before the RPC is issued')
+})
+
+test('Sandbox.create sends configuration with secrets and variant scope', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_secrets'})),
+  })
+
+  await Sandbox.create(recording.client, {
+    env: {DATABASE_URL: 'unused'},
+    configuration: {
+      secrets: {DATABASE_URL: 'PROD_DATABASE_URL', _TOKEN2: 'API_TOKEN'},
+      environment: 'production',
+      repository: 'acme/app',
+    },
+  })
+
+  const request = recording.lastRequest('createSandbox') as {
+    env?: Record<string, string>
+    configuration?: SandboxConfigurationProto
+  }
+  assert.deepEqual(request.env, {DATABASE_URL: 'unused'})
+  assert.equal(request.configuration?.$typeName, 'depot.sandbox.v1.SandboxConfiguration')
+  assert.deepEqual(
+    request.configuration?.secrets.map(({env, secret}) => ({env, secret})),
+    [
+      {env: 'DATABASE_URL', secret: 'PROD_DATABASE_URL'},
+      {env: '_TOKEN2', secret: 'API_TOKEN'},
+    ],
+  )
+  assert.equal(request.configuration?.environment, 'production')
+  assert.equal(request.configuration?.repository, 'acme/app')
+})
+
+test('Sandbox.create leaves the variant scope unset when not provided', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_unscoped'})),
+  })
+
+  await Sandbox.create(recording.client, {configuration: {secrets: {NPM_TOKEN: 'NPM_TOKEN'}}})
+
+  const request = recording.lastRequest('createSandbox') as {configuration?: SandboxConfigurationProto}
+  assert.deepEqual(
+    request.configuration?.secrets.map(({env, secret}) => ({env, secret})),
+    [{env: 'NPM_TOKEN', secret: 'NPM_TOKEN'}],
+  )
+  assert.equal(request.configuration?.environment, undefined)
+  assert.equal(request.configuration?.repository, undefined)
 })
 
 test('Sandbox.create rejects legacy timeoutMs before any RPC', async () => {

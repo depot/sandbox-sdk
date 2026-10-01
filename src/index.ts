@@ -48,5 +48,6 @@ export type {
   RunCommandOpts,
   Runtime,
   SandboxCommandExecutionStatus,
+  SandboxConfiguration,
   SandboxStatus,
 } from './types.js'

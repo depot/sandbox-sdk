@@ -8,10 +8,12 @@ import type {SandboxCommandExecutionEvent} from './gen/depot/sandbox/v1/command_
 import {
   ListSandboxesRequest_FilterSchema,
   RuntimeSchema,
+  SandboxConfigurationSchema,
   SandboxStatus as SandboxStatusProto,
   type ListSandboxesRequest_Filter as ListSandboxesFilterProto,
   type NetworkUsage as NetworkUsageProto,
   type Runtime as RuntimeProto,
+  type SandboxConfiguration as SandboxConfigurationProto,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
 import {SandboxTailnet} from './tailnet.js'
@@ -23,6 +25,7 @@ import type {
   Resources,
   RunCommandOpts,
   Runtime,
+  SandboxConfiguration,
   SandboxStatus,
 } from './types.js'
 
@@ -147,6 +150,7 @@ export class Sandbox {
       staging: opts.staging,
       timeoutMinutes: opts.timeoutMinutes,
       disableTailnet: opts.disableTailnet,
+      configuration: opts.configuration !== undefined ? configurationToProto(opts.configuration) : undefined,
     })
     const sandbox = response.sandbox
     if (!sandbox) {
@@ -500,6 +504,8 @@ export interface CreateSandboxOpts {
   timeoutMinutes?: number
   /** Keep the sandbox off your organization's tailnet, which it otherwise joins when Tailscale is connected. */
   disableTailnet?: boolean
+  /** Configuration for every command, including the org CI secrets to inject. */
+  configuration?: SandboxConfiguration
 }
 
 /** Options for {@link Sandbox.setTimeout}. */
@@ -538,6 +544,14 @@ function assertTimeoutMinutes(minutes: number): void {
   if (!Number.isSafeInteger(minutes) || minutes <= 0 || minutes > 2_147_483_647) {
     throw new TypeError(`timeoutMinutes must be a positive safe int32 integer, got ${minutes}`)
   }
+}
+
+function configurationToProto(configuration: SandboxConfiguration): SandboxConfigurationProto {
+  return create(SandboxConfigurationSchema, {
+    secrets: Object.entries(configuration.secrets).map(([env, secret]) => ({env, secret})),
+    environment: configuration.environment,
+    repository: configuration.repository,
+  })
 }
 
 function assertNoLegacyTimeoutMs(opts: object): void {

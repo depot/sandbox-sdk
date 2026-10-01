@@ -25,6 +25,30 @@ export interface NetworkUsage {
   egressBytes: number
 }
 
+/** Configuration applied to every command run in a sandbox for its whole life. */
+export interface SandboxConfiguration {
+  /**
+   * Org CI secrets to inject, keyed by environment variable name; each value
+   * names a CI secret, e.g. `{DATABASE_URL: 'PROD_DATABASE_URL'}`. Wins over
+   * an `env` entry with the same name.
+   *
+   * An invalid variable name or an unknown or inapplicable secret fails create
+   * with InvalidArgument; a secret deleted after create fails each command with
+   * FailedPrecondition (create a new sandbox). Command output is not masked.
+   */
+  secrets: Record<string, string>
+  /**
+   * CI environment that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token,
+   * which `runCommand` and `fs()` on the sandbox then require too.
+   */
+  environment?: string
+  /**
+   * Repository that picks each secret's variant; unset uses unscoped variants. Requires an owner or org token,
+   * which `runCommand` and `fs()` on the sandbox then require too.
+   */
+  repository?: string
+}
+
 /**
  * The compute resources to request for a sandbox. Every field is optional;
  * leaving one unset lets the server choose a default.
