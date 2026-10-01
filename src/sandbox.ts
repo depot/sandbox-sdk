@@ -16,6 +16,7 @@ import {
   type SandboxConfiguration as SandboxConfigurationProto,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
+import {SandboxTailnet} from './tailnet.js'
 import type {
   ListFilter,
   NetworkUsage,
@@ -132,6 +133,11 @@ export class Sandbox {
     return this._name
   }
 
+  /** The sandbox's connection to your organization's tailnet. */
+  get tailnet(): SandboxTailnet {
+    return new SandboxTailnet({run: (opts) => this.runCommand(opts)})
+  }
+
   /** Create a new sandbox. */
   static async create(client: SandboxClient, opts: CreateSandboxOpts = {}): Promise<Sandbox> {
     assertNoLegacyTimeoutMs(opts)
@@ -143,6 +149,7 @@ export class Sandbox {
       env: opts.env,
       staging: opts.staging,
       timeoutMinutes: opts.timeoutMinutes,
+      disableTailnet: opts.disableTailnet,
       configuration: opts.configuration !== undefined ? configurationToProto(opts.configuration) : undefined,
     })
     const sandbox = response.sandbox
@@ -495,6 +502,8 @@ export interface CreateSandboxOpts {
    * server default (2 hours).
    */
   timeoutMinutes?: number
+  /** Keep the sandbox off your organization's tailnet, which it otherwise joins when Tailscale is connected. */
+  disableTailnet?: boolean
   /** Configuration for every command, including the org CI secrets to inject. */
   configuration?: SandboxConfiguration
 }

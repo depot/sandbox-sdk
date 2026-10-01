@@ -117,6 +117,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     env: undefined,
     staging: undefined,
     timeoutMinutes: undefined,
+    disableTailnet: undefined,
     configuration: undefined,
   })
 
@@ -220,6 +221,7 @@ test('Sandbox.create sends timeoutMinutes when provided', async () => {
     env: undefined,
     staging: undefined,
     timeoutMinutes: 120,
+    disableTailnet: undefined,
     configuration: undefined,
   })
 })
@@ -416,3 +418,9 @@ function assertSandboxTypeContract(sandbox: Sandbox, client: SandboxClient): voi
 }
 
 void assertSandboxTypeContract
+
+test('Sandbox.create forwards disableTailnet', async () => {
+  const recording = fakeClient({createSandbox: () => createResponse(makeSandbox())})
+  await Sandbox.create(recording.client, {disableTailnet: true})
+  assert.equal((recording.lastRequest('createSandbox') as {disableTailnet?: boolean}).disableTailnet, true)
+})

@@ -77,6 +77,7 @@ This beta package currently includes:
 - `sandbox.stop`, `sandbox.kill`, `sandbox.setTimeout`, `sandbox.runCommand`, `sandbox.fs`
 - `SandboxCommandExecution.wait`, `logs`, `output`, `stdout`, and `stderr`
 - `FileSystem` helpers for common file operations
+- `sandbox.tailnet`: `status()` and `waitForAddress()`, which report the sandbox's live MagicDNS name and IPs on your organization's tailnet; opt out with `disableTailnet` on create
 
 Other sandbox capabilities, such as piped stdin, command history, snapshots, and pty support, are not part of this beta surface yet.
 
