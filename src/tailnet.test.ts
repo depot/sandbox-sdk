@@ -100,3 +100,25 @@ test('waitForAddress times out with the last status it saw', async () => {
     return true
   })
 })
+
+test('waitForAddress starts no status check once the deadline has passed', async () => {
+  const {tailnet, requests} = fakeTailnet([{exitCode: 0, stdout: NEEDS_LOGIN}])
+  await assert.rejects(tailnet.waitForAddress({timeoutMs: 10, intervalMs: 50}), TailnetTimeoutError)
+  assert.equal(requests.length, 1)
+})
+
+test('waitForAddress swallows a status check that fails after the timeout', async () => {
+  const unhandled: unknown[] = []
+  const onUnhandled = (reason: unknown) => unhandled.push(reason)
+  process.on('unhandledRejection', onUnhandled)
+  try {
+    const tailnet = new SandboxTailnet({
+      run: () => new Promise((_, reject) => setTimeout(() => reject(new Error('stream closed')), 30)),
+    })
+    await assert.rejects(tailnet.waitForAddress({timeoutMs: 10}), TailnetTimeoutError)
+    await new Promise((resolve) => setTimeout(resolve, 60))
+    assert.deepEqual(unhandled, [])
+  } finally {
+    process.off('unhandledRejection', onUnhandled)
+  }
+})

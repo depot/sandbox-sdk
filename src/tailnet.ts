@@ -92,12 +92,15 @@ export class SandboxTailnet {
       const remaining = deadline - Date.now()
       if (remaining <= 0) throw new TailnetTimeoutError(status)
       await new Promise((resolve) => setTimeout(resolve, Math.min(intervalMs, remaining)))
+      if (Date.now() >= deadline) throw new TailnetTimeoutError(status)
     }
   }
 }
 
 async function beforeDeadline<T>(promise: Promise<T>, deadline: number, onTimeout: () => Error): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined
+  // A check still running at the deadline is abandoned; its late failure is moot.
+  promise.catch(() => {})
   const expired = new Promise<never>((_, reject) => {
     timer = setTimeout(() => reject(onTimeout()), Math.max(0, deadline - Date.now()))
   })
