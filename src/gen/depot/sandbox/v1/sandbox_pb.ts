@@ -49,7 +49,7 @@ import {file_depot_sandbox_v1_refs} from './refs_pb.js'
 export const file_depot_sandbox_v1_sandbox: GenFile =
   /*@__PURE__*/
   fileDesc(
-    'Ch5kZXBvdC9zYW5kYm94L3YxL3NhbmRib3gucHJvdG8SEGRlcG90LnNhbmRib3gudjEicQoJUmVzb3VyY2VzEhIKBXZjcHVzGAEgASgFSACIAQESFgoJbWVtb3J5X21iGAIgASgFSAGIAQESFAoHZGlza19nYhgDIAEoBUgCiAEBQggKBl92Y3B1c0IMCgpfbWVtb3J5X21iQgoKCF9kaXNrX2diIjoKB1J1bnRpbWUSDwoFbmFtZWQYASABKAlIABITCglpbWFnZV9yZWYYAiABKAlIAEIJCgdydW50aW1lIqAGCgdTYW5kYm94EhIKCnNhbmRib3hfaWQYASABKAkSFwoPb3JnYW5pemF0aW9uX2lkGAIgASgJEi8KBnN0YXR1cxgDIAEoDjIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFN0YXR1cxIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCgpzdGFydGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjMKCnN0b3BwZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESMwoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIgChNhY3RpdmVfY3B1X3VzYWdlX21zGAkgASgDSAOIAQESOgoNbmV0d29ya191c2FnZRgKIAEoCzIeLmRlcG90LnNhbmRib3gudjEuTmV0d29ya1VzYWdlSASIAQESLgoJcmVzb3VyY2VzGAsgASgLMhsuZGVwb3Quc2FuZGJveC52MS5SZXNvdXJjZXMSKgoHcnVudGltZRgMIAEoCzIZLmRlcG90LnNhbmRib3gudjEuUnVudGltZRIWCglleGl0X2NvZGUYDiABKAVIBYgBARIaCg1lcnJvcl9tZXNzYWdlGA8gASgJSAaIAQESLwoDZW52GBAgAygLMiIuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94LkVudkVudHJ5EhEKBG5hbWUYESABKAlIB4gBARoqCghFbnZFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQg0KC19zdGFydGVkX2F0Qg0KC19zdG9wcGVkX2F0Qg0KC19leHBpcmVzX2F0QhYKFF9hY3RpdmVfY3B1X3VzYWdlX21zQhAKDl9uZXR3b3JrX3VzYWdlQgwKCl9leGl0X2NvZGVCEAoOX2Vycm9yX21lc3NhZ2VCBwoFX25hbWVKBAgIEAlKBAgNEA4iOwoMTmV0d29ya1VzYWdlEhUKDWluZ3Jlc3NfYnl0ZXMYASABKAMSFAoMZWdyZXNzX2J5dGVzGAIgASgDIvYCChRDcmVhdGVTYW5kYm94UmVxdWVzdBIRCgRuYW1lGAEgASgJSACIAQESMwoJcmVzb3VyY2VzGAIgASgLMhsuZGVwb3Quc2FuZGJveC52MS5SZXNvdXJjZXNIAYgBARIvCgdydW50aW1lGAMgASgLMhkuZGVwb3Quc2FuZGJveC52MS5SdW50aW1lSAKIAQESPAoDZW52GAQgAygLMi8uZGVwb3Quc2FuZGJveC52MS5DcmVhdGVTYW5kYm94UmVxdWVzdC5FbnZFbnRyeRIUCgdzdGFnaW5nGAUgASgISAOIAQESHAoPdGltZW91dF9taW51dGVzGAcgASgFSASIAQEaKgoIRW52RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUIHCgVfbmFtZUIMCgpfcmVzb3VyY2VzQgoKCF9ydW50aW1lQgoKCF9zdGFnaW5nQhIKEF90aW1lb3V0X21pbnV0ZXNKBAgGEAciQwoVQ3JlYXRlU2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3giQAoSR2V0U2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3gihQMKFExpc3RTYW5kYm94ZXNSZXF1ZXN0EhYKCXBhZ2Vfc2l6ZRgBIAEoBUgAiAEBEhcKCnBhZ2VfdG9rZW4YAiABKAlIAYgBARJCCgZmaWx0ZXIYAyABKAsyLS5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0LkZpbHRlckgCiAEBGs8BCgZGaWx0ZXISLwoGc3RhdGVzGAEgAygOMh8uZGVwb3Quc2FuZGJveC52MS5TYW5kYm94U3RhdHVzEjYKDWNyZWF0ZWRfYWZ0ZXIYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSACIAQESNwoOY3JlYXRlZF9iZWZvcmUYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCEAoOX2NyZWF0ZWRfYWZ0ZXJCEQoPX2NyZWF0ZWRfYmVmb3JlQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW5CCQoHX2ZpbHRlciJ3ChVMaXN0U2FuZGJveGVzUmVzcG9uc2USLAoJc2FuZGJveGVzGAEgAygLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94EhwKD25leHRfcGFnZV90b2tlbhgCIAEoCUgAiAEBQhIKEF9uZXh0X3BhZ2VfdG9rZW4iZwoSU3RvcFNhbmRib3hSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSFQoIYmxvY2tpbmcYAiABKAhIAIgBAUILCglfYmxvY2tpbmciQQoTU3RvcFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94ImMKEktpbGxTYW5kYm94UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhMKBnNpZ25hbBgCIAEoCUgAiAEBQgkKB19zaWduYWwiQQoTS2lsbFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94IoEBChhTZXRTYW5kYm94VGltZW91dFJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIcCg90aW1lb3V0X21pbnV0ZXMYAyABKAVIAIgBAUISChBfdGltZW91dF9taW51dGVzSgQIAhADIkcKGVNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USKgoHc2FuZGJveBgBIAEoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveCr3AQoNU2FuZGJveFN0YXR1cxIeChpTQU5EQk9YX1NUQVRVU19VTlNQRUNJRklFRBAAEhoKFlNBTkRCT1hfU1RBVFVTX0NSRUFURUQQARIbChdTQU5EQk9YX1NUQVRVU19BU1NJR05FRBACEhsKF1NBTkRCT1hfU1RBVFVTX1NUQVJUSU5HEAMSGgoWU0FOREJPWF9TVEFUVVNfUlVOTklORxAEEhsKF1NBTkRCT1hfU1RBVFVTX0ZJTklTSEVEEAUSHAoYU0FOREJPWF9TVEFUVVNfQ0FOQ0VMTEVEEAYSGQoVU0FOREJPWF9TVEFUVVNfRkFJTEVEEAcy/A0KDlNhbmRib3hTZXJ2aWNlEmAKDUNyZWF0ZVNhbmRib3gSJi5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5DcmVhdGVTYW5kYm94UmVzcG9uc2USUAoKR2V0U2FuZGJveBIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhokLmRlcG90LnNhbmRib3gudjEuR2V0U2FuZGJveFJlc3BvbnNlEmAKDUxpc3RTYW5kYm94ZXMSJi5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5MaXN0U2FuZGJveGVzUmVzcG9uc2USWgoLU3RvcFNhbmRib3gSJC5kZXBvdC5zYW5kYm94LnYxLlN0b3BTYW5kYm94UmVxdWVzdBolLmRlcG90LnNhbmRib3gudjEuU3RvcFNhbmRib3hSZXNwb25zZRJaCgtLaWxsU2FuZGJveBIkLmRlcG90LnNhbmRib3gudjEuS2lsbFNhbmRib3hSZXF1ZXN0GiUuZGVwb3Quc2FuZGJveC52MS5LaWxsU2FuZGJveFJlc3BvbnNlEmwKEVNldFNhbmRib3hUaW1lb3V0EiouZGVwb3Quc2FuZGJveC52MS5TZXRTYW5kYm94VGltZW91dFJlcXVlc3QaKy5kZXBvdC5zYW5kYm94LnYxLlNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USYwoKUnVuQ29tbWFuZBIjLmRlcG90LnNhbmRib3gudjEuUnVuQ29tbWFuZFJlcXVlc3QaLi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQwARJICgVNa2RpchIeLmRlcG90LnNhbmRib3gudjEuTWtkaXJSZXF1ZXN0Gh8uZGVwb3Quc2FuZGJveC52MS5Na2RpclJlc3BvbnNlEkUKBFN0YXQSHS5kZXBvdC5zYW5kYm94LnYxLlN0YXRSZXF1ZXN0Gh4uZGVwb3Quc2FuZGJveC52MS5TdGF0UmVzcG9uc2USTgoHUmVhZERpchIgLmRlcG90LnNhbmRib3gudjEuUmVhZERpclJlcXVlc3QaIS5kZXBvdC5zYW5kYm94LnYxLlJlYWREaXJSZXNwb25zZRJLCgZSZW1vdmUSHy5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlcXVlc3QaIC5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlc3BvbnNlEksKBlJlbmFtZRIfLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVxdWVzdBogLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVzcG9uc2USUQoIQ29weUZpbGUSIS5kZXBvdC5zYW5kYm94LnYxLkNvcHlGaWxlUmVxdWVzdBoiLmRlcG90LnNhbmRib3gudjEuQ29weUZpbGVSZXNwb25zZRJRCghUcnVuY2F0ZRIhLmRlcG90LnNhbmRib3gudjEuVHJ1bmNhdGVSZXF1ZXN0GiIuZGVwb3Quc2FuZGJveC52MS5UcnVuY2F0ZVJlc3BvbnNlEkgKBUNobW9kEh4uZGVwb3Quc2FuZGJveC52MS5DaG1vZFJlcXVlc3QaHy5kZXBvdC5zYW5kYm94LnYxLkNobW9kUmVzcG9uc2USSAoFQ2hvd24SHi5kZXBvdC5zYW5kYm94LnYxLkNob3duUmVxdWVzdBofLmRlcG90LnNhbmRib3gudjEuQ2hvd25SZXNwb25zZRJOCgdTeW1saW5rEiAuZGVwb3Quc2FuZGJveC52MS5TeW1saW5rUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU3ltbGlua1Jlc3BvbnNlElEKCFJlYWRsaW5rEiEuZGVwb3Quc2FuZGJveC52MS5SZWFkbGlua1JlcXVlc3QaIi5kZXBvdC5zYW5kYm94LnYxLlJlYWRsaW5rUmVzcG9uc2USSwoGQWNjZXNzEh8uZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXF1ZXN0GiAuZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXNwb25zZRJMCghSZWFkRmlsZRIhLmRlcG90LnNhbmRib3gudjEuUmVhZEZpbGVSZXF1ZXN0GhsuZGVwb3Quc2FuZGJveC52MS5GaWxlQ2h1bmswARJWCglXcml0ZUZpbGUSIi5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QaIy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlc3BvbnNlKAFiBnByb3RvMw',
+    'Ch5kZXBvdC9zYW5kYm94L3YxL3NhbmRib3gucHJvdG8SEGRlcG90LnNhbmRib3gudjEicQoJUmVzb3VyY2VzEhIKBXZjcHVzGAEgASgFSACIAQESFgoJbWVtb3J5X21iGAIgASgFSAGIAQESFAoHZGlza19nYhgDIAEoBUgCiAEBQggKBl92Y3B1c0IMCgpfbWVtb3J5X21iQgoKCF9kaXNrX2diIjoKB1J1bnRpbWUSDwoFbmFtZWQYASABKAlIABITCglpbWFnZV9yZWYYAiABKAlIAEIJCgdydW50aW1lIqAGCgdTYW5kYm94EhIKCnNhbmRib3hfaWQYASABKAkSFwoPb3JnYW5pemF0aW9uX2lkGAIgASgJEi8KBnN0YXR1cxgDIAEoDjIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFN0YXR1cxIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCgpzdGFydGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjMKCnN0b3BwZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESMwoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIgChNhY3RpdmVfY3B1X3VzYWdlX21zGAkgASgDSAOIAQESOgoNbmV0d29ya191c2FnZRgKIAEoCzIeLmRlcG90LnNhbmRib3gudjEuTmV0d29ya1VzYWdlSASIAQESLgoJcmVzb3VyY2VzGAsgASgLMhsuZGVwb3Quc2FuZGJveC52MS5SZXNvdXJjZXMSKgoHcnVudGltZRgMIAEoCzIZLmRlcG90LnNhbmRib3gudjEuUnVudGltZRIWCglleGl0X2NvZGUYDiABKAVIBYgBARIaCg1lcnJvcl9tZXNzYWdlGA8gASgJSAaIAQESLwoDZW52GBAgAygLMiIuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94LkVudkVudHJ5EhEKBG5hbWUYESABKAlIB4gBARoqCghFbnZFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQg0KC19zdGFydGVkX2F0Qg0KC19zdG9wcGVkX2F0Qg0KC19leHBpcmVzX2F0QhYKFF9hY3RpdmVfY3B1X3VzYWdlX21zQhAKDl9uZXR3b3JrX3VzYWdlQgwKCl9leGl0X2NvZGVCEAoOX2Vycm9yX21lc3NhZ2VCBwoFX25hbWVKBAgIEAlKBAgNEA4iOwoMTmV0d29ya1VzYWdlEhUKDWluZ3Jlc3NfYnl0ZXMYASABKAMSFAoMZWdyZXNzX2J5dGVzGAIgASgDIiwKDVNhbmRib3hTZWNyZXQSCwoDZW52GAEgASgJEg4KBnNlY3JldBgCIAEoCSKaAQoUU2FuZGJveENvbmZpZ3VyYXRpb24SMAoHc2VjcmV0cxgBIAMoCzIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFNlY3JldBIYCgtlbnZpcm9ubWVudBgCIAEoCUgAiAEBEhcKCnJlcG9zaXRvcnkYAyABKAlIAYgBAUIOCgxfZW52aXJvbm1lbnRCDQoLX3JlcG9zaXRvcnki/gMKFENyZWF0ZVNhbmRib3hSZXF1ZXN0EhEKBG5hbWUYASABKAlIAIgBARIzCglyZXNvdXJjZXMYAiABKAsyGy5kZXBvdC5zYW5kYm94LnYxLlJlc291cmNlc0gBiAEBEi8KB3J1bnRpbWUYAyABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlJ1bnRpbWVIAogBARI8CgNlbnYYBCADKAsyLy5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0LkVudkVudHJ5EhQKB3N0YWdpbmcYBSABKAhIA4gBARIcCg90aW1lb3V0X21pbnV0ZXMYByABKAVIBIgBARIcCg9kaXNhYmxlX3RhaWxuZXQYCCABKAhIBYgBARJCCg1jb25maWd1cmF0aW9uGAkgASgLMiYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29uZmlndXJhdGlvbkgGiAEBGioKCEVudkVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBwoFX25hbWVCDAoKX3Jlc291cmNlc0IKCghfcnVudGltZUIKCghfc3RhZ2luZ0ISChBfdGltZW91dF9taW51dGVzQhIKEF9kaXNhYmxlX3RhaWxuZXRCEAoOX2NvbmZpZ3VyYXRpb25KBAgGEAciQwoVQ3JlYXRlU2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3giQAoSR2V0U2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3gihQMKFExpc3RTYW5kYm94ZXNSZXF1ZXN0EhYKCXBhZ2Vfc2l6ZRgBIAEoBUgAiAEBEhcKCnBhZ2VfdG9rZW4YAiABKAlIAYgBARJCCgZmaWx0ZXIYAyABKAsyLS5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0LkZpbHRlckgCiAEBGs8BCgZGaWx0ZXISLwoGc3RhdGVzGAEgAygOMh8uZGVwb3Quc2FuZGJveC52MS5TYW5kYm94U3RhdHVzEjYKDWNyZWF0ZWRfYWZ0ZXIYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSACIAQESNwoOY3JlYXRlZF9iZWZvcmUYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCEAoOX2NyZWF0ZWRfYWZ0ZXJCEQoPX2NyZWF0ZWRfYmVmb3JlQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW5CCQoHX2ZpbHRlciJ3ChVMaXN0U2FuZGJveGVzUmVzcG9uc2USLAoJc2FuZGJveGVzGAEgAygLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94EhwKD25leHRfcGFnZV90b2tlbhgCIAEoCUgAiAEBQhIKEF9uZXh0X3BhZ2VfdG9rZW4iZwoSU3RvcFNhbmRib3hSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSFQoIYmxvY2tpbmcYAiABKAhIAIgBAUILCglfYmxvY2tpbmciQQoTU3RvcFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94ImMKEktpbGxTYW5kYm94UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhMKBnNpZ25hbBgCIAEoCUgAiAEBQgkKB19zaWduYWwiQQoTS2lsbFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94IoEBChhTZXRTYW5kYm94VGltZW91dFJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIcCg90aW1lb3V0X21pbnV0ZXMYAyABKAVIAIgBAUISChBfdGltZW91dF9taW51dGVzSgQIAhADIkcKGVNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USKgoHc2FuZGJveBgBIAEoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveCr3AQoNU2FuZGJveFN0YXR1cxIeChpTQU5EQk9YX1NUQVRVU19VTlNQRUNJRklFRBAAEhoKFlNBTkRCT1hfU1RBVFVTX0NSRUFURUQQARIbChdTQU5EQk9YX1NUQVRVU19BU1NJR05FRBACEhsKF1NBTkRCT1hfU1RBVFVTX1NUQVJUSU5HEAMSGgoWU0FOREJPWF9TVEFUVVNfUlVOTklORxAEEhsKF1NBTkRCT1hfU1RBVFVTX0ZJTklTSEVEEAUSHAoYU0FOREJPWF9TVEFUVVNfQ0FOQ0VMTEVEEAYSGQoVU0FOREJPWF9TVEFUVVNfRkFJTEVEEAcy/A0KDlNhbmRib3hTZXJ2aWNlEmAKDUNyZWF0ZVNhbmRib3gSJi5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5DcmVhdGVTYW5kYm94UmVzcG9uc2USUAoKR2V0U2FuZGJveBIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhokLmRlcG90LnNhbmRib3gudjEuR2V0U2FuZGJveFJlc3BvbnNlEmAKDUxpc3RTYW5kYm94ZXMSJi5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5MaXN0U2FuZGJveGVzUmVzcG9uc2USWgoLU3RvcFNhbmRib3gSJC5kZXBvdC5zYW5kYm94LnYxLlN0b3BTYW5kYm94UmVxdWVzdBolLmRlcG90LnNhbmRib3gudjEuU3RvcFNhbmRib3hSZXNwb25zZRJaCgtLaWxsU2FuZGJveBIkLmRlcG90LnNhbmRib3gudjEuS2lsbFNhbmRib3hSZXF1ZXN0GiUuZGVwb3Quc2FuZGJveC52MS5LaWxsU2FuZGJveFJlc3BvbnNlEmwKEVNldFNhbmRib3hUaW1lb3V0EiouZGVwb3Quc2FuZGJveC52MS5TZXRTYW5kYm94VGltZW91dFJlcXVlc3QaKy5kZXBvdC5zYW5kYm94LnYxLlNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USYwoKUnVuQ29tbWFuZBIjLmRlcG90LnNhbmRib3gudjEuUnVuQ29tbWFuZFJlcXVlc3QaLi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQwARJICgVNa2RpchIeLmRlcG90LnNhbmRib3gudjEuTWtkaXJSZXF1ZXN0Gh8uZGVwb3Quc2FuZGJveC52MS5Na2RpclJlc3BvbnNlEkUKBFN0YXQSHS5kZXBvdC5zYW5kYm94LnYxLlN0YXRSZXF1ZXN0Gh4uZGVwb3Quc2FuZGJveC52MS5TdGF0UmVzcG9uc2USTgoHUmVhZERpchIgLmRlcG90LnNhbmRib3gudjEuUmVhZERpclJlcXVlc3QaIS5kZXBvdC5zYW5kYm94LnYxLlJlYWREaXJSZXNwb25zZRJLCgZSZW1vdmUSHy5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlcXVlc3QaIC5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlc3BvbnNlEksKBlJlbmFtZRIfLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVxdWVzdBogLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVzcG9uc2USUQoIQ29weUZpbGUSIS5kZXBvdC5zYW5kYm94LnYxLkNvcHlGaWxlUmVxdWVzdBoiLmRlcG90LnNhbmRib3gudjEuQ29weUZpbGVSZXNwb25zZRJRCghUcnVuY2F0ZRIhLmRlcG90LnNhbmRib3gudjEuVHJ1bmNhdGVSZXF1ZXN0GiIuZGVwb3Quc2FuZGJveC52MS5UcnVuY2F0ZVJlc3BvbnNlEkgKBUNobW9kEh4uZGVwb3Quc2FuZGJveC52MS5DaG1vZFJlcXVlc3QaHy5kZXBvdC5zYW5kYm94LnYxLkNobW9kUmVzcG9uc2USSAoFQ2hvd24SHi5kZXBvdC5zYW5kYm94LnYxLkNob3duUmVxdWVzdBofLmRlcG90LnNhbmRib3gudjEuQ2hvd25SZXNwb25zZRJOCgdTeW1saW5rEiAuZGVwb3Quc2FuZGJveC52MS5TeW1saW5rUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU3ltbGlua1Jlc3BvbnNlElEKCFJlYWRsaW5rEiEuZGVwb3Quc2FuZGJveC52MS5SZWFkbGlua1JlcXVlc3QaIi5kZXBvdC5zYW5kYm94LnYxLlJlYWRsaW5rUmVzcG9uc2USSwoGQWNjZXNzEh8uZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXF1ZXN0GiAuZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXNwb25zZRJMCghSZWFkRmlsZRIhLmRlcG90LnNhbmRib3gudjEuUmVhZEZpbGVSZXF1ZXN0GhsuZGVwb3Quc2FuZGJveC52MS5GaWxlQ2h1bmswARJWCglXcml0ZUZpbGUSIi5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QaIy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlc3BvbnNlKAFiBnByb3RvMw',
     [
       file_depot_sandbox_v1_command,
       file_depot_sandbox_v1_filesystem,
@@ -303,6 +303,94 @@ export type NetworkUsage = Message<'depot.sandbox.v1.NetworkUsage'> & {
 export const NetworkUsageSchema: GenMessage<NetworkUsage> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_sandbox, 3)
 
 /**
+ * One organization CI secret exposed to a sandbox's commands as an environment
+ * variable.
+ *
+ * @generated from message depot.sandbox.v1.SandboxSecret
+ */
+export type SandboxSecret = Message<'depot.sandbox.v1.SandboxSecret'> & {
+  /**
+   * Environment variable the value appears under. Must match
+   * [A-Za-z_][A-Za-z0-9_]*, must not be `__proto__`, and must be unique within
+   * `SandboxConfiguration.secrets`; otherwise the create fails with
+   * InvalidArgument. A name that also appears in the sandbox's `env` takes the
+   * secret's value.
+   *
+   * @generated from field: string env = 1;
+   */
+  env: string
+
+  /**
+   * Name of the CI secret whose value to expose. For example, "NPM_TOKEN".
+   *
+   * @generated from field: string secret = 2;
+   */
+  secret: string
+}
+
+/**
+ * Describes the message depot.sandbox.v1.SandboxSecret.
+ * Use `create(SandboxSecretSchema)` to create a new message.
+ */
+export const SandboxSecretSchema: GenMessage<SandboxSecret> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_sandbox, 4)
+
+/**
+ * Configuration applied to every command run in a sandbox for its whole life.
+ *
+ * @generated from message depot.sandbox.v1.SandboxConfiguration
+ */
+export type SandboxConfiguration = Message<'depot.sandbox.v1.SandboxConfiguration'> & {
+  /**
+   * Organization CI secrets to expose to commands. At create time the server
+   * picks the variant of each secret that applies to `environment` and
+   * `repository` and keeps that choice for the life of the sandbox; an unknown
+   * name fails the create with InvalidArgument. The chosen variant's current
+   * value is read when each command starts, so a rotated value takes effect on
+   * the next command, and a deleted secret fails the command with
+   * FailedPrecondition. Depot does not store the value with the sandbox or the
+   * command, or return it from any method. A command that prints the variable
+   * shows the value in its own output, which is streamed back unredacted.
+   *
+   * @generated from field: repeated depot.sandbox.v1.SandboxSecret secrets = 1;
+   */
+  secrets: SandboxSecret[]
+
+  /**
+   * CI environment used to choose among the variants of each secret in
+   * `secrets`. For example, "production". Leave unset to use only variants that
+   * are not scoped to an environment. Setting it requires the Owner role or a
+   * non-reader organization token; otherwise the create fails with
+   * PermissionDenied. The same requirement then applies to RunCommand and every
+   * file system method on the sandbox.
+   *
+   * @generated from field: optional string environment = 2;
+   */
+  environment?: string
+
+  /**
+   * Repository used to choose among the variants of each secret in `secrets`.
+   * For example, "depot/api". Leave unset to use only variants that are not
+   * scoped to a repository. Setting it requires the Owner role or a non-reader
+   * organization token; otherwise the create fails with PermissionDenied. The
+   * same requirement then applies to RunCommand and every file system method on
+   * the sandbox.
+   *
+   * @generated from field: optional string repository = 3;
+   */
+  repository?: string
+}
+
+/**
+ * Describes the message depot.sandbox.v1.SandboxConfiguration.
+ * Use `create(SandboxConfigurationSchema)` to create a new message.
+ */
+export const SandboxConfigurationSchema: GenMessage<SandboxConfiguration> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_sandbox, 5)
+
+/**
  * @generated from message depot.sandbox.v1.CreateSandboxRequest
  */
 export type CreateSandboxRequest = Message<'depot.sandbox.v1.CreateSandboxRequest'> & {
@@ -359,6 +447,26 @@ export type CreateSandboxRequest = Message<'depot.sandbox.v1.CreateSandboxReques
    * @generated from field: optional int32 timeout_minutes = 7;
    */
   timeoutMinutes?: number
+
+  /**
+   * Keep the sandbox off the organization's tailnet. When the organization has
+   * connected Tailscale and the image includes `curl` and the `tailscale` CLI,
+   * a new sandbox joins that tailnet as an ephemeral device. The join finishes
+   * in the background shortly after the sandbox is running, so a command that
+   * runs right away may not reach tailnet addresses yet. Set to true to skip
+   * the join. Default: false.
+   *
+   * @generated from field: optional bool disable_tailnet = 8;
+   */
+  disableTailnet?: boolean
+
+  /**
+   * Configuration applied to every command run in the sandbox, including the CI
+   * secrets to inject. Leave unset for a sandbox with no configuration.
+   *
+   * @generated from field: optional depot.sandbox.v1.SandboxConfiguration configuration = 9;
+   */
+  configuration?: SandboxConfiguration
 }
 
 /**
@@ -367,7 +475,7 @@ export type CreateSandboxRequest = Message<'depot.sandbox.v1.CreateSandboxReques
  */
 export const CreateSandboxRequestSchema: GenMessage<CreateSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 4)
+  messageDesc(file_depot_sandbox_v1_sandbox, 6)
 
 /**
  * @generated from message depot.sandbox.v1.CreateSandboxResponse
@@ -387,7 +495,7 @@ export type CreateSandboxResponse = Message<'depot.sandbox.v1.CreateSandboxRespo
  */
 export const CreateSandboxResponseSchema: GenMessage<CreateSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 5)
+  messageDesc(file_depot_sandbox_v1_sandbox, 7)
 
 /**
  * @generated from message depot.sandbox.v1.GetSandboxResponse
@@ -407,7 +515,7 @@ export type GetSandboxResponse = Message<'depot.sandbox.v1.GetSandboxResponse'> 
  */
 export const GetSandboxResponseSchema: GenMessage<GetSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 6)
+  messageDesc(file_depot_sandbox_v1_sandbox, 8)
 
 /**
  * Lists an organization's sandboxes, with optional filtering by status and
@@ -445,7 +553,7 @@ export type ListSandboxesRequest = Message<'depot.sandbox.v1.ListSandboxesReques
  */
 export const ListSandboxesRequestSchema: GenMessage<ListSandboxesRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 7)
+  messageDesc(file_depot_sandbox_v1_sandbox, 9)
 
 /**
  * Criteria for narrowing the list. All set criteria must match.
@@ -482,7 +590,7 @@ export type ListSandboxesRequest_Filter = Message<'depot.sandbox.v1.ListSandboxe
  */
 export const ListSandboxesRequest_FilterSchema: GenMessage<ListSandboxesRequest_Filter> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 7, 0)
+  messageDesc(file_depot_sandbox_v1_sandbox, 9, 0)
 
 /**
  * @generated from message depot.sandbox.v1.ListSandboxesResponse
@@ -509,7 +617,7 @@ export type ListSandboxesResponse = Message<'depot.sandbox.v1.ListSandboxesRespo
  */
 export const ListSandboxesResponseSchema: GenMessage<ListSandboxesResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 8)
+  messageDesc(file_depot_sandbox_v1_sandbox, 10)
 
 /**
  * Request to gracefully shut down a sandbox. The server records the request
@@ -543,7 +651,7 @@ export type StopSandboxRequest = Message<'depot.sandbox.v1.StopSandboxRequest'> 
  */
 export const StopSandboxRequestSchema: GenMessage<StopSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 9)
+  messageDesc(file_depot_sandbox_v1_sandbox, 11)
 
 /**
  * @generated from message depot.sandbox.v1.StopSandboxResponse
@@ -566,7 +674,7 @@ export type StopSandboxResponse = Message<'depot.sandbox.v1.StopSandboxResponse'
  */
 export const StopSandboxResponseSchema: GenMessage<StopSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 10)
+  messageDesc(file_depot_sandbox_v1_sandbox, 12)
 
 /**
  * Request to forcibly terminate a sandbox. This is fire-and-forget: the call
@@ -598,7 +706,7 @@ export type KillSandboxRequest = Message<'depot.sandbox.v1.KillSandboxRequest'> 
  */
 export const KillSandboxRequestSchema: GenMessage<KillSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 11)
+  messageDesc(file_depot_sandbox_v1_sandbox, 13)
 
 /**
  * @generated from message depot.sandbox.v1.KillSandboxResponse
@@ -618,7 +726,7 @@ export type KillSandboxResponse = Message<'depot.sandbox.v1.KillSandboxResponse'
  */
 export const KillSandboxResponseSchema: GenMessage<KillSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 12)
+  messageDesc(file_depot_sandbox_v1_sandbox, 14)
 
 /**
  * Request to set a sandbox's expiry to a fresh deadline measured from now.
@@ -651,7 +759,7 @@ export type SetSandboxTimeoutRequest = Message<'depot.sandbox.v1.SetSandboxTimeo
  */
 export const SetSandboxTimeoutRequestSchema: GenMessage<SetSandboxTimeoutRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 13)
+  messageDesc(file_depot_sandbox_v1_sandbox, 15)
 
 /**
  * @generated from message depot.sandbox.v1.SetSandboxTimeoutResponse
@@ -672,7 +780,7 @@ export type SetSandboxTimeoutResponse = Message<'depot.sandbox.v1.SetSandboxTime
  */
 export const SetSandboxTimeoutResponseSchema: GenMessage<SetSandboxTimeoutResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 14)
+  messageDesc(file_depot_sandbox_v1_sandbox, 16)
 
 /**
  * Where a sandbox is in its lifecycle. The values track the underlying
