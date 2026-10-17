@@ -27,7 +27,7 @@ import {file_depot_sandbox_v1_refs} from './refs_pb.js'
 export const file_depot_sandbox_v1_filesystem: GenFile =
   /*@__PURE__*/
   fileDesc(
-    'CiFkZXBvdC9zYW5kYm94L3YxL2ZpbGVzeXN0ZW0ucHJvdG8SEGRlcG90LnNhbmRib3gudjEijQEKFUZpbGVTeXN0ZW1FcnJvckRldGFpbBIzCgRjb2RlGAEgASgOMiUuZGVwb3Quc2FuZGJveC52MS5GaWxlU3lzdGVtRXJyb3JDb2RlEg8KB3N5c2NhbGwYAiABKAkSDAoEcGF0aBgDIAEoCRIUCgdtZXNzYWdlGAQgASgJSACIAQFCCgoIX21lc3NhZ2UijQEKDE1rZGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESEQoEbW9kZRgEIAEoDUgBiAEBQgwKCl9yZWN1cnNpdmVCBwoFX21vZGUiDwoNTWtkaXJSZXNwb25zZSJ8CgtTdGF0UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPZm9sbG93X3N5bWxpbmtzGAMgASgISACIAQFCEgoQX2ZvbGxvd19zeW1saW5rcyKcAQoMU3RhdFJlc3BvbnNlEgwKBHBhdGgYASABKAkSDAoEc2l6ZRgCIAEoAxIMCgRtb2RlGAMgASgNEigKBHR5cGUYBCABKA4yGi5kZXBvdC5zYW5kYm94LnYxLkZpbGVUeXBlEg0KBXVuYW1lGAUgASgJEg0KBWduYW1lGAYgASgJEhoKEm10aW1lX3VuaXhfc2Vjb25kcxgHIAEoAyJ/Cg5SZWFkRGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSHAoPd2l0aF9maWxlX3R5cGVzGAMgASgISACIAQFCEgoQX3dpdGhfZmlsZV90eXBlcyI+Cg9SZWFkRGlyUmVzcG9uc2USKwoHZW50cmllcxgBIAMoCzIaLmRlcG90LnNhbmRib3gudjEuRGlyRW50cnkiQgoIRGlyRW50cnkSDAoEbmFtZRgBIAEoCRIoCgR0eXBlGAIgASgOMhouZGVwb3Quc2FuZGJveC52MS5GaWxlVHlwZSKiAQoNUmVtb3ZlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESGwoOaWdub3JlX21pc3NpbmcYBCABKAhIAYgBAUIMCgpfcmVjdXJzaXZlQhEKD19pZ25vcmVfbWlzc2luZyIQCg5SZW1vdmVSZXNwb25zZSJiCg1SZW5hbWVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSEQoJZnJvbV9wYXRoGAIgASgJEg8KB3RvX3BhdGgYAyABKAkiEAoOUmVuYW1lUmVzcG9uc2UimgEKD0NvcHlGaWxlUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhEKCWZyb21fcGF0aBgCIAEoCRIPCgd0b19wYXRoGAMgASgJEh4KEXByZXNlcnZlX21ldGFkYXRhGAQgASgISACIAQFCFAoSX3ByZXNlcnZlX21ldGFkYXRhIhIKEENvcHlGaWxlUmVzcG9uc2UiXAoPVHJ1bmNhdGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIMCgRzaXplGAMgASgDIhIKEFRydW5jYXRlUmVzcG9uc2UiZwoMQ2htb2RSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiDwoNQ2htb2RSZXNwb25zZSJ/CgxDaG93blJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhAKA3VpZBgDIAEoDUgAiAEBEhAKA2dpZBgEIAEoDUgBiAEBQgYKBF91aWRCBgoEX2dpZCIPCg1DaG93blJlc3BvbnNlImIKDlN5bWxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDgoGdGFyZ2V0GAIgASgJEhEKCWxpbmtfcGF0aBgDIAEoCSIRCg9TeW1saW5rUmVzcG9uc2UiTgoPUmVhZGxpbmtSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIiChBSZWFkbGlua1Jlc3BvbnNlEg4KBnRhcmdldBgBIAEoCSJoCg1BY2Nlc3NSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIRCgRtb2RlGAMgASgNSACIAQFCBwoFX21vZGUiEAoOQWNjZXNzUmVzcG9uc2UiTgoPUmVhZEZpbGVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCSIzCglGaWxlQ2h1bmsSDAoEZGF0YRgBIAEoDBIQCgNlb2YYAiABKAhIAIgBAUIGCgRfZW9mIp4CChBXcml0ZUZpbGVSZXF1ZXN0EjcKBGluaXQYASABKAsyJy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QuSW5pdEgAEg4KBGRhdGEYAiABKAxIABq3AQoESW5pdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhMKBmFwcGVuZBgEIAEoCEgBiAEBEh8KEmNyZWF0ZV9kaXJlY3RvcmllcxgFIAEoCEgCiAEBQgcKBV9tb2RlQgkKB19hcHBlbmRCFQoTX2NyZWF0ZV9kaXJlY3Rvcmllc0IHCgVpbnB1dCIqChFXcml0ZUZpbGVSZXNwb25zZRIVCg1ieXRlc193cml0dGVuGAEgASgDKrQHChNGaWxlU3lzdGVtRXJyb3JDb2RlEiUKIUZJTEVTWVNURU1fRVJST1JfQ09ERV9VTlNQRUNJRklFRBAAEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FUEVSTRABEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTk9FTlQQAhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlOVFIQBBIdChlGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlPEAUSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VCQURGEAkSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT01FTRAMEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FQUNDRVMQDRIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUJVU1kQEBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUVYSVNUEBESHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VYREVWEBISIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT1RESVIQFBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUlTRElSEBUSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJTlZBTBAWEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkZJTEUQFxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU1GSUxFEBgSIQodRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VUWFRCU1kQGhIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUZCSUcQGxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PU1BDEBwSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VST0ZTEB4SIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VNTElOSxAfEiYKIkZJTEVTWVNURU1fRVJST1JfQ09ERV9FTkFNRVRPT0xPTkcQJBIjCh9GSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PVEVNUFRZECcSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VMT09QECgSJAogRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VPUE5PVFNVUFAQXxIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRURRVU9UEHoSIAobRklMRVNZU1RFTV9FUlJPUl9DT0RFX09USEVSEIAgKs8BCghGaWxlVHlwZRIZChVGSUxFX1RZUEVfVU5TUEVDSUZJRUQQABISCg5GSUxFX1RZUEVfRklMRRABEhcKE0ZJTEVfVFlQRV9ESVJFQ1RPUlkQAhIVChFGSUxFX1RZUEVfU1lNTElOSxADEhoKFkZJTEVfVFlQRV9CTE9DS19ERVZJQ0UQBBIeChpGSUxFX1RZUEVfQ0hBUkFDVEVSX0RFVklDRRAFEhIKDkZJTEVfVFlQRV9GSUZPEAYSFAoQRklMRV9UWVBFX1NPQ0tFVBAHYgZwcm90bzM',
+    'CiFkZXBvdC9zYW5kYm94L3YxL2ZpbGVzeXN0ZW0ucHJvdG8SEGRlcG90LnNhbmRib3gudjEijQEKFUZpbGVTeXN0ZW1FcnJvckRldGFpbBIzCgRjb2RlGAEgASgOMiUuZGVwb3Quc2FuZGJveC52MS5GaWxlU3lzdGVtRXJyb3JDb2RlEg8KB3N5c2NhbGwYAiABKAkSDAoEcGF0aBgDIAEoCRIUCgdtZXNzYWdlGAQgASgJSACIAQFCCgoIX21lc3NhZ2UiqQEKDE1rZGlyUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSFgoJcmVjdXJzaXZlGAMgASgISACIAQESEQoEbW9kZRgEIAEoDUgBiAEBEhEKBHN1ZG8YBSABKAhIAogBAUIMCgpfcmVjdXJzaXZlQgcKBV9tb2RlQgcKBV9zdWRvIg8KDU1rZGlyUmVzcG9uc2UimAEKC1N0YXRSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIcCg9mb2xsb3dfc3ltbGlua3MYAyABKAhIAIgBARIRCgRzdWRvGAQgASgISAGIAQFCEgoQX2ZvbGxvd19zeW1saW5rc0IHCgVfc3VkbyKcAQoMU3RhdFJlc3BvbnNlEgwKBHBhdGgYASABKAkSDAoEc2l6ZRgCIAEoAxIMCgRtb2RlGAMgASgNEigKBHR5cGUYBCABKA4yGi5kZXBvdC5zYW5kYm94LnYxLkZpbGVUeXBlEg0KBXVuYW1lGAUgASgJEg0KBWduYW1lGAYgASgJEhoKEm10aW1lX3VuaXhfc2Vjb25kcxgHIAEoAyKbAQoOUmVhZERpclJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhwKD3dpdGhfZmlsZV90eXBlcxgDIAEoCEgAiAEBEhEKBHN1ZG8YBCABKAhIAYgBAUISChBfd2l0aF9maWxlX3R5cGVzQgcKBV9zdWRvIj4KD1JlYWREaXJSZXNwb25zZRIrCgdlbnRyaWVzGAEgAygLMhouZGVwb3Quc2FuZGJveC52MS5EaXJFbnRyeSJCCghEaXJFbnRyeRIMCgRuYW1lGAEgASgJEigKBHR5cGUYAiABKA4yGi5kZXBvdC5zYW5kYm94LnYxLkZpbGVUeXBlIr4BCg1SZW1vdmVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSDAoEcGF0aBgCIAEoCRIWCglyZWN1cnNpdmUYAyABKAhIAIgBARIbCg5pZ25vcmVfbWlzc2luZxgEIAEoCEgBiAEBEhEKBHN1ZG8YBSABKAhIAogBAUIMCgpfcmVjdXJzaXZlQhEKD19pZ25vcmVfbWlzc2luZ0IHCgVfc3VkbyIQCg5SZW1vdmVSZXNwb25zZSJ+Cg1SZW5hbWVSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSEQoJZnJvbV9wYXRoGAIgASgJEg8KB3RvX3BhdGgYAyABKAkSEQoEc3VkbxgEIAEoCEgAiAEBQgcKBV9zdWRvIhAKDlJlbmFtZVJlc3BvbnNlIrYBCg9Db3B5RmlsZVJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIRCglmcm9tX3BhdGgYAiABKAkSDwoHdG9fcGF0aBgDIAEoCRIeChFwcmVzZXJ2ZV9tZXRhZGF0YRgEIAEoCEgAiAEBEhEKBHN1ZG8YBSABKAhIAYgBAUIUChJfcHJlc2VydmVfbWV0YWRhdGFCBwoFX3N1ZG8iEgoQQ29weUZpbGVSZXNwb25zZSJ4Cg9UcnVuY2F0ZVJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEgwKBHNpemUYAyABKAMSEQoEc3VkbxgEIAEoCEgAiAEBQgcKBV9zdWRvIhIKEFRydW5jYXRlUmVzcG9uc2UigwEKDENobW9kUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhEKBHN1ZG8YBCABKAhIAYgBAUIHCgVfbW9kZUIHCgVfc3VkbyIPCg1DaG1vZFJlc3BvbnNlIpsBCgxDaG93blJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhAKA3VpZBgDIAEoDUgAiAEBEhAKA2dpZBgEIAEoDUgBiAEBEhEKBHN1ZG8YBSABKAhIAogBAUIGCgRfdWlkQgYKBF9naWRCBwoFX3N1ZG8iDwoNQ2hvd25SZXNwb25zZSJ+Cg5TeW1saW5rUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEg4KBnRhcmdldBgCIAEoCRIRCglsaW5rX3BhdGgYAyABKAkSEQoEc3VkbxgEIAEoCEgAiAEBQgcKBV9zdWRvIhEKD1N5bWxpbmtSZXNwb25zZSJqCg9SZWFkbGlua1JlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhEKBHN1ZG8YAyABKAhIAIgBAUIHCgVfc3VkbyIiChBSZWFkbGlua1Jlc3BvbnNlEg4KBnRhcmdldBgBIAEoCSKEAQoNQWNjZXNzUmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhEKBHN1ZG8YBCABKAhIAYgBAUIHCgVfbW9kZUIHCgVfc3VkbyIQCg5BY2Nlc3NSZXNwb25zZSJqCg9SZWFkRmlsZVJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIMCgRwYXRoGAIgASgJEhEKBHN1ZG8YAyABKAhIAIgBAUIHCgVfc3VkbyIzCglGaWxlQ2h1bmsSDAoEZGF0YRgBIAEoDBIQCgNlb2YYAiABKAhIAIgBAUIGCgRfZW9mIroCChBXcml0ZUZpbGVSZXF1ZXN0EjcKBGluaXQYASABKAsyJy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QuSW5pdEgAEg4KBGRhdGEYAiABKAxIABrTAQoESW5pdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEgwKBHBhdGgYAiABKAkSEQoEbW9kZRgDIAEoDUgAiAEBEhMKBmFwcGVuZBgEIAEoCEgBiAEBEh8KEmNyZWF0ZV9kaXJlY3RvcmllcxgFIAEoCEgCiAEBEhEKBHN1ZG8YBiABKAhIA4gBAUIHCgVfbW9kZUIJCgdfYXBwZW5kQhUKE19jcmVhdGVfZGlyZWN0b3JpZXNCBwoFX3N1ZG9CBwoFaW5wdXQiKgoRV3JpdGVGaWxlUmVzcG9uc2USFQoNYnl0ZXNfd3JpdHRlbhgBIAEoAyq0BwoTRmlsZVN5c3RlbUVycm9yQ29kZRIlCiFGSUxFU1lTVEVNX0VSUk9SX0NPREVfVU5TUEVDSUZJRUQQABIfChtGSUxFU1lTVEVNX0VSUk9SX0NPREVfRVBFUk0QARIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5PRU5UEAISHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJTlRSEAQSHQoZRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJTxAFEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FQkFERhAJEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTk9NRU0QDBIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRUFDQ0VTEA0SHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VCVVNZEBASIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VFWElTVBAREh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FWERFVhASEiEKHUZJTEVTWVNURU1fRVJST1JfQ09ERV9FTk9URElSEBQSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VJU0RJUhAVEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FSU5WQUwQFhIgChxGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5GSUxFEBcSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VNRklMRRAYEiEKHUZJTEVTWVNURU1fRVJST1JfQ09ERV9FVFhUQlNZEBoSHwobRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VGQklHEBsSIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT1NQQxAcEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FUk9GUxAeEiAKHEZJTEVTWVNURU1fRVJST1JfQ09ERV9FTUxJTksQHxImCiJGSUxFU1lTVEVNX0VSUk9SX0NPREVfRU5BTUVUT09MT05HECQSIwofRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VOT1RFTVBUWRAnEh8KG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9FTE9PUBAoEiQKIEZJTEVTWVNURU1fRVJST1JfQ09ERV9FT1BOT1RTVVBQEF8SIAocRklMRVNZU1RFTV9FUlJPUl9DT0RFX0VEUVVPVBB6EiAKG0ZJTEVTWVNURU1fRVJST1JfQ09ERV9PVEhFUhCAICrPAQoIRmlsZVR5cGUSGQoVRklMRV9UWVBFX1VOU1BFQ0lGSUVEEAASEgoORklMRV9UWVBFX0ZJTEUQARIXChNGSUxFX1RZUEVfRElSRUNUT1JZEAISFQoRRklMRV9UWVBFX1NZTUxJTksQAxIaChZGSUxFX1RZUEVfQkxPQ0tfREVWSUNFEAQSHgoaRklMRV9UWVBFX0NIQVJBQ1RFUl9ERVZJQ0UQBRISCg5GSUxFX1RZUEVfRklGTxAGEhQKEEZJTEVfVFlQRV9TT0NLRVQQB2IGcHJvdG8z',
     [file_depot_sandbox_v1_refs],
   )
 
@@ -96,6 +96,14 @@ export type MkdirRequest = Message<'depot.sandbox.v1.MkdirRequest'> & {
    * @generated from field: optional uint32 mode = 4;
    */
   mode?: number
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 5;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -140,6 +148,14 @@ export type StatRequest = Message<'depot.sandbox.v1.StatRequest'> & {
    * @generated from field: optional bool follow_symlinks = 3;
    */
   followSymlinks?: boolean
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -218,6 +234,14 @@ export type ReadDirRequest = Message<'depot.sandbox.v1.ReadDirRequest'> & {
    * @generated from field: optional bool with_file_types = 3;
    */
   withFileTypes?: boolean
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -295,6 +319,14 @@ export type RemoveRequest = Message<'depot.sandbox.v1.RemoveRequest'> & {
    * @generated from field: optional bool ignore_missing = 4;
    */
   ignoreMissing?: boolean
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 5;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -336,6 +368,14 @@ export type RenameRequest = Message<'depot.sandbox.v1.RenameRequest'> & {
    * @generated from field: string to_path = 3;
    */
   toPath: string
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -385,6 +425,14 @@ export type CopyFileRequest = Message<'depot.sandbox.v1.CopyFileRequest'> & {
    * @generated from field: optional bool preserve_metadata = 4;
    */
   preserveMetadata?: boolean
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 5;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -426,6 +474,14 @@ export type TruncateRequest = Message<'depot.sandbox.v1.TruncateRequest'> & {
    * @generated from field: int64 size = 3;
    */
   size: bigint
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -474,6 +530,14 @@ export type ChmodRequest = Message<'depot.sandbox.v1.ChmodRequest'> & {
    * @generated from field: optional uint32 mode = 3;
    */
   mode?: number
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -520,6 +584,14 @@ export type ChownRequest = Message<'depot.sandbox.v1.ChownRequest'> & {
    * @generated from field: optional uint32 gid = 4;
    */
   gid?: number
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 5;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -563,6 +635,14 @@ export type SymlinkRequest = Message<'depot.sandbox.v1.SymlinkRequest'> & {
    * @generated from field: string link_path = 3;
    */
   linkPath: string
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -599,6 +679,14 @@ export type ReadlinkRequest = Message<'depot.sandbox.v1.ReadlinkRequest'> & {
    * @generated from field: string path = 2;
    */
   path: string
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 3;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -648,6 +736,14 @@ export type AccessRequest = Message<'depot.sandbox.v1.AccessRequest'> & {
    * @generated from field: optional uint32 mode = 3;
    */
   mode?: number
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 4;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -684,6 +780,14 @@ export type ReadFileRequest = Message<'depot.sandbox.v1.ReadFileRequest'> & {
    * @generated from field: string path = 2;
    */
   path: string
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges rather
+   * than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 3;
+   */
+  sudo?: boolean
 }
 
 /**
@@ -785,6 +889,14 @@ export type WriteFileRequest_Init = Message<'depot.sandbox.v1.WriteFileRequest.I
    * @generated from field: optional bool create_directories = 5;
    */
   createDirectories?: boolean
+
+  /**
+   * Run the operation through `sudo -E`, so it acts with root privileges
+   * rather than as the sandbox's default non-root user. Default: false.
+   *
+   * @generated from field: optional bool sudo = 6;
+   */
+  sudo?: boolean
 }
 
 /**
