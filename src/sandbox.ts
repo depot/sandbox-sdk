@@ -330,12 +330,7 @@ export class Sandbox {
 
     // Pull the first event; it MUST be Started so the SDK can build the
     // SandboxCommandExecution instance with the server-minted cmd_id. Anything else
-    // (including a missing oneof case) is a protocol violation. We don't
-    // use for-await-of here because we hand the iterator off to
-    // drainStream once Started lands; the cost is that the implicit
-    // cleanup for-await-of provides doesn't apply, so any early-exit
-    // path has to call iterator.return() explicitly or the underlying
-    // HTTP/2 stream stays open until GC.
+    // (including a missing oneof case) is a protocol violation.
     const iterator = stream[Symbol.asyncIterator]()
     let startedEvent: SandboxCommandExecutionEvent
     try {
@@ -351,13 +346,7 @@ export class Sandbox {
         )
       }
     } catch (err) {
-      if (typeof iterator.return === 'function') {
-        try {
-          await iterator.return()
-        } catch {
-          // ignore — best-effort cleanup
-        }
-      }
+      void drainToEnd(iterator)
       throw err
     }
     const startedAt =
@@ -388,16 +377,10 @@ export class Sandbox {
     if (opts.detached) {
       // Fire-and-forget: the server ends the stream right after Started and
       // keeps the command running in the sandbox. There is no further output to
-      // pump, so close the iterator instead of draining it — draining would see
+      // pump, so drainToEnd it rather than drainStream, which would see
       // the stream end without a Finished event and wrongly mark the command
       // failed. logs(), output(), and wait() throw for detached commands.
-      if (typeof iterator.return === 'function') {
-        try {
-          await iterator.return()
-        } catch {
-          // ignore — best-effort cleanup
-        }
-      }
+      void drainToEnd(iterator)
       return command
     }
 
@@ -664,6 +647,7 @@ async function drainStream(
     }
     if (sawFinished) {
       _commandInternals.end(command)
+      await drainToEnd(iterator)
     } else {
       // Server stream ended without a Finished event. The handler's
       // no-exit-code path records the row as failed and then returns
@@ -675,24 +659,16 @@ async function drainStream(
     }
   } catch (err) {
     _commandInternals.fail(command, err)
-  } finally {
-    // We obtained `iterator` by calling stream[Symbol.asyncIterator]()
-    // and manually drove it with .next(), so a regular for-await-of's
-    // implicit cleanup doesn't apply. If we broke out of the loop on
-    // 'finished' (or `_commandInternals.fail` raised), the underlying
-    // HTTP/2 stream stays open until GC reclaims the iterator. Signal
-    // explicitly so the transport can release it now. .return() is
-    // optional on AsyncIterator; guard for that and swallow errors so
-    // a misbehaving iterator doesn't shadow whatever we already
-    // recorded above.
-    if (typeof iterator.return === 'function') {
-      try {
-        await iterator.return()
-      } catch {
-        // ignore — best-effort cleanup
-      }
-    }
+    void drainToEnd(iterator)
   }
+}
+
+// connect-es iterators lack return(), and node frees an HTTP/2 stream only once it is read to the end (DEP-7687).
+async function drainToEnd(iterator: AsyncIterator<SandboxCommandExecutionEvent>): Promise<void> {
+  const step = async (): Promise<void> => {
+    if (!(await iterator.next()).done) return step()
+  }
+  await step().catch(() => undefined)
 }
 
 function networkUsageFromProto(usage: NetworkUsageProto | undefined): NetworkUsage | undefined {
