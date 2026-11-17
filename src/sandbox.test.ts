@@ -1,4 +1,4 @@
-import {create, toBinary, type MessageInitShape} from '@bufbuild/protobuf'
+import {create, toBinary, toJson, type MessageInitShape} from '@bufbuild/protobuf'
 import {timestampFromDate} from '@bufbuild/protobuf/wkt'
 import type {ServiceImpl} from '@connectrpc/connect'
 import {connectNodeAdapter} from '@connectrpc/connect-node'
@@ -24,6 +24,7 @@ import {
   CreateSandboxResponseSchema,
   GetSandboxResponseSchema,
   ListSandboxesResponseSchema,
+  SandboxNetworkPolicySchema,
   SandboxSchema,
   SandboxService,
   SandboxStatus as SandboxStatusProto,
@@ -31,6 +32,7 @@ import {
   SnapshotSandboxResponseSchema,
   StopSandboxResponseSchema,
   type SandboxConfiguration as SandboxConfigurationProto,
+  type SandboxNetworkPolicy,
   type Sandbox as SandboxProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
 import {Sandbox, type CreateSandboxOpts, type SetTimeoutOpts} from './sandbox.js'
@@ -136,6 +138,7 @@ test('Sandbox.create takes an explicit client and binds it to the returned sandb
     configuration: undefined,
     architecture: undefined,
     snapshot: undefined,
+    networkPolicy: undefined,
   })
 
   await sandbox.stop()
@@ -224,6 +227,56 @@ test('sandboxes fetched from different clients keep using their originating clie
   })
 })
 
+test('Sandbox.create sends a network policy with a profile and rules', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_network'})),
+  })
+
+  await Sandbox.create(recording.client, {
+    networkPolicy: {
+      profile: {name: 'strict'},
+      defaultAction: 'deny',
+      rules: [
+        {action: 'allow', target: '*.github.com', description: 'source'},
+        {action: 'deny', target: '10.0.0.5'},
+      ],
+    },
+  })
+
+  const request = recording.lastRequest('createSandbox') as {networkPolicy: unknown}
+  assert.deepEqual(toJson(SandboxNetworkPolicySchema, request.networkPolicy as SandboxNetworkPolicy), {
+    profile: {name: 'strict'},
+    defaultAction: 'NETWORK_ACTION_DENY',
+    rules: [
+      {action: 'NETWORK_ACTION_ALLOW', target: '*.github.com', description: 'source'},
+      {action: 'NETWORK_ACTION_DENY', target: '10.0.0.5'},
+    ],
+  })
+})
+
+test('Sandbox.create sends a network profile by id without rules', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_network'})),
+  })
+
+  await Sandbox.create(recording.client, {networkPolicy: {profile: {id: 'profile_1'}}})
+
+  const request = recording.lastRequest('createSandbox') as {networkPolicy: unknown}
+  assert.deepEqual(toJson(SandboxNetworkPolicySchema, request.networkPolicy as SandboxNetworkPolicy), {
+    profile: {id: 'profile_1'},
+  })
+})
+
+test('Sandbox.create omits the network policy when none is requested', async () => {
+  const recording = fakeClient({
+    createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_network'})),
+  })
+
+  await Sandbox.create(recording.client)
+
+  assert.equal((recording.lastRequest('createSandbox') as {networkPolicy?: unknown}).networkPolicy, undefined)
+})
+
 test('Sandbox.create sends timeoutMinutes when provided', async () => {
   const recording = fakeClient({
     createSandbox: () => createResponse(makeSandbox({sandboxId: 'sbx_timeout'})),
@@ -243,6 +296,7 @@ test('Sandbox.create sends timeoutMinutes when provided', async () => {
     configuration: undefined,
     architecture: undefined,
     snapshot: undefined,
+    networkPolicy: undefined,
   })
 })
 

@@ -43,6 +43,9 @@ export {
 export type {
   Architecture,
   ListFilter,
+  NetworkAction,
+  NetworkPolicy,
+  NetworkRule,
   Pagination,
   PaginationResult,
   Resources,

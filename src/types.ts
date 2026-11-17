@@ -73,6 +73,40 @@ export interface Resources {
  */
 export type Runtime = {readonly named: string} | {readonly imageRef: string}
 
+/** The action a network rule takes on a matching connection. */
+export type NetworkAction = 'allow' | 'deny'
+
+/** One outbound network rule. */
+export interface NetworkRule {
+  action: NetworkAction
+  /**
+   * The destination the rule matches: a host name such as `api.example.com`, a domain and all of its subdomains
+   * written as `*.example.com`, an IP address, or a CIDR block such as `10.0.0.0/8`.
+   */
+  target: string
+  /** A note about why the rule exists. At most 191 characters. */
+  description?: string
+}
+
+/**
+ * Outbound network rules for a sandbox. A connection is allowed when both the profile and `rules` allow it. Depot's
+ * own services are always allowed.
+ */
+export interface NetworkPolicy {
+  /**
+   * The network profile to apply, by name or id. It replaces your organization's default profile for sandboxes; the
+   * default does not also apply. Leave unset to apply the default profile.
+   */
+  profile?: {readonly name: string} | {readonly id: string}
+  /**
+   * The action for a connection that no rule in `rules` matches. Required when `rules` is set. Set `'deny'` with no
+   * `rules` to refuse every connection except to Depot's own services.
+   */
+  defaultAction?: NetworkAction
+  /** Rules for this sandbox only. They can only narrow what the profile allows. A matching deny rule wins. At most 500. */
+  rules?: NetworkRule[]
+}
+
 /** A copy of a sandbox's files from {@link Sandbox.snapshot}, accepted by {@link Sandbox.create}. */
 export interface Snapshot {
   readonly snapshotId: string
