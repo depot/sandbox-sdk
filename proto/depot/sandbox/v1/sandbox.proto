@@ -309,6 +309,59 @@ message CreateSandboxRequest {
   optional bool disable_depot_cache = 11;
   // Snapshot whose files to restore before the sandbox is returned; `runtime` and `architecture` default to its own.
   optional SnapshotRef snapshot = 12;
+  // Outbound network rules for the sandbox. Leave unset to apply the organization's default network profile for
+  // sandboxes, if it has one. When the organization has no default profile and this is unset, the sandbox can
+  // connect to any address. Setting it when network policies are not enabled for the organization fails the create
+  // with FailedPrecondition.
+  optional SandboxNetworkPolicy network_policy = 13;
+}
+
+// Outbound network rules for one sandbox. A connection is allowed when both the profile and `rules` allow it. Depot's
+// own services, such as api.depot.dev, are always allowed.
+message SandboxNetworkPolicy {
+  // Network profile whose current rules apply to the sandbox. It replaces the organization's default network profile
+  // for sandboxes; the default does not also apply. An unknown profile fails the create with NotFound. Leave unset to
+  // apply the default profile.
+  optional NetworkProfileRef profile = 1;
+  // Action for a connection that no rule in `rules` matches. Can be NETWORK_ACTION_ALLOW or NETWORK_ACTION_DENY.
+  // Required if `rules` is set. Set NETWORK_ACTION_DENY with no `rules` to refuse every connection except to Depot's
+  // own services.
+  optional NetworkAction default_action = 2;
+  // Rules for this sandbox only. They can only narrow what the profile allows. A deny rule that matches a connection
+  // wins over an allow rule that matches it. Maximum: 500.
+  repeated NetworkRule rules = 3;
+}
+
+// Names a network profile in the organization.
+message NetworkProfileRef {
+  oneof selector {
+    // Unique identifier for the network profile.
+    string id = 1;
+    // Name of the network profile. For example, "default-deny".
+    string name = 2;
+  }
+}
+
+// One outbound network rule.
+message NetworkRule {
+  // Action for a connection to `target`. Can be NETWORK_ACTION_ALLOW or NETWORK_ACTION_DENY.
+  NetworkAction action = 1;
+  // Destination the rule matches. Can be a host name, such as "api.example.com"; a domain and all of its subdomains,
+  // written as "*.example.com"; an IP address; or a CIDR block, such as "10.0.0.0/8". A host name rule matches
+  // connections to the addresses that name resolved to inside the sandbox.
+  string target = 2;
+  // Note about why the rule exists. Maximum: 191 characters.
+  optional string description = 3;
+}
+
+// Action a network rule takes.
+enum NetworkAction {
+  // Default zero value. Not valid in a request.
+  NETWORK_ACTION_UNSPECIFIED = 0;
+  // Allow the connection.
+  NETWORK_ACTION_ALLOW = 1;
+  // Refuse the connection.
+  NETWORK_ACTION_DENY = 2;
 }
 
 message CreateSandboxResponse {

@@ -63,7 +63,7 @@ import {file_depot_sandbox_v1_refs} from './refs_pb.js'
 export const file_depot_sandbox_v1_sandbox: GenFile =
   /*@__PURE__*/
   fileDesc(
-    'Ch5kZXBvdC9zYW5kYm94L3YxL3NhbmRib3gucHJvdG8SEGRlcG90LnNhbmRib3gudjEicQoJUmVzb3VyY2VzEhIKBXZjcHVzGAEgASgFSACIAQESFgoJbWVtb3J5X21iGAIgASgFSAGIAQESFAoHZGlza19nYhgDIAEoBUgCiAEBQggKBl92Y3B1c0IMCgpfbWVtb3J5X21iQgoKCF9kaXNrX2diIjoKB1J1bnRpbWUSDwoFbmFtZWQYASABKAlIABITCglpbWFnZV9yZWYYAiABKAlIAEIJCgdydW50aW1lItYGCgdTYW5kYm94EhIKCnNhbmRib3hfaWQYASABKAkSFwoPb3JnYW5pemF0aW9uX2lkGAIgASgJEi8KBnN0YXR1cxgDIAEoDjIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFN0YXR1cxIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCgpzdGFydGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjMKCnN0b3BwZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESMwoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIgChNhY3RpdmVfY3B1X3VzYWdlX21zGAkgASgDSAOIAQESOgoNbmV0d29ya191c2FnZRgKIAEoCzIeLmRlcG90LnNhbmRib3gudjEuTmV0d29ya1VzYWdlSASIAQESLgoJcmVzb3VyY2VzGAsgASgLMhsuZGVwb3Quc2FuZGJveC52MS5SZXNvdXJjZXMSKgoHcnVudGltZRgMIAEoCzIZLmRlcG90LnNhbmRib3gudjEuUnVudGltZRIWCglleGl0X2NvZGUYDiABKAVIBYgBARIaCg1lcnJvcl9tZXNzYWdlGA8gASgJSAaIAQESLwoDZW52GBAgAygLMiIuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94LkVudkVudHJ5EhEKBG5hbWUYESABKAlIB4gBARI0CgxhcmNoaXRlY3R1cmUYEiABKA4yHi5kZXBvdC5zYW5kYm94LnYxLkFyY2hpdGVjdHVyZRoqCghFbnZFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQg0KC19zdGFydGVkX2F0Qg0KC19zdG9wcGVkX2F0Qg0KC19leHBpcmVzX2F0QhYKFF9hY3RpdmVfY3B1X3VzYWdlX21zQhAKDl9uZXR3b3JrX3VzYWdlQgwKCl9leGl0X2NvZGVCEAoOX2Vycm9yX21lc3NhZ2VCBwoFX25hbWVKBAgIEAlKBAgNEA4iOwoMTmV0d29ya1VzYWdlEhUKDWluZ3Jlc3NfYnl0ZXMYASABKAMSFAoMZWdyZXNzX2J5dGVzGAIgASgDIiwKDVNhbmRib3hTZWNyZXQSCwoDZW52GAEgASgJEg4KBnNlY3JldBgCIAEoCSKaAQoUU2FuZGJveENvbmZpZ3VyYXRpb24SMAoHc2VjcmV0cxgBIAMoCzIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFNlY3JldBIYCgtlbnZpcm9ubWVudBgCIAEoCUgAiAEBEhcKCnJlcG9zaXRvcnkYAyABKAlIAYgBAUIOCgxfZW52aXJvbm1lbnRCDQoLX3JlcG9zaXRvcnkixwUKFENyZWF0ZVNhbmRib3hSZXF1ZXN0EhEKBG5hbWUYASABKAlIAIgBARIzCglyZXNvdXJjZXMYAiABKAsyGy5kZXBvdC5zYW5kYm94LnYxLlJlc291cmNlc0gBiAEBEi8KB3J1bnRpbWUYAyABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlJ1bnRpbWVIAogBARI8CgNlbnYYBCADKAsyLy5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0LkVudkVudHJ5EhQKB3N0YWdpbmcYBSABKAhIA4gBARIcCg90aW1lb3V0X21pbnV0ZXMYByABKAVIBIgBARIcCg9kaXNhYmxlX3RhaWxuZXQYCCABKAhIBYgBARJCCg1jb25maWd1cmF0aW9uGAkgASgLMiYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29uZmlndXJhdGlvbkgGiAEBEjkKDGFyY2hpdGVjdHVyZRgKIAEoDjIeLmRlcG90LnNhbmRib3gudjEuQXJjaGl0ZWN0dXJlSAeIAQESIAoTZGlzYWJsZV9kZXBvdF9jYWNoZRgLIAEoCEgIiAEBEjQKCHNuYXBzaG90GAwgASgLMh0uZGVwb3Quc2FuZGJveC52MS5TbmFwc2hvdFJlZkgJiAEBGioKCEVudkVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBwoFX25hbWVCDAoKX3Jlc291cmNlc0IKCghfcnVudGltZUIKCghfc3RhZ2luZ0ISChBfdGltZW91dF9taW51dGVzQhIKEF9kaXNhYmxlX3RhaWxuZXRCEAoOX2NvbmZpZ3VyYXRpb25CDwoNX2FyY2hpdGVjdHVyZUIWChRfZGlzYWJsZV9kZXBvdF9jYWNoZUILCglfc25hcHNob3RKBAgGEAciQwoVQ3JlYXRlU2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3giQAoSR2V0U2FuZGJveFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3gihQMKFExpc3RTYW5kYm94ZXNSZXF1ZXN0EhYKCXBhZ2Vfc2l6ZRgBIAEoBUgAiAEBEhcKCnBhZ2VfdG9rZW4YAiABKAlIAYgBARJCCgZmaWx0ZXIYAyABKAsyLS5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0LkZpbHRlckgCiAEBGs8BCgZGaWx0ZXISLwoGc3RhdGVzGAEgAygOMh8uZGVwb3Quc2FuZGJveC52MS5TYW5kYm94U3RhdHVzEjYKDWNyZWF0ZWRfYWZ0ZXIYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSACIAQESNwoOY3JlYXRlZF9iZWZvcmUYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCEAoOX2NyZWF0ZWRfYWZ0ZXJCEQoPX2NyZWF0ZWRfYmVmb3JlQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW5CCQoHX2ZpbHRlciJ3ChVMaXN0U2FuZGJveGVzUmVzcG9uc2USLAoJc2FuZGJveGVzGAEgAygLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94EhwKD25leHRfcGFnZV90b2tlbhgCIAEoCUgAiAEBQhIKEF9uZXh0X3BhZ2VfdG9rZW4iZwoSU3RvcFNhbmRib3hSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSFQoIYmxvY2tpbmcYAiABKAhIAIgBAUILCglfYmxvY2tpbmciQQoTU3RvcFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94ImMKEktpbGxTYW5kYm94UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhMKBnNpZ25hbBgCIAEoCUgAiAEBQgkKB19zaWduYWwiQQoTS2lsbFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94IoEBChhTZXRTYW5kYm94VGltZW91dFJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhIcCg90aW1lb3V0X21pbnV0ZXMYAyABKAVIAIgBAUISChBfdGltZW91dF9taW51dGVzSgQIAhADIkcKGVNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USKgoHc2FuZGJveBgBIAEoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveCL0AQoIU25hcHNob3QSEwoLc25hcHNob3RfaWQYASABKAkSGQoRc291cmNlX3NhbmRib3hfaWQYAiABKAkSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEgoKc2l6ZV9ieXRlcxgEIAEoAxISCgpmaWxlX2NvdW50GAUgASgDEioKB3J1bnRpbWUYBiABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlJ1bnRpbWUSNAoMYXJjaGl0ZWN0dXJlGAcgASgOMh4uZGVwb3Quc2FuZGJveC52MS5BcmNoaXRlY3R1cmUiRwoWU25hcHNob3RTYW5kYm94UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmIkcKF1NuYXBzaG90U2FuZGJveFJlc3BvbnNlEiwKCHNuYXBzaG90GAEgASgLMhouZGVwb3Quc2FuZGJveC52MS5TbmFwc2hvdCr3AQoNU2FuZGJveFN0YXR1cxIeChpTQU5EQk9YX1NUQVRVU19VTlNQRUNJRklFRBAAEhoKFlNBTkRCT1hfU1RBVFVTX0NSRUFURUQQARIbChdTQU5EQk9YX1NUQVRVU19BU1NJR05FRBACEhsKF1NBTkRCT1hfU1RBVFVTX1NUQVJUSU5HEAMSGgoWU0FOREJPWF9TVEFUVVNfUlVOTklORxAEEhsKF1NBTkRCT1hfU1RBVFVTX0ZJTklTSEVEEAUSHAoYU0FOREJPWF9TVEFUVVNfQ0FOQ0VMTEVEEAYSGQoVU0FOREJPWF9TVEFUVVNfRkFJTEVEEAcqXAoMQXJjaGl0ZWN0dXJlEhwKGEFSQ0hJVEVDVFVSRV9VTlNQRUNJRklFRBAAEhYKEkFSQ0hJVEVDVFVSRV9BTUQ2NBABEhYKEkFSQ0hJVEVDVFVSRV9BUk02NBACMugSCg5TYW5kYm94U2VydmljZRJgCg1DcmVhdGVTYW5kYm94EiYuZGVwb3Quc2FuZGJveC52MS5DcmVhdGVTYW5kYm94UmVxdWVzdBonLmRlcG90LnNhbmRib3gudjEuQ3JlYXRlU2FuZGJveFJlc3BvbnNlElAKCkdldFNhbmRib3gSHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYaJC5kZXBvdC5zYW5kYm94LnYxLkdldFNhbmRib3hSZXNwb25zZRJgCg1MaXN0U2FuZGJveGVzEiYuZGVwb3Quc2FuZGJveC52MS5MaXN0U2FuZGJveGVzUmVxdWVzdBonLmRlcG90LnNhbmRib3gudjEuTGlzdFNhbmRib3hlc1Jlc3BvbnNlEloKC1N0b3BTYW5kYm94EiQuZGVwb3Quc2FuZGJveC52MS5TdG9wU2FuZGJveFJlcXVlc3QaJS5kZXBvdC5zYW5kYm94LnYxLlN0b3BTYW5kYm94UmVzcG9uc2USWgoLS2lsbFNhbmRib3gSJC5kZXBvdC5zYW5kYm94LnYxLktpbGxTYW5kYm94UmVxdWVzdBolLmRlcG90LnNhbmRib3gudjEuS2lsbFNhbmRib3hSZXNwb25zZRJsChFTZXRTYW5kYm94VGltZW91dBIqLmRlcG90LnNhbmRib3gudjEuU2V0U2FuZGJveFRpbWVvdXRSZXF1ZXN0GisuZGVwb3Quc2FuZGJveC52MS5TZXRTYW5kYm94VGltZW91dFJlc3BvbnNlEmMKClJ1bkNvbW1hbmQSIy5kZXBvdC5zYW5kYm94LnYxLlJ1bkNvbW1hbmRSZXF1ZXN0Gi4uZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29tbWFuZEV4ZWN1dGlvbkV2ZW50MAESYgoQRmV0Y2hTYW5kYm94TG9ncxIpLmRlcG90LnNhbmRib3gudjEuRmV0Y2hTYW5kYm94TG9nc1JlcXVlc3QaIS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hMb2dFbnRyeTABEmAKD1RhaWxTYW5kYm94TG9ncxIoLmRlcG90LnNhbmRib3gudjEuVGFpbFNhbmRib3hMb2dzUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU2FuZGJveExvZ0VudHJ5MAESZAoRU3RyZWFtU2FuZGJveExvZ3MSKi5kZXBvdC5zYW5kYm94LnYxLlN0cmVhbVNhbmRib3hMb2dzUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU2FuZGJveExvZ0VudHJ5MAESZgoPUmVhZENvbW1hbmRMb2dzEiguZGVwb3Quc2FuZGJveC52MS5SZWFkQ29tbWFuZExvZ3NSZXF1ZXN0GikuZGVwb3Quc2FuZGJveC52MS5SZWFkQ29tbWFuZExvZ3NSZXNwb25zZRJuChFTdHJlYW1Db21tYW5kTG9ncxIqLmRlcG90LnNhbmRib3gudjEuU3RyZWFtQ29tbWFuZExvZ3NSZXF1ZXN0GisuZGVwb3Quc2FuZGJveC52MS5TdHJlYW1Db21tYW5kTG9nc1Jlc3BvbnNlMAESSAoFTWtkaXISHi5kZXBvdC5zYW5kYm94LnYxLk1rZGlyUmVxdWVzdBofLmRlcG90LnNhbmRib3gudjEuTWtkaXJSZXNwb25zZRJFCgRTdGF0Eh0uZGVwb3Quc2FuZGJveC52MS5TdGF0UmVxdWVzdBoeLmRlcG90LnNhbmRib3gudjEuU3RhdFJlc3BvbnNlEk4KB1JlYWREaXISIC5kZXBvdC5zYW5kYm94LnYxLlJlYWREaXJSZXF1ZXN0GiEuZGVwb3Quc2FuZGJveC52MS5SZWFkRGlyUmVzcG9uc2USSwoGUmVtb3ZlEh8uZGVwb3Quc2FuZGJveC52MS5SZW1vdmVSZXF1ZXN0GiAuZGVwb3Quc2FuZGJveC52MS5SZW1vdmVSZXNwb25zZRJLCgZSZW5hbWUSHy5kZXBvdC5zYW5kYm94LnYxLlJlbmFtZVJlcXVlc3QaIC5kZXBvdC5zYW5kYm94LnYxLlJlbmFtZVJlc3BvbnNlElEKCENvcHlGaWxlEiEuZGVwb3Quc2FuZGJveC52MS5Db3B5RmlsZVJlcXVlc3QaIi5kZXBvdC5zYW5kYm94LnYxLkNvcHlGaWxlUmVzcG9uc2USUQoIVHJ1bmNhdGUSIS5kZXBvdC5zYW5kYm94LnYxLlRydW5jYXRlUmVxdWVzdBoiLmRlcG90LnNhbmRib3gudjEuVHJ1bmNhdGVSZXNwb25zZRJICgVDaG1vZBIeLmRlcG90LnNhbmRib3gudjEuQ2htb2RSZXF1ZXN0Gh8uZGVwb3Quc2FuZGJveC52MS5DaG1vZFJlc3BvbnNlEkgKBUNob3duEh4uZGVwb3Quc2FuZGJveC52MS5DaG93blJlcXVlc3QaHy5kZXBvdC5zYW5kYm94LnYxLkNob3duUmVzcG9uc2USTgoHU3ltbGluaxIgLmRlcG90LnNhbmRib3gudjEuU3ltbGlua1JlcXVlc3QaIS5kZXBvdC5zYW5kYm94LnYxLlN5bWxpbmtSZXNwb25zZRJRCghSZWFkbGluaxIhLmRlcG90LnNhbmRib3gudjEuUmVhZGxpbmtSZXF1ZXN0GiIuZGVwb3Quc2FuZGJveC52MS5SZWFkbGlua1Jlc3BvbnNlEksKBkFjY2VzcxIfLmRlcG90LnNhbmRib3gudjEuQWNjZXNzUmVxdWVzdBogLmRlcG90LnNhbmRib3gudjEuQWNjZXNzUmVzcG9uc2USTAoIUmVhZEZpbGUSIS5kZXBvdC5zYW5kYm94LnYxLlJlYWRGaWxlUmVxdWVzdBobLmRlcG90LnNhbmRib3gudjEuRmlsZUNodW5rMAESVgoJV3JpdGVGaWxlEiIuZGVwb3Quc2FuZGJveC52MS5Xcml0ZUZpbGVSZXF1ZXN0GiMuZGVwb3Quc2FuZGJveC52MS5Xcml0ZUZpbGVSZXNwb25zZSgBEmYKD1NuYXBzaG90U2FuZGJveBIoLmRlcG90LnNhbmRib3gudjEuU25hcHNob3RTYW5kYm94UmVxdWVzdBopLmRlcG90LnNhbmRib3gudjEuU25hcHNob3RTYW5kYm94UmVzcG9uc2ViBnByb3RvMw',
+    'Ch5kZXBvdC9zYW5kYm94L3YxL3NhbmRib3gucHJvdG8SEGRlcG90LnNhbmRib3gudjEicQoJUmVzb3VyY2VzEhIKBXZjcHVzGAEgASgFSACIAQESFgoJbWVtb3J5X21iGAIgASgFSAGIAQESFAoHZGlza19nYhgDIAEoBUgCiAEBQggKBl92Y3B1c0IMCgpfbWVtb3J5X21iQgoKCF9kaXNrX2diIjoKB1J1bnRpbWUSDwoFbmFtZWQYASABKAlIABITCglpbWFnZV9yZWYYAiABKAlIAEIJCgdydW50aW1lItYGCgdTYW5kYm94EhIKCnNhbmRib3hfaWQYASABKAkSFwoPb3JnYW5pemF0aW9uX2lkGAIgASgJEi8KBnN0YXR1cxgDIAEoDjIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFN0YXR1cxIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCgpzdGFydGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjMKCnN0b3BwZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESMwoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIgChNhY3RpdmVfY3B1X3VzYWdlX21zGAkgASgDSAOIAQESOgoNbmV0d29ya191c2FnZRgKIAEoCzIeLmRlcG90LnNhbmRib3gudjEuTmV0d29ya1VzYWdlSASIAQESLgoJcmVzb3VyY2VzGAsgASgLMhsuZGVwb3Quc2FuZGJveC52MS5SZXNvdXJjZXMSKgoHcnVudGltZRgMIAEoCzIZLmRlcG90LnNhbmRib3gudjEuUnVudGltZRIWCglleGl0X2NvZGUYDiABKAVIBYgBARIaCg1lcnJvcl9tZXNzYWdlGA8gASgJSAaIAQESLwoDZW52GBAgAygLMiIuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94LkVudkVudHJ5EhEKBG5hbWUYESABKAlIB4gBARI0CgxhcmNoaXRlY3R1cmUYEiABKA4yHi5kZXBvdC5zYW5kYm94LnYxLkFyY2hpdGVjdHVyZRoqCghFbnZFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQg0KC19zdGFydGVkX2F0Qg0KC19zdG9wcGVkX2F0Qg0KC19leHBpcmVzX2F0QhYKFF9hY3RpdmVfY3B1X3VzYWdlX21zQhAKDl9uZXR3b3JrX3VzYWdlQgwKCl9leGl0X2NvZGVCEAoOX2Vycm9yX21lc3NhZ2VCBwoFX25hbWVKBAgIEAlKBAgNEA4iOwoMTmV0d29ya1VzYWdlEhUKDWluZ3Jlc3NfYnl0ZXMYASABKAMSFAoMZWdyZXNzX2J5dGVzGAIgASgDIiwKDVNhbmRib3hTZWNyZXQSCwoDZW52GAEgASgJEg4KBnNlY3JldBgCIAEoCSKaAQoUU2FuZGJveENvbmZpZ3VyYXRpb24SMAoHc2VjcmV0cxgBIAMoCzIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFNlY3JldBIYCgtlbnZpcm9ubWVudBgCIAEoCUgAiAEBEhcKCnJlcG9zaXRvcnkYAyABKAlIAYgBAUIOCgxfZW52aXJvbm1lbnRCDQoLX3JlcG9zaXRvcnkinwYKFENyZWF0ZVNhbmRib3hSZXF1ZXN0EhEKBG5hbWUYASABKAlIAIgBARIzCglyZXNvdXJjZXMYAiABKAsyGy5kZXBvdC5zYW5kYm94LnYxLlJlc291cmNlc0gBiAEBEi8KB3J1bnRpbWUYAyABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlJ1bnRpbWVIAogBARI8CgNlbnYYBCADKAsyLy5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0LkVudkVudHJ5EhQKB3N0YWdpbmcYBSABKAhIA4gBARIcCg90aW1lb3V0X21pbnV0ZXMYByABKAVIBIgBARIcCg9kaXNhYmxlX3RhaWxuZXQYCCABKAhIBYgBARJCCg1jb25maWd1cmF0aW9uGAkgASgLMiYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94Q29uZmlndXJhdGlvbkgGiAEBEjkKDGFyY2hpdGVjdHVyZRgKIAEoDjIeLmRlcG90LnNhbmRib3gudjEuQXJjaGl0ZWN0dXJlSAeIAQESIAoTZGlzYWJsZV9kZXBvdF9jYWNoZRgLIAEoCEgIiAEBEjQKCHNuYXBzaG90GAwgASgLMh0uZGVwb3Quc2FuZGJveC52MS5TbmFwc2hvdFJlZkgJiAEBEkMKDm5ldHdvcmtfcG9saWN5GA0gASgLMiYuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94TmV0d29ya1BvbGljeUgKiAEBGioKCEVudkVudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBwoFX25hbWVCDAoKX3Jlc291cmNlc0IKCghfcnVudGltZUIKCghfc3RhZ2luZ0ISChBfdGltZW91dF9taW51dGVzQhIKEF9kaXNhYmxlX3RhaWxuZXRCEAoOX2NvbmZpZ3VyYXRpb25CDwoNX2FyY2hpdGVjdHVyZUIWChRfZGlzYWJsZV9kZXBvdF9jYWNoZUILCglfc25hcHNob3RCEQoPX25ldHdvcmtfcG9saWN5SgQIBhAHItwBChRTYW5kYm94TmV0d29ya1BvbGljeRI5Cgdwcm9maWxlGAEgASgLMiMuZGVwb3Quc2FuZGJveC52MS5OZXR3b3JrUHJvZmlsZVJlZkgAiAEBEjwKDmRlZmF1bHRfYWN0aW9uGAIgASgOMh8uZGVwb3Quc2FuZGJveC52MS5OZXR3b3JrQWN0aW9uSAGIAQESLAoFcnVsZXMYAyADKAsyHS5kZXBvdC5zYW5kYm94LnYxLk5ldHdvcmtSdWxlQgoKCF9wcm9maWxlQhEKD19kZWZhdWx0X2FjdGlvbiI9ChFOZXR3b3JrUHJvZmlsZVJlZhIMCgJpZBgBIAEoCUgAEg4KBG5hbWUYAiABKAlIAEIKCghzZWxlY3RvciJ4CgtOZXR3b3JrUnVsZRIvCgZhY3Rpb24YASABKA4yHy5kZXBvdC5zYW5kYm94LnYxLk5ldHdvcmtBY3Rpb24SDgoGdGFyZ2V0GAIgASgJEhgKC2Rlc2NyaXB0aW9uGAMgASgJSACIAQFCDgoMX2Rlc2NyaXB0aW9uIkMKFUNyZWF0ZVNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94IkAKEkdldFNhbmRib3hSZXNwb25zZRIqCgdzYW5kYm94GAEgASgLMhkuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94IoUDChRMaXN0U2FuZGJveGVzUmVxdWVzdBIWCglwYWdlX3NpemUYASABKAVIAIgBARIXCgpwYWdlX3Rva2VuGAIgASgJSAGIAQESQgoGZmlsdGVyGAMgASgLMi0uZGVwb3Quc2FuZGJveC52MS5MaXN0U2FuZGJveGVzUmVxdWVzdC5GaWx0ZXJIAogBARrPAQoGRmlsdGVyEi8KBnN0YXRlcxgBIAMoDjIfLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFN0YXR1cxI2Cg1jcmVhdGVkX2FmdGVyGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjcKDmNyZWF0ZWRfYmVmb3JlGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBiAEBQhAKDl9jcmVhdGVkX2FmdGVyQhEKD19jcmVhdGVkX2JlZm9yZUIMCgpfcGFnZV9zaXplQg0KC19wYWdlX3Rva2VuQgkKB19maWx0ZXIidwoVTGlzdFNhbmRib3hlc1Jlc3BvbnNlEiwKCXNhbmRib3hlcxgBIAMoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveBIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlIAIgBAUISChBfbmV4dF9wYWdlX3Rva2VuImcKElN0b3BTYW5kYm94UmVxdWVzdBItCgdzYW5kYm94GAEgASgLMhwuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94UmVmEhUKCGJsb2NraW5nGAIgASgISACIAQFCCwoJX2Jsb2NraW5nIkEKE1N0b3BTYW5kYm94UmVzcG9uc2USKgoHc2FuZGJveBgBIAEoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveCJjChJLaWxsU2FuZGJveFJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhITCgZzaWduYWwYAiABKAlIAIgBAUIJCgdfc2lnbmFsIkEKE0tpbGxTYW5kYm94UmVzcG9uc2USKgoHc2FuZGJveBgBIAEoCzIZLmRlcG90LnNhbmRib3gudjEuU2FuZGJveCKBAQoYU2V0U2FuZGJveFRpbWVvdXRSZXF1ZXN0Ei0KB3NhbmRib3gYASABKAsyHC5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hSZWYSHAoPdGltZW91dF9taW51dGVzGAMgASgFSACIAQFCEgoQX3RpbWVvdXRfbWludXRlc0oECAIQAyJHChlTZXRTYW5kYm94VGltZW91dFJlc3BvbnNlEioKB3NhbmRib3gYASABKAsyGS5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3gi9AEKCFNuYXBzaG90EhMKC3NuYXBzaG90X2lkGAEgASgJEhkKEXNvdXJjZV9zYW5kYm94X2lkGAIgASgJEi4KCmNyZWF0ZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCnNpemVfYnl0ZXMYBCABKAMSEgoKZmlsZV9jb3VudBgFIAEoAxIqCgdydW50aW1lGAYgASgLMhkuZGVwb3Quc2FuZGJveC52MS5SdW50aW1lEjQKDGFyY2hpdGVjdHVyZRgHIAEoDjIeLmRlcG90LnNhbmRib3gudjEuQXJjaGl0ZWN0dXJlIkcKFlNuYXBzaG90U2FuZGJveFJlcXVlc3QSLQoHc2FuZGJveBgBIAEoCzIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZiJHChdTbmFwc2hvdFNhbmRib3hSZXNwb25zZRIsCghzbmFwc2hvdBgBIAEoCzIaLmRlcG90LnNhbmRib3gudjEuU25hcHNob3Qq9wEKDVNhbmRib3hTdGF0dXMSHgoaU0FOREJPWF9TVEFUVVNfVU5TUEVDSUZJRUQQABIaChZTQU5EQk9YX1NUQVRVU19DUkVBVEVEEAESGwoXU0FOREJPWF9TVEFUVVNfQVNTSUdORUQQAhIbChdTQU5EQk9YX1NUQVRVU19TVEFSVElORxADEhoKFlNBTkRCT1hfU1RBVFVTX1JVTk5JTkcQBBIbChdTQU5EQk9YX1NUQVRVU19GSU5JU0hFRBAFEhwKGFNBTkRCT1hfU1RBVFVTX0NBTkNFTExFRBAGEhkKFVNBTkRCT1hfU1RBVFVTX0ZBSUxFRBAHKlwKDEFyY2hpdGVjdHVyZRIcChhBUkNISVRFQ1RVUkVfVU5TUEVDSUZJRUQQABIWChJBUkNISVRFQ1RVUkVfQU1ENjQQARIWChJBUkNISVRFQ1RVUkVfQVJNNjQQAipiCg1OZXR3b3JrQWN0aW9uEh4KGk5FVFdPUktfQUNUSU9OX1VOU1BFQ0lGSUVEEAASGAoUTkVUV09SS19BQ1RJT05fQUxMT1cQARIXChNORVRXT1JLX0FDVElPTl9ERU5ZEAIy6BIKDlNhbmRib3hTZXJ2aWNlEmAKDUNyZWF0ZVNhbmRib3gSJi5kZXBvdC5zYW5kYm94LnYxLkNyZWF0ZVNhbmRib3hSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5DcmVhdGVTYW5kYm94UmVzcG9uc2USUAoKR2V0U2FuZGJveBIcLmRlcG90LnNhbmRib3gudjEuU2FuZGJveFJlZhokLmRlcG90LnNhbmRib3gudjEuR2V0U2FuZGJveFJlc3BvbnNlEmAKDUxpc3RTYW5kYm94ZXMSJi5kZXBvdC5zYW5kYm94LnYxLkxpc3RTYW5kYm94ZXNSZXF1ZXN0GicuZGVwb3Quc2FuZGJveC52MS5MaXN0U2FuZGJveGVzUmVzcG9uc2USWgoLU3RvcFNhbmRib3gSJC5kZXBvdC5zYW5kYm94LnYxLlN0b3BTYW5kYm94UmVxdWVzdBolLmRlcG90LnNhbmRib3gudjEuU3RvcFNhbmRib3hSZXNwb25zZRJaCgtLaWxsU2FuZGJveBIkLmRlcG90LnNhbmRib3gudjEuS2lsbFNhbmRib3hSZXF1ZXN0GiUuZGVwb3Quc2FuZGJveC52MS5LaWxsU2FuZGJveFJlc3BvbnNlEmwKEVNldFNhbmRib3hUaW1lb3V0EiouZGVwb3Quc2FuZGJveC52MS5TZXRTYW5kYm94VGltZW91dFJlcXVlc3QaKy5kZXBvdC5zYW5kYm94LnYxLlNldFNhbmRib3hUaW1lb3V0UmVzcG9uc2USYwoKUnVuQ29tbWFuZBIjLmRlcG90LnNhbmRib3gudjEuUnVuQ29tbWFuZFJlcXVlc3QaLi5kZXBvdC5zYW5kYm94LnYxLlNhbmRib3hDb21tYW5kRXhlY3V0aW9uRXZlbnQwARJiChBGZXRjaFNhbmRib3hMb2dzEikuZGVwb3Quc2FuZGJveC52MS5GZXRjaFNhbmRib3hMb2dzUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU2FuZGJveExvZ0VudHJ5MAESYAoPVGFpbFNhbmRib3hMb2dzEiguZGVwb3Quc2FuZGJveC52MS5UYWlsU2FuZGJveExvZ3NSZXF1ZXN0GiEuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94TG9nRW50cnkwARJkChFTdHJlYW1TYW5kYm94TG9ncxIqLmRlcG90LnNhbmRib3gudjEuU3RyZWFtU2FuZGJveExvZ3NSZXF1ZXN0GiEuZGVwb3Quc2FuZGJveC52MS5TYW5kYm94TG9nRW50cnkwARJmCg9SZWFkQ29tbWFuZExvZ3MSKC5kZXBvdC5zYW5kYm94LnYxLlJlYWRDb21tYW5kTG9nc1JlcXVlc3QaKS5kZXBvdC5zYW5kYm94LnYxLlJlYWRDb21tYW5kTG9nc1Jlc3BvbnNlEm4KEVN0cmVhbUNvbW1hbmRMb2dzEiouZGVwb3Quc2FuZGJveC52MS5TdHJlYW1Db21tYW5kTG9nc1JlcXVlc3QaKy5kZXBvdC5zYW5kYm94LnYxLlN0cmVhbUNvbW1hbmRMb2dzUmVzcG9uc2UwARJICgVNa2RpchIeLmRlcG90LnNhbmRib3gudjEuTWtkaXJSZXF1ZXN0Gh8uZGVwb3Quc2FuZGJveC52MS5Na2RpclJlc3BvbnNlEkUKBFN0YXQSHS5kZXBvdC5zYW5kYm94LnYxLlN0YXRSZXF1ZXN0Gh4uZGVwb3Quc2FuZGJveC52MS5TdGF0UmVzcG9uc2USTgoHUmVhZERpchIgLmRlcG90LnNhbmRib3gudjEuUmVhZERpclJlcXVlc3QaIS5kZXBvdC5zYW5kYm94LnYxLlJlYWREaXJSZXNwb25zZRJLCgZSZW1vdmUSHy5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlcXVlc3QaIC5kZXBvdC5zYW5kYm94LnYxLlJlbW92ZVJlc3BvbnNlEksKBlJlbmFtZRIfLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVxdWVzdBogLmRlcG90LnNhbmRib3gudjEuUmVuYW1lUmVzcG9uc2USUQoIQ29weUZpbGUSIS5kZXBvdC5zYW5kYm94LnYxLkNvcHlGaWxlUmVxdWVzdBoiLmRlcG90LnNhbmRib3gudjEuQ29weUZpbGVSZXNwb25zZRJRCghUcnVuY2F0ZRIhLmRlcG90LnNhbmRib3gudjEuVHJ1bmNhdGVSZXF1ZXN0GiIuZGVwb3Quc2FuZGJveC52MS5UcnVuY2F0ZVJlc3BvbnNlEkgKBUNobW9kEh4uZGVwb3Quc2FuZGJveC52MS5DaG1vZFJlcXVlc3QaHy5kZXBvdC5zYW5kYm94LnYxLkNobW9kUmVzcG9uc2USSAoFQ2hvd24SHi5kZXBvdC5zYW5kYm94LnYxLkNob3duUmVxdWVzdBofLmRlcG90LnNhbmRib3gudjEuQ2hvd25SZXNwb25zZRJOCgdTeW1saW5rEiAuZGVwb3Quc2FuZGJveC52MS5TeW1saW5rUmVxdWVzdBohLmRlcG90LnNhbmRib3gudjEuU3ltbGlua1Jlc3BvbnNlElEKCFJlYWRsaW5rEiEuZGVwb3Quc2FuZGJveC52MS5SZWFkbGlua1JlcXVlc3QaIi5kZXBvdC5zYW5kYm94LnYxLlJlYWRsaW5rUmVzcG9uc2USSwoGQWNjZXNzEh8uZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXF1ZXN0GiAuZGVwb3Quc2FuZGJveC52MS5BY2Nlc3NSZXNwb25zZRJMCghSZWFkRmlsZRIhLmRlcG90LnNhbmRib3gudjEuUmVhZEZpbGVSZXF1ZXN0GhsuZGVwb3Quc2FuZGJveC52MS5GaWxlQ2h1bmswARJWCglXcml0ZUZpbGUSIi5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlcXVlc3QaIy5kZXBvdC5zYW5kYm94LnYxLldyaXRlRmlsZVJlc3BvbnNlKAESZgoPU25hcHNob3RTYW5kYm94EiguZGVwb3Quc2FuZGJveC52MS5TbmFwc2hvdFNhbmRib3hSZXF1ZXN0GikuZGVwb3Quc2FuZGJveC52MS5TbmFwc2hvdFNhbmRib3hSZXNwb25zZWIGcHJvdG8z',
     [
       file_depot_sandbox_v1_command,
       file_depot_sandbox_v1_filesystem,
@@ -511,6 +511,16 @@ export type CreateSandboxRequest = Message<'depot.sandbox.v1.CreateSandboxReques
    * @generated from field: optional depot.sandbox.v1.SnapshotRef snapshot = 12;
    */
   snapshot?: SnapshotRef
+
+  /**
+   * Outbound network rules for the sandbox. Leave unset to apply the organization's default network profile for
+   * sandboxes, if it has one. When the organization has no default profile and this is unset, the sandbox can
+   * connect to any address. Setting it when network policies are not enabled for the organization fails the create
+   * with FailedPrecondition.
+   *
+   * @generated from field: optional depot.sandbox.v1.SandboxNetworkPolicy network_policy = 13;
+   */
+  networkPolicy?: SandboxNetworkPolicy
 }
 
 /**
@@ -520,6 +530,123 @@ export type CreateSandboxRequest = Message<'depot.sandbox.v1.CreateSandboxReques
 export const CreateSandboxRequestSchema: GenMessage<CreateSandboxRequest> =
   /*@__PURE__*/
   messageDesc(file_depot_sandbox_v1_sandbox, 6)
+
+/**
+ * Outbound network rules for one sandbox. A connection is allowed when both the profile and `rules` allow it. Depot's
+ * own services, such as api.depot.dev, are always allowed.
+ *
+ * @generated from message depot.sandbox.v1.SandboxNetworkPolicy
+ */
+export type SandboxNetworkPolicy = Message<'depot.sandbox.v1.SandboxNetworkPolicy'> & {
+  /**
+   * Network profile whose current rules apply to the sandbox. It replaces the organization's default network profile
+   * for sandboxes; the default does not also apply. An unknown profile fails the create with NotFound. Leave unset to
+   * apply the default profile.
+   *
+   * @generated from field: optional depot.sandbox.v1.NetworkProfileRef profile = 1;
+   */
+  profile?: NetworkProfileRef
+
+  /**
+   * Action for a connection that no rule in `rules` matches. Can be NETWORK_ACTION_ALLOW or NETWORK_ACTION_DENY.
+   * Required if `rules` is set. Set NETWORK_ACTION_DENY with no `rules` to refuse every connection except to Depot's
+   * own services.
+   *
+   * @generated from field: optional depot.sandbox.v1.NetworkAction default_action = 2;
+   */
+  defaultAction?: NetworkAction
+
+  /**
+   * Rules for this sandbox only. They can only narrow what the profile allows. A deny rule that matches a connection
+   * wins over an allow rule that matches it. Maximum: 500.
+   *
+   * @generated from field: repeated depot.sandbox.v1.NetworkRule rules = 3;
+   */
+  rules: NetworkRule[]
+}
+
+/**
+ * Describes the message depot.sandbox.v1.SandboxNetworkPolicy.
+ * Use `create(SandboxNetworkPolicySchema)` to create a new message.
+ */
+export const SandboxNetworkPolicySchema: GenMessage<SandboxNetworkPolicy> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_sandbox, 7)
+
+/**
+ * Names a network profile in the organization.
+ *
+ * @generated from message depot.sandbox.v1.NetworkProfileRef
+ */
+export type NetworkProfileRef = Message<'depot.sandbox.v1.NetworkProfileRef'> & {
+  /**
+   * @generated from oneof depot.sandbox.v1.NetworkProfileRef.selector
+   */
+  selector:
+    | {
+        /**
+         * Unique identifier for the network profile.
+         *
+         * @generated from field: string id = 1;
+         */
+        value: string
+        case: 'id'
+      }
+    | {
+        /**
+         * Name of the network profile. For example, "default-deny".
+         *
+         * @generated from field: string name = 2;
+         */
+        value: string
+        case: 'name'
+      }
+    | {case: undefined; value?: undefined}
+}
+
+/**
+ * Describes the message depot.sandbox.v1.NetworkProfileRef.
+ * Use `create(NetworkProfileRefSchema)` to create a new message.
+ */
+export const NetworkProfileRefSchema: GenMessage<NetworkProfileRef> =
+  /*@__PURE__*/
+  messageDesc(file_depot_sandbox_v1_sandbox, 8)
+
+/**
+ * One outbound network rule.
+ *
+ * @generated from message depot.sandbox.v1.NetworkRule
+ */
+export type NetworkRule = Message<'depot.sandbox.v1.NetworkRule'> & {
+  /**
+   * Action for a connection to `target`. Can be NETWORK_ACTION_ALLOW or NETWORK_ACTION_DENY.
+   *
+   * @generated from field: depot.sandbox.v1.NetworkAction action = 1;
+   */
+  action: NetworkAction
+
+  /**
+   * Destination the rule matches. Can be a host name, such as "api.example.com"; a domain and all of its subdomains,
+   * written as "*.example.com"; an IP address; or a CIDR block, such as "10.0.0.0/8". A host name rule matches
+   * connections to the addresses that name resolved to inside the sandbox.
+   *
+   * @generated from field: string target = 2;
+   */
+  target: string
+
+  /**
+   * Note about why the rule exists. Maximum: 191 characters.
+   *
+   * @generated from field: optional string description = 3;
+   */
+  description?: string
+}
+
+/**
+ * Describes the message depot.sandbox.v1.NetworkRule.
+ * Use `create(NetworkRuleSchema)` to create a new message.
+ */
+export const NetworkRuleSchema: GenMessage<NetworkRule> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_sandbox, 9)
 
 /**
  * @generated from message depot.sandbox.v1.CreateSandboxResponse
@@ -539,7 +666,7 @@ export type CreateSandboxResponse = Message<'depot.sandbox.v1.CreateSandboxRespo
  */
 export const CreateSandboxResponseSchema: GenMessage<CreateSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 7)
+  messageDesc(file_depot_sandbox_v1_sandbox, 10)
 
 /**
  * @generated from message depot.sandbox.v1.GetSandboxResponse
@@ -559,7 +686,7 @@ export type GetSandboxResponse = Message<'depot.sandbox.v1.GetSandboxResponse'> 
  */
 export const GetSandboxResponseSchema: GenMessage<GetSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 8)
+  messageDesc(file_depot_sandbox_v1_sandbox, 11)
 
 /**
  * Lists an organization's sandboxes, with optional filtering by status and
@@ -597,7 +724,7 @@ export type ListSandboxesRequest = Message<'depot.sandbox.v1.ListSandboxesReques
  */
 export const ListSandboxesRequestSchema: GenMessage<ListSandboxesRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 9)
+  messageDesc(file_depot_sandbox_v1_sandbox, 12)
 
 /**
  * Criteria for narrowing the list. All set criteria must match.
@@ -634,7 +761,7 @@ export type ListSandboxesRequest_Filter = Message<'depot.sandbox.v1.ListSandboxe
  */
 export const ListSandboxesRequest_FilterSchema: GenMessage<ListSandboxesRequest_Filter> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 9, 0)
+  messageDesc(file_depot_sandbox_v1_sandbox, 12, 0)
 
 /**
  * @generated from message depot.sandbox.v1.ListSandboxesResponse
@@ -661,7 +788,7 @@ export type ListSandboxesResponse = Message<'depot.sandbox.v1.ListSandboxesRespo
  */
 export const ListSandboxesResponseSchema: GenMessage<ListSandboxesResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 10)
+  messageDesc(file_depot_sandbox_v1_sandbox, 13)
 
 /**
  * Request to gracefully shut down a sandbox. The server records the request
@@ -695,7 +822,7 @@ export type StopSandboxRequest = Message<'depot.sandbox.v1.StopSandboxRequest'> 
  */
 export const StopSandboxRequestSchema: GenMessage<StopSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 11)
+  messageDesc(file_depot_sandbox_v1_sandbox, 14)
 
 /**
  * @generated from message depot.sandbox.v1.StopSandboxResponse
@@ -718,7 +845,7 @@ export type StopSandboxResponse = Message<'depot.sandbox.v1.StopSandboxResponse'
  */
 export const StopSandboxResponseSchema: GenMessage<StopSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 12)
+  messageDesc(file_depot_sandbox_v1_sandbox, 15)
 
 /**
  * Request to forcibly terminate a sandbox. This is fire-and-forget: the call
@@ -750,7 +877,7 @@ export type KillSandboxRequest = Message<'depot.sandbox.v1.KillSandboxRequest'> 
  */
 export const KillSandboxRequestSchema: GenMessage<KillSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 13)
+  messageDesc(file_depot_sandbox_v1_sandbox, 16)
 
 /**
  * @generated from message depot.sandbox.v1.KillSandboxResponse
@@ -770,7 +897,7 @@ export type KillSandboxResponse = Message<'depot.sandbox.v1.KillSandboxResponse'
  */
 export const KillSandboxResponseSchema: GenMessage<KillSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 14)
+  messageDesc(file_depot_sandbox_v1_sandbox, 17)
 
 /**
  * Request to set a sandbox's expiry to a fresh deadline measured from now.
@@ -803,7 +930,7 @@ export type SetSandboxTimeoutRequest = Message<'depot.sandbox.v1.SetSandboxTimeo
  */
 export const SetSandboxTimeoutRequestSchema: GenMessage<SetSandboxTimeoutRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 15)
+  messageDesc(file_depot_sandbox_v1_sandbox, 18)
 
 /**
  * @generated from message depot.sandbox.v1.SetSandboxTimeoutResponse
@@ -824,7 +951,7 @@ export type SetSandboxTimeoutResponse = Message<'depot.sandbox.v1.SetSandboxTime
  */
 export const SetSandboxTimeoutResponseSchema: GenMessage<SetSandboxTimeoutResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 16)
+  messageDesc(file_depot_sandbox_v1_sandbox, 19)
 
 /**
  * A saved copy of a sandbox's files, made by `SnapshotSandbox`.
@@ -886,7 +1013,7 @@ export type Snapshot = Message<'depot.sandbox.v1.Snapshot'> & {
  * Describes the message depot.sandbox.v1.Snapshot.
  * Use `create(SnapshotSchema)` to create a new message.
  */
-export const SnapshotSchema: GenMessage<Snapshot> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_sandbox, 17)
+export const SnapshotSchema: GenMessage<Snapshot> = /*@__PURE__*/ messageDesc(file_depot_sandbox_v1_sandbox, 20)
 
 /**
  * @generated from message depot.sandbox.v1.SnapshotSandboxRequest
@@ -906,7 +1033,7 @@ export type SnapshotSandboxRequest = Message<'depot.sandbox.v1.SnapshotSandboxRe
  */
 export const SnapshotSandboxRequestSchema: GenMessage<SnapshotSandboxRequest> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 18)
+  messageDesc(file_depot_sandbox_v1_sandbox, 21)
 
 /**
  * @generated from message depot.sandbox.v1.SnapshotSandboxResponse
@@ -926,7 +1053,7 @@ export type SnapshotSandboxResponse = Message<'depot.sandbox.v1.SnapshotSandboxR
  */
 export const SnapshotSandboxResponseSchema: GenMessage<SnapshotSandboxResponse> =
   /*@__PURE__*/
-  messageDesc(file_depot_sandbox_v1_sandbox, 19)
+  messageDesc(file_depot_sandbox_v1_sandbox, 22)
 
 /**
  * Where a sandbox is in its lifecycle. The values track the underlying
@@ -1034,6 +1161,39 @@ export enum Architecture {
  * Describes the enum depot.sandbox.v1.Architecture.
  */
 export const ArchitectureSchema: GenEnum<Architecture> = /*@__PURE__*/ enumDesc(file_depot_sandbox_v1_sandbox, 1)
+
+/**
+ * Action a network rule takes.
+ *
+ * @generated from enum depot.sandbox.v1.NetworkAction
+ */
+export enum NetworkAction {
+  /**
+   * Default zero value. Not valid in a request.
+   *
+   * @generated from enum value: NETWORK_ACTION_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * Allow the connection.
+   *
+   * @generated from enum value: NETWORK_ACTION_ALLOW = 1;
+   */
+  ALLOW = 1,
+
+  /**
+   * Refuse the connection.
+   *
+   * @generated from enum value: NETWORK_ACTION_DENY = 2;
+   */
+  DENY = 2,
+}
+
+/**
+ * Describes the enum depot.sandbox.v1.NetworkAction.
+ */
+export const NetworkActionSchema: GenEnum<NetworkAction> = /*@__PURE__*/ enumDesc(file_depot_sandbox_v1_sandbox, 2)
 
 /**
  * @generated from service depot.sandbox.v1.SandboxService

@@ -9,13 +9,16 @@ import {SnapshotRefSchema, type SnapshotRef as SnapshotRefProto} from './gen/dep
 import {
   Architecture as ArchitectureProto,
   ListSandboxesRequest_FilterSchema,
+  NetworkAction as NetworkActionProto,
   RuntimeSchema,
   SandboxConfigurationSchema,
+  SandboxNetworkPolicySchema,
   SandboxStatus as SandboxStatusProto,
   type ListSandboxesRequest_Filter as ListSandboxesFilterProto,
   type NetworkUsage as NetworkUsageProto,
   type Runtime as RuntimeProto,
   type SandboxConfiguration as SandboxConfigurationProto,
+  type SandboxNetworkPolicy as SandboxNetworkPolicyProto,
   type Sandbox as SandboxProto,
   type Snapshot as SnapshotProto,
 } from './gen/depot/sandbox/v1/sandbox_pb.js'
@@ -24,6 +27,8 @@ import {SandboxTailnet} from './tailnet.js'
 import type {
   Architecture,
   ListFilter,
+  NetworkAction,
+  NetworkPolicy,
   NetworkUsage,
   Pagination,
   PaginationResult,
@@ -168,6 +173,7 @@ export class Sandbox {
       configuration: opts.configuration !== undefined ? configurationToProto(opts.configuration) : undefined,
       architecture: opts.architecture !== undefined ? architectureToProto(opts.architecture) : undefined,
       snapshot: opts.snapshot !== undefined ? snapshotRefToProto(opts.snapshot) : undefined,
+      networkPolicy: opts.networkPolicy !== undefined ? networkPolicyToProto(opts.networkPolicy) : undefined,
     })
     const sandbox = response.sandbox
     if (!sandbox) {
@@ -519,6 +525,11 @@ export interface CreateSandboxOpts {
   architecture?: Architecture
   /** Boot from a {@link Snapshot} or snapshot id; `runtime` and `architecture` default to the snapshot's. */
   snapshot?: Snapshot | string
+  /**
+   * Outbound network rules. Leave unset to apply your organization's default network profile for sandboxes, if it
+   * has one. Fails with FailedPrecondition when network policies are not enabled for your organization.
+   */
+  networkPolicy?: NetworkPolicy
 }
 
 /** Options for {@link Sandbox.setTimeout}. */
@@ -565,6 +576,34 @@ function configurationToProto(configuration: SandboxConfiguration): SandboxConfi
     environment: configuration.environment,
     repository: configuration.repository,
   })
+}
+
+function networkPolicyToProto(policy: NetworkPolicy): SandboxNetworkPolicyProto {
+  const profile = policy.profile
+  return create(SandboxNetworkPolicySchema, {
+    profile:
+      profile === undefined
+        ? undefined
+        : {selector: 'name' in profile ? {case: 'name', value: profile.name} : {case: 'id', value: profile.id}},
+    defaultAction: policy.defaultAction !== undefined ? networkActionToProto(policy.defaultAction) : undefined,
+    rules: (policy.rules ?? []).map((rule) => ({
+      action: networkActionToProto(rule.action),
+      target: rule.target,
+      description: rule.description,
+    })),
+  })
+}
+
+function networkActionToProto(action: NetworkAction): NetworkActionProto {
+  switch (action) {
+    case 'allow':
+      return NetworkActionProto.ALLOW
+    case 'deny':
+      return NetworkActionProto.DENY
+    default:
+      // Only reachable when a caller forces an invalid value through a cast.
+      throw new TypeError(`unknown NetworkAction: ${action as string}`)
+  }
 }
 
 function assertNoLegacyTimeoutMs(opts: object): void {

@@ -107,6 +107,7 @@ This beta package currently includes:
 - `FileSystem` helpers for common file operations
 - `sandbox.tailnet`: `status()` and `waitForAddress()`, which report the sandbox's live MagicDNS name and IPs on your organization's tailnet; opt out with `disableTailnet` on create
 - Depot Cache: every command gets your organization's Depot Cache credentials for sccache, Turborepo, and Nx, plus `DEPOT_CACHE_HOST` and `DEPOT_CACHE_TOKEN` for other tools; opt out with `disableDepotCache` on create
+- Network policy: `networkPolicy` on create names a network profile, which replaces your organization's default profile, and can add rules for that sandbox only, such as `{defaultAction: 'deny', rules: [{action: 'allow', target: '*.github.com'}]}`. Depot's own services are always allowed. It requires network policies to be enabled for your organization
 
 Other sandbox capabilities, such as piped stdin, command history, and pty support, are not part of this beta surface yet.
 
