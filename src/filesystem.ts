@@ -137,33 +137,41 @@ export class DirEntry {
   }
 }
 
-export interface ReadFileOpts {
+/**
+ * Run the operation through `sudo -E`, so it acts with root privileges rather
+ * than as the sandbox's default non-root user. Defaults to false.
+ */
+export interface SudoOpts {
+  sudo?: boolean
+}
+
+export interface ReadFileOpts extends SudoOpts {
   /** Decode the bytes as a string under this encoding. Omit to get a Buffer. */
   encoding?: BufferEncoding
 }
 
-export interface WriteFileOpts {
+export interface WriteFileOpts extends SudoOpts {
   /** POSIX mode applied if the file is created. */
   mode?: number
   /** Create any missing parent directories before writing. */
   recursive?: boolean
 }
 
-export interface MkdirOpts {
+export interface MkdirOpts extends SudoOpts {
   recursive?: boolean
   mode?: number
 }
 
-export interface RmOpts {
+export interface RmOpts extends SudoOpts {
   recursive?: boolean
   force?: boolean
 }
 
-export interface ReaddirOpts {
+export interface ReaddirOpts extends SudoOpts {
   withFileTypes?: boolean
 }
 
-export interface CopyFileOpts {
+export interface CopyFileOpts extends SudoOpts {
   /** Preserve mode, owner, and timestamps where possible (cp -p). */
   preserveMetadata?: boolean
 }
@@ -201,7 +209,7 @@ export class FileSystem {
   async readFile(path: string, opts?: ReadFileOpts): Promise<Buffer | string> {
     const chunks: Uint8Array[] = []
     try {
-      for await (const chunk of this.client.rpc.readFile({...this.ref(), path})) {
+      for await (const chunk of this.client.rpc.readFile({...this.ref(), path, sudo: opts?.sudo})) {
         if (chunk.data.length > 0) chunks.push(chunk.data)
       }
     } catch (err) {
@@ -216,7 +224,12 @@ export class FileSystem {
    * `opts.recursive`, missing parent directories are created first.
    */
   async writeFile(path: string, data: Buffer | Uint8Array | string, opts?: WriteFileOpts): Promise<void> {
-    await this.writeStream(path, data, {mode: opts?.mode, recursive: opts?.recursive, append: false}, 'write')
+    await this.writeStream(
+      path,
+      data,
+      {mode: opts?.mode, recursive: opts?.recursive, append: false, sudo: opts?.sudo},
+      'write',
+    )
   }
 
   /**
@@ -224,13 +237,18 @@ export class FileSystem {
    * with append semantics; there is no dedicated append method.
    */
   async appendFile(path: string, data: Buffer | Uint8Array | string, opts?: WriteFileOpts): Promise<void> {
-    await this.writeStream(path, data, {mode: opts?.mode, recursive: opts?.recursive, append: true}, 'open')
+    await this.writeStream(
+      path,
+      data,
+      {mode: opts?.mode, recursive: opts?.recursive, append: true, sudo: opts?.sudo},
+      'open',
+    )
   }
 
   private async writeStream(
     path: string,
     data: Buffer | Uint8Array | string,
-    init: {mode?: number; recursive?: boolean; append: boolean},
+    init: {mode?: number; recursive?: boolean; append: boolean; sudo?: boolean},
     syscall: string,
   ): Promise<void> {
     if (init.mode !== undefined) assertValidMode(init.mode, syscall, path)
@@ -246,6 +264,7 @@ export class FileSystem {
             mode: init.mode,
             append: init.append,
             createDirectories: init.recursive,
+            sudo: init.sudo,
           },
         },
       })
@@ -271,7 +290,7 @@ export class FileSystem {
   async mkdir(path: string, opts?: MkdirOpts): Promise<void> {
     if (opts?.mode !== undefined) assertValidMode(opts.mode, 'mkdir', path)
     try {
-      await this.client.rpc.mkdir({...this.ref(), path, recursive: opts?.recursive, mode: opts?.mode})
+      await this.client.rpc.mkdir({...this.ref(), path, recursive: opts?.recursive, mode: opts?.mode, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'mkdir', path)
     }
@@ -284,7 +303,12 @@ export class FileSystem {
   async readdir(path: string, opts?: ReaddirOpts): Promise<string[] | DirEntry[]> {
     let response
     try {
-      response = await this.client.rpc.readDir({...this.ref(), path, withFileTypes: opts?.withFileTypes})
+      response = await this.client.rpc.readDir({
+        ...this.ref(),
+        path,
+        withFileTypes: opts?.withFileTypes,
+        sudo: opts?.sudo,
+      })
     } catch (err) {
       throw toFileSystemError(err, 'scandir', path)
     }
@@ -299,12 +323,12 @@ export class FileSystem {
    * random string. Composed from mkdir with a retry on a name collision; there
    * is no dedicated method.
    */
-  async mkdtemp(prefix: string): Promise<string> {
+  async mkdtemp(prefix: string, opts?: SudoOpts): Promise<string> {
     for (let attempt = 0; attempt < 8; attempt++) {
       const suffix = Math.random().toString(36).slice(2, 8)
       const path = `${prefix}${suffix}`
       try {
-        await this.client.rpc.mkdir({...this.ref(), path})
+        await this.client.rpc.mkdir({...this.ref(), path, sudo: opts?.sudo})
         return path
       } catch (err) {
         const fsErr = toFileSystemError(err, 'mkdir', path)
@@ -318,19 +342,19 @@ export class FileSystem {
   // ─── Stat family ──────────────────────────────────────────────────────
 
   /** Stat, following symlinks. */
-  stat(path: string): Promise<StatResult> {
-    return this.statImpl(path, true)
+  stat(path: string, opts?: SudoOpts): Promise<StatResult> {
+    return this.statImpl(path, true, opts)
   }
 
   /** Lstat — stat the link itself rather than its target. */
-  lstat(path: string): Promise<StatResult> {
-    return this.statImpl(path, false)
+  lstat(path: string, opts?: SudoOpts): Promise<StatResult> {
+    return this.statImpl(path, false, opts)
   }
 
-  private async statImpl(path: string, followSymlinks: boolean): Promise<StatResult> {
+  private async statImpl(path: string, followSymlinks: boolean, opts?: SudoOpts): Promise<StatResult> {
     let response
     try {
-      response = await this.client.rpc.stat({...this.ref(), path, followSymlinks})
+      response = await this.client.rpc.stat({...this.ref(), path, followSymlinks, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, followSymlinks ? 'stat' : 'lstat', path)
     }
@@ -352,12 +376,12 @@ export class FileSystem {
    * surface later. Pathological per-component resolution (a symlink in the
    * middle of a path) is not handled here yet — see the SDK reference.
    */
-  async realpath(path: string): Promise<string> {
+  async realpath(path: string, opts?: SudoOpts): Promise<string> {
     let current = path
     for (let hop = 0; hop < REALPATH_MAX_HOPS; hop++) {
       let info: StatResult
       try {
-        info = await this.lstat(current)
+        info = await this.lstat(current, opts)
       } catch (err) {
         // A missing or unreadable component surfaces as the underlying lstat
         // error. Pass an already-classified FileSystemError through unchanged:
@@ -368,7 +392,7 @@ export class FileSystem {
         throw toFileSystemError(err, 'realpath', path)
       }
       if (info.type !== 'symlink') return current
-      const target = await this.readlink(current)
+      const target = await this.readlink(current, opts)
       // An absolute target replaces the path; a relative one resolves against
       // the link's directory.
       current = target.startsWith('/') ? target : joinPath(dirname(current), target)
@@ -387,31 +411,45 @@ export class FileSystem {
   // ─── Mutation ───────────────────────────────────────────────────────────
 
   /** Remove a file or symlink. */
-  unlink(path: string): Promise<void> {
-    return this.removeImpl(path, {recursive: false, force: false}, 'unlink')
+  unlink(path: string, opts?: SudoOpts): Promise<void> {
+    return this.removeImpl(path, {recursive: false, force: false, sudo: opts?.sudo}, 'unlink')
   }
 
   /** Remove a path, optionally recursively and/or ignoring a missing target. */
   rm(path: string, opts?: RmOpts): Promise<void> {
-    return this.removeImpl(path, {recursive: opts?.recursive ?? false, force: opts?.force ?? false}, 'unlink')
+    return this.removeImpl(
+      path,
+      {recursive: opts?.recursive ?? false, force: opts?.force ?? false, sudo: opts?.sudo},
+      'unlink',
+    )
   }
 
   /** Remove an empty directory. Fails with ENOTEMPTY if it isn't empty. */
-  rmdir(path: string): Promise<void> {
-    return this.removeImpl(path, {recursive: false, force: false}, 'rmdir')
+  rmdir(path: string, opts?: SudoOpts): Promise<void> {
+    return this.removeImpl(path, {recursive: false, force: false, sudo: opts?.sudo}, 'rmdir')
   }
 
-  private async removeImpl(path: string, opts: {recursive: boolean; force: boolean}, syscall: string): Promise<void> {
+  private async removeImpl(
+    path: string,
+    opts: {recursive: boolean; force: boolean; sudo?: boolean},
+    syscall: string,
+  ): Promise<void> {
     try {
-      await this.client.rpc.remove({...this.ref(), path, recursive: opts.recursive, ignoreMissing: opts.force})
+      await this.client.rpc.remove({
+        ...this.ref(),
+        path,
+        recursive: opts.recursive,
+        ignoreMissing: opts.force,
+        sudo: opts.sudo,
+      })
     } catch (err) {
       throw toFileSystemError(err, syscall, path)
     }
   }
 
-  async rename(from: string, to: string): Promise<void> {
+  async rename(from: string, to: string, opts?: SudoOpts): Promise<void> {
     try {
-      await this.client.rpc.rename({...this.ref(), fromPath: from, toPath: to})
+      await this.client.rpc.rename({...this.ref(), fromPath: from, toPath: to, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'rename', from)
     }
@@ -424,13 +462,14 @@ export class FileSystem {
         fromPath: from,
         toPath: to,
         preserveMetadata: opts?.preserveMetadata,
+        sudo: opts?.sudo,
       })
     } catch (err) {
       throw toFileSystemError(err, 'copyfile', from)
     }
   }
 
-  async truncate(path: string, size = 0): Promise<void> {
+  async truncate(path: string, size = 0, opts?: SudoOpts): Promise<void> {
     if (!Number.isInteger(size) || size < 0) {
       throw new FileSystemError({
         code: 'EINVAL',
@@ -440,26 +479,26 @@ export class FileSystem {
       })
     }
     try {
-      await this.client.rpc.truncate({...this.ref(), path, size: BigInt(size)})
+      await this.client.rpc.truncate({...this.ref(), path, size: BigInt(size), sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'ftruncate', path)
     }
   }
 
   /** chmod. `mode` accepts an octal integer (`0o755`) or an octal string (`"755"`). */
-  async chmod(path: string, mode: number | string): Promise<void> {
+  async chmod(path: string, mode: number | string, opts?: SudoOpts): Promise<void> {
     const numeric = typeof mode === 'string' ? parseInt(mode, 8) : mode
     assertValidMode(numeric, 'chmod', path)
     try {
-      await this.client.rpc.chmod({...this.ref(), path, mode: numeric})
+      await this.client.rpc.chmod({...this.ref(), path, mode: numeric, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'chmod', path)
     }
   }
 
-  async chown(path: string, uid: number, gid: number): Promise<void> {
+  async chown(path: string, uid: number, gid: number, opts?: SudoOpts): Promise<void> {
     try {
-      await this.client.rpc.chown({...this.ref(), path, uid, gid})
+      await this.client.rpc.chown({...this.ref(), path, uid, gid, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'chown', path)
     }
@@ -467,17 +506,17 @@ export class FileSystem {
 
   // ─── Symlinks ─────────────────────────────────────────────────────────
 
-  async symlink(target: string, linkPath: string): Promise<void> {
+  async symlink(target: string, linkPath: string, opts?: SudoOpts): Promise<void> {
     try {
-      await this.client.rpc.symlink({...this.ref(), target, linkPath})
+      await this.client.rpc.symlink({...this.ref(), target, linkPath, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'symlink', linkPath)
     }
   }
 
-  async readlink(path: string): Promise<string> {
+  async readlink(path: string, opts?: SudoOpts): Promise<string> {
     try {
-      const response = await this.client.rpc.readlink({...this.ref(), path})
+      const response = await this.client.rpc.readlink({...this.ref(), path, sudo: opts?.sudo})
       return response.target
     } catch (err) {
       throw toFileSystemError(err, 'readlink', path)
@@ -487,9 +526,9 @@ export class FileSystem {
   // ─── Access / probe ─────────────────────────────────────────────────────
 
   /** Check access to `path`. Resolves on success, rejects with a FileSystemError otherwise. */
-  async access(path: string, mode?: number): Promise<void> {
+  async access(path: string, mode?: number, opts?: SudoOpts): Promise<void> {
     try {
-      await this.client.rpc.access({...this.ref(), path, mode})
+      await this.client.rpc.access({...this.ref(), path, mode, sudo: opts?.sudo})
     } catch (err) {
       throw toFileSystemError(err, 'access', path)
     }
@@ -500,9 +539,9 @@ export class FileSystem {
    * `node:fs/promises`, but an SDK convenience callers ask for. Errors other
    * than ENOENT (for example EACCES on an unreadable parent) propagate.
    */
-  async exists(path: string): Promise<boolean> {
+  async exists(path: string, opts?: SudoOpts): Promise<boolean> {
     try {
-      await this.stat(path)
+      await this.stat(path, opts)
       return true
     } catch (err) {
       if (err instanceof Error && 'code' in err && (err as {code: unknown}).code === 'ENOENT') return false

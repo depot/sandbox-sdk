@@ -96,6 +96,9 @@ message MkdirRequest {
   // Octal permission mode for the new directory. When unset, the server applies
   // its umask.
   optional uint32 mode = 4;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 5;
 }
 message MkdirResponse {}
 
@@ -105,6 +108,9 @@ message StatRequest {
   // When true (the default), follow symlinks like stat. When false, report on
   // the link itself like lstat.
   optional bool follow_symlinks = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message StatResponse {
   string path = 1;
@@ -123,6 +129,9 @@ message ReadDirRequest {
   // entries always carry name and type; when this is false the SDK exposes them
   // as a plain array of names instead.
   optional bool with_file_types = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message ReadDirResponse {
   repeated DirEntry entries = 1;
@@ -140,6 +149,9 @@ message RemoveRequest {
   // When true, removing a path that does not exist succeeds instead of failing
   // with ENOENT, matching the force option of node fs.rm.
   optional bool ignore_missing = 4;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 5;
 }
 message RemoveResponse {}
 
@@ -147,6 +159,9 @@ message RenameRequest {
   SandboxRef sandbox = 1;
   string from_path = 2;
   string to_path = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message RenameResponse {}
 
@@ -157,6 +172,9 @@ message CopyFileRequest {
   // When true, preserve the file's mode, owner, and timestamps where the server
   // can (cp -p).
   optional bool preserve_metadata = 4;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 5;
 }
 message CopyFileResponse {}
 
@@ -164,6 +182,9 @@ message TruncateRequest {
   SandboxRef sandbox = 1;
   string path = 2;
   int64 size = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message TruncateResponse {}
 
@@ -177,6 +198,9 @@ message ChmodRequest {
   // Matches MkdirRequest.mode and WriteFileRequest.Init.mode, which are also
   // presence-tracked.
   optional uint32 mode = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message ChmodResponse {}
 
@@ -185,6 +209,9 @@ message ChownRequest {
   string path = 2;
   optional uint32 uid = 3;
   optional uint32 gid = 4;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 5;
 }
 message ChownResponse {}
 
@@ -193,12 +220,18 @@ message SymlinkRequest {
   // Create link_path as a symlink pointing at target (ln -s target link_path).
   string target = 2;
   string link_path = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message SymlinkResponse {}
 
 message ReadlinkRequest {
   SandboxRef sandbox = 1;
   string path = 2;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 3;
 }
 message ReadlinkResponse {
   string target = 1;
@@ -210,6 +243,9 @@ message AccessRequest {
   // Bitmask of access checks to perform (F_OK, R_OK, W_OK, X_OK). When unset,
   // the server checks for existence (F_OK).
   optional uint32 mode = 3;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 4;
 }
 message AccessResponse {}
 
@@ -218,6 +254,9 @@ message AccessResponse {}
 message ReadFileRequest {
   SandboxRef sandbox = 1;
   string path = 2;
+  // Run the operation through `sudo -E`, so it acts with root privileges rather
+  // than as the sandbox's default non-root user. Default: false.
+  optional bool sudo = 3;
 }
 
 // One chunk of a file streamed by ReadFile. Chunks arrive in order. The final
@@ -242,6 +281,9 @@ message WriteFileRequest {
     optional bool append = 4;
     // When true, create the parent directories before opening the file.
     optional bool create_directories = 5;
+    // Run the operation through `sudo -E`, so it acts with root privileges
+    // rather than as the sandbox's default non-root user. Default: false.
+    optional bool sudo = 6;
   }
 }
 message WriteFileResponse {
